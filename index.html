@@ -50,28 +50,53 @@
       font-weight: bold;
       background-color: #000;
     }
-    .collections {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 30px;
-      margin-top: 30px;
-    }
-    .collections img {
-      width: 100%;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
     h2 {
       font-family: 'Playfair Display', serif;
       color: #bfa14a;
       margin-bottom: 20px;
     }
-    footer {
-      background-color: #f8f8f8;
-      text-align: center;
+    .collections {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .product-card {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 10px;
       padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      max-width: 300px;
+    }
+    .product-card img {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .product-card h3 {
+      margin: 10px 0 5px;
+      font-family: 'Playfair Display', serif;
+      color: #bfa14a;
+    }
+    .product-card p {
+      margin: 0 0 10px;
+      font-weight: bold;
+    }
+    .order-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    .order-buttons a {
+      text-decoration: none;
+      padding: 8px 14px;
+      background: #bfa14a;
+      color: #fff;
+      border-radius: 5px;
       font-size: 14px;
-      color: #777;
+    }
+    .order-buttons a:hover {
+      background: #a78c30;
     }
     form input, form textarea {
       width: 100%;
@@ -91,6 +116,13 @@
     }
     form button:hover {
       background-color: #a78c30;
+    }
+    footer {
+      background-color: #f8f8f8;
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      color: #777;
     }
   </style>
 </head>
@@ -113,9 +145,40 @@
   <section id="collections">
     <h2>Our Collections</h2>
     <div class="collections">
-      <img src="https://via.placeholder.com/400x300?text=Necklaces" alt="Necklaces">
-      <img src="https://via.placeholder.com/400x300?text=Earrings" alt="Earrings">
-      <img src="https://via.placeholder.com/400x300?text=Bracelets" alt="Bracelets">
+
+      <!-- Product 1 -->
+      <div class="product-card">
+        <img src="https://via.placeholder.com/400x300?text=Gold+Necklace" alt="Gold Necklace">
+        <h3>Gold Necklace</h3>
+        <p>₹5,499</p>
+        <div class="order-buttons">
+          <a href="https://wa.me/918960458885?text=Hi,+I'm+interested+in+the+Gold+Necklace" target="_blank">WhatsApp</a>
+          <a href="https://instagram.com/atiyavanity_vibes" target="_blank">Instagram</a>
+        </div>
+      </div>
+
+      <!-- Product 2 -->
+      <div class="product-card">
+        <img src="https://via.placeholder.com/400x300?text=Pearl+Earrings" alt="Pearl Earrings">
+        <h3>Pearl Earrings</h3>
+        <p>₹2,199</p>
+        <div class="order-buttons">
+          <a href="https://wa.me/918960458885?text=Hi,+I'm+interested+in+the+Pearl+Earrings" target="_blank">WhatsApp</a>
+          <a href="https://instagram.com/atiyavanity_vibes" target="_blank">Instagram</a>
+        </div>
+      </div>
+
+      <!-- Product 3 -->
+      <div class="product-card">
+        <img src="https://via.placeholder.com/400x300?text=Kundan+Bracelet" alt="Kundan Bracelet">
+        <h3>Kundan Bracelet</h3>
+        <p>₹3,750</p>
+        <div class="order-buttons">
+          <a href="https://wa.me/918960458885?text=Hi,+I'm+interested+in+the+Kundan+Bracelet" target="_blank">WhatsApp</a>
+          <a href="https://instagram.com/atiyavanity_vibes" target="_blank">Instagram</a>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -127,14 +190,18 @@
   </section>
 
   <section id="contact">
-    <h2>Contact Us</h2>
-    <form style="max-width: 500px; margin: auto;">
-      <input type="text" placeholder="Your Name" required />
-      <input type="email" placeholder="Your Email" required />
-      <textarea rows="5" placeholder="Your Message" required></textarea>
-      <button type="submit">Send Message</button>
-    </form>
-  </section>
+  <h2>Contact Us</h2>
+  <form action="https://formsubmit.co/atiyatrinkets@gmail.com" method="POST" style="max-width: 500px; margin: auto;">
+    <input type="text" name="name" placeholder="Your Name" required />
+    <input type="email" name="email" placeholder="Your Email" required />
+    <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+    <button type="submit">Send Message</button>
+
+    <!-- Optional Formsubmit extras -->
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_template" value="table">
+  </form>
+</section>
 
   <footer>
     © 2025 AtiyaTrinkets. All rights reserved.
