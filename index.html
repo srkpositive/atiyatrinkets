@@ -25,51 +25,127 @@
       color: var(--text);
     }
 
+    .navbar {
+      background: transparent;
+      padding: 10px 20px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 999;
+      transition: background 0.3s ease;
+    }
+
+    .navbar.scrolled {
+      background: var(--primary);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .nav-links li {
+      position: relative;
+    }
+
+    .nav-links li a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: bold;
+      transition: color 0.2s;
+    }
+
+    .nav-links li a:hover {
+      color: var(--accent);
+    }
+
+    .nav-links li:hover .dropdown {
+      display: block;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 30px;
+      left: 0;
+      background: var(--primary);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .dropdown a {
+      display: block;
+      padding: 10px 15px;
+      white-space: nowrap;
+    }
+
+    .burger {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    @media screen and (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        background: var(--primary);
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        padding: 10px 20px;
+        border-radius: 10px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .burger {
+        display: block;
+      }
+    }
+
     header {
       background: var(--primary);
       text-align: center;
-      padding: 50px 20px;
+      padding: 80px 20px 40px;
       animation: fadeInDown 1s ease;
-      position: relative;
     }
 
     header h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 3rem;
+      font-size: 2.5rem;
       margin-bottom: 10px;
     }
 
     header p {
-      font-size: 1.2rem;
-    }
-
-    .cart-icon {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      font-size: 1.2rem;
-    }
-
-    .cart-icon a {
-      position: relative;
-      color: var(--text);
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    #cart-count {
-      position: absolute;
-      top: -10px;
-      right: -15px;
-      background: #d63384;
-      color: white;
-      border-radius: 50%;
-      padding: 2px 6px;
-      font-size: 12px;
+      font-size: 1.1rem;
     }
 
     section {
-      padding: 50px 20px;
+      padding: 40px 20px;
       max-width: 1000px;
       margin: auto;
       text-align: center;
@@ -130,12 +206,7 @@
       animation: fadeInUp 1s ease;
     }
 
-    .testimonial p {
-      margin: 0;
-    }
-
-    .about,
-    .contact {
+    .about, .contact {
       background: #fff;
       padding: 30px;
       margin-top: 30px;
@@ -148,11 +219,9 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
-      margin-top: 20px;
     }
 
-    .contact input,
-    .contact textarea {
+    .contact input, .contact textarea {
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 6px;
@@ -173,17 +242,6 @@
       background: #c29dc3;
     }
 
-    .contact a {
-      color: var(--accent);
-      font-weight: bold;
-      text-decoration: none;
-    }
-
-    .contact a:hover {
-      text-decoration: underline;
-      color: #c29dc3;
-    }
-
     footer {
       text-align: center;
       padding: 20px;
@@ -200,101 +258,62 @@
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
-    @media screen and (max-width: 600px) {
-      .product-card {
-        width: 90%;
-      }
-
-      header h1 {
-        font-size: 2rem;
-      }
-
-      .testimonial {
-        padding: 15px;
-      }
-    }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>AtiyaTrinkets</h1>
-    <p>Graceful. Affordable. You.</p>
-    <!-- Cart Icon with Badge -->
-    <div class="cart-icon">
-      <a href="cart.html">
-        🛒 <span id="cart-count">0</span>
-      </a>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand">AtiyaTrinkets</a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#">Home</a></li>
+        <li>
+          <a href="#about">About</a>
+          <div class="dropdown">
+            <a href="#about">Our Story</a>
+            <a href="#">Team</a>
+          </div>
+        </li>
+        <li>
+          <a href="#products">Products</a>
+          <div class="dropdown">
+            <a href="#products">Earrings</a>
+            <a href="#">Necklaces</a>
+            <a href="#">Bracelets</a>
+          </div>
+        </li>
+        <li><a href="#testimonials">Testimonials</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="cart.html">🛒 <span id="nav-cart-count">0</span></a></li>
+      </ul>
+      <div class="burger" onclick="toggleMenu()">☰</div>
     </div>
-  </header>
+  </nav>
 
-  <section id="products">
-    <h2>Featured Earrings</h2>
-    <div class="product-grid">
-      <div class="product-card">
-        <img src="https://via.placeholder.com/300x300?text=Earring+1" alt="Earring 1">
-        <h3>Golden Hoop</h3>
-        <div class="price">₹499</div>
-        <a href="product.html?id=1"><button>Add to Cart</button></a>
-      </div>
-      <div class="product-card">
-        <img src="https://via.placeholder.com/300x300?text=Earring+2" alt="Earring 2">
-        <h3>Silver Drops</h3>
-        <div class="price">₹399</div>
-        <a href="product.html?id=2"><button>Add to Cart</button></a>
-      </div>
-    </div>
-  </section>
+<!-- rest of your HTML remains as-is -->
+<script>
+  function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('active');
+  }
 
-  <section id="testimonials">
-    <h2>What Our Customers Say</h2>
-    <div class="testimonial">
-      <p>"Absolutely love the quality and designs. Perfect for gifting!"</p>
-    </div>
-    <div class="testimonial">
-      <p>"Elegant earrings at affordable prices. I wear them daily!"</p>
-    </div>
-  </section>
+  function updateCartBadge() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const count = cart.reduce((sum, item) => sum + item.qty, 0);
+    const badge = document.getElementById('nav-cart-count');
+    if (badge) badge.textContent = count;
+  }
 
-  <section class="about" id="about">
-    <h2>About AtiyaTrinkets</h2>
-    <p>We craft elegant, affordable artificial jewellery that reflects the beauty in every woman. At AtiyaTrinkets, we believe style shouldn’t come at a high price — our collections are carefully curated to suit festive occasions, everyday wear, and everything in between.</p>
-  </section>
-
-  <section class="contact" id="contact">
-    <h2>Contact Us</h2>
-    <p>Prefer direct chat or email?</p>
-    <p>
-      📱 <a href="https://wa.me/918960458885" target="_blank">WhatsApp</a><br>
-      📧 <a href="mailto:atiyatrinkets@gmail.com">Email us</a>
-    </p>
-
-    <form action="https://formsubmit.co/atiyatrinkets@gmail.com" method="POST">
-      <input type="text" name="name" placeholder="Your Name" required />
-      <input type="email" name="email" placeholder="Your Email" required />
-      <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
-      <button type="submit">Send Message</button>
-      <input type="hidden" name="_next" value="https://srkpositive.github.io/atiyatrinkets/thankyou.html">
-      <input type="hidden" name="_captcha" value="false">
-    </form>
-  </section>
-
-  <footer>
-    <p>&copy; 2025 AtiyaTrinkets</p>
-  </footer>
-
-  <!-- Cart Badge Script -->
-  <script>
-    function updateCartCount() {
-      const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      const count = cart.reduce((sum, item) => sum + item.qty, 0);
-      const badge = document.getElementById('cart-count');
-      if (badge) badge.textContent = count;
+  function handleNavbarScroll() {
+    const navbar = document.getElementById('navbar');
+    if (window.scrollY > 20) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
     }
+  }
 
-    window.onload = updateCartCount;
-  </script>
-
+  window.addEventListener('scroll', handleNavbarScroll);
+  window.onload = updateCartBadge;
+</script>
 </body>
 </html>
