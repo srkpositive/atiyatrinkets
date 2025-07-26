@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Checkout - AtiyaTrinkets</title>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background-color: #fdf6f0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      background: #fff;
+      margin: auto;
+      padding: 30px;
+      border-radius: 10px;
+    }
+
+    h2 {
+      color: #d8b4d3;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .btn {
+      background-color: #d8b4d3;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #c29dc3;
+    }
+
+    .paypal-button {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Checkout</h2>
+    <input type="text" id="name" placeholder="Full Name" required>
+    <input type="text" id="address" placeholder="Shipping Address" required>
+    <input type="tel" id="phone" placeholder="Phone Number" required>
+
+    <button class="btn" onclick="payWithRazorpay()">Pay with Razorpay</button>
+
+    <div class="paypal-button">
+      <div id="paypal-button-container"></div>
+    </div>
+  </div>
+
+  <script>
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    const totalAmount = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+    function payWithRazorpay() {
+      const options = {
+        key: "YOUR_RAZORPAY_KEY", // Replace with your Razorpay Key
+        amount: totalAmount * 100,
+        currency: "INR",
+        name: "AtiyaTrinkets",
+        description: "Jewellery Order",
+        handler: function (response) {
+          alert("Payment Successful: " + response.razorpay_payment_id);
+          localStorage.removeItem('cart');
+          window.location.href = "index.html";
+        },
+        prefill: {
+          name: document.getElementById('name').value,
+          contact: document.getElementById('phone').value
+        }
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.open();
+    }
+  </script>
+
+  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
+  <script>
+    paypal.Buttons({
+      createOrder: function(data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: (totalAmount / 83).toFixed(2) // Rough INR→USD conversion
+            }
+          }]
+        });
+      },
+      onApprove: function(data, actions) {
+        return actions.order.capture().then(function(details) {
+          alert('Payment Successful, ' + details.payer.name.given_name + '!');
+          localStorage.removeItem('cart');
+          window.location.href = "index.html";
+        });
+      }
+    }).render('#paypal-button-container');
+  </script>
+
+</body>
+</html>
