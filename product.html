@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <title>Product - AtiyaTrinkets</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary: #f8e1e7;
@@ -14,11 +15,48 @@
 
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Open Sans', sans-serif;
       background: var(--background);
       color: var(--text);
       text-align: center;
-      padding: 40px 20px;
+      padding: 50px 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      margin-bottom: 5px;
+    }
+
+    .cart-icon {
+      position: absolute;
+      top: 0;
+      right: 20px;
+      font-size: 1.2rem;
+    }
+
+    .cart-icon a {
+      position: relative;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    #cart-count {
+      position: absolute;
+      top: -10px;
+      right: -15px;
+      background: #d63384;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 12px;
     }
 
     .product {
@@ -37,6 +75,7 @@
     }
 
     h2 {
+      font-size: 1.5rem;
       margin: 10px 0;
     }
 
@@ -60,23 +99,47 @@
       background: #c29dc3;
     }
 
-    a {
+    a.back {
       display: inline-block;
-      margin-top: 20px;
+      margin-top: 30px;
       color: var(--accent);
-      font-weight: bold;
       text-decoration: none;
+      font-weight: bold;
+    }
+
+    a.back:hover {
+      text-decoration: underline;
+    }
+
+    @media screen and (max-width: 600px) {
+      header h1 {
+        font-size: 1.8rem;
+      }
+
+      .product {
+        padding: 20px;
+      }
     }
   </style>
 </head>
 <body>
 
+  <header>
+    <h1>AtiyaTrinkets</h1>
+    <div class="cart-icon">
+      <a href="cart.html">
+        🛒 <span id="cart-count">0</span>
+      </a>
+    </div>
+  </header>
+
   <div class="product">
     <img id="productImg" src="" alt="Product Image" />
     <h2 id="productName">Product Name</h2>
     <div class="price" id="productPrice">₹0</div>
-    <button id="addToCartBtn">Add to Cart</button><br/>
-    <a href="cart.html">🛒 View Cart</a>
+    <button id="addToCartBtn">Add to Cart</button>
+    <br><br>
+    <a class="back" href="index.html">← Continue Shopping</a>
   </div>
 
   <script>
@@ -97,7 +160,6 @@
 
     const params = new URLSearchParams(window.location.search);
     const productId = params.get('id');
-
     const product = products[productId];
 
     if (product) {
@@ -116,11 +178,21 @@
         }
 
         localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartCount();
         alert("Added to cart!");
       });
     } else {
       document.querySelector('.product').innerHTML = "<p>Product not found.</p>";
     }
+
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const count = cart.reduce((sum, item) => sum + item.qty, 0);
+      const badge = document.getElementById('cart-count');
+      if (badge) badge.textContent = count;
+    }
+
+    window.onload = updateCartCount;
   </script>
 
 </body>
