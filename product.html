@@ -89,6 +89,7 @@
       text-align: center;
       padding: 20px;
       background-color: var(--primary);
+      margin-top: 40px;
     }
   </style>
 </head>
@@ -120,29 +121,37 @@
   </footer>
 
   <script>
-  // Example static product (later, make this dynamic with ?id=...)
-  const product = {
-    id: 1,
-    name: 'Golden Hoop',
-    price: 499,
-    image: 'https://via.placeholder.com/400x400?text=Earring+1'
-  };
+    // Static product info for now
+    const product = {
+      id: 1,
+      name: 'Golden Hoop',
+      price: 499,
+      image: 'https://via.placeholder.com/400x400?text=Earring+1',
+      description: 'Elegant gold-plated hoop earrings for daily and festive wear. Lightweight and skin-friendly.'
+    };
 
-  function addToCart() {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    // Update DOM content (optional, useful for dynamic)
+    document.getElementById('product-title').textContent = product.name;
+    document.getElementById('product-price').textContent = `₹${product.price}`;
+    document.getElementById('product-description').textContent = product.description;
+    document.getElementById('product-image').src = product.image;
 
-    const existingItem = cart.find(item => item.id === product.id);
+    // Cart logic
+    function addToCart() {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-    if (existingItem) {
-      existingItem.quantity += 1;
-    } else {
-      cart.push({ ...product, quantity: 1 });
+      const existingItem = cart.find(item => item.id === product.id);
+
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({ ...product, quantity: 1 });
+      }
+
+      localStorage.setItem('cart', JSON.stringify(cart));
+      alert('Item added to cart!');
     }
-
-    localStorage.setItem('cart', JSON.stringify(cart));
-    alert('Item added to cart!');
-  }
-</script>
+  </script>
 
 </body>
 </html>
