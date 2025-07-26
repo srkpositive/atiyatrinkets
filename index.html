@@ -30,6 +30,7 @@
       text-align: center;
       padding: 50px 20px;
       animation: fadeInDown 1s ease;
+      position: relative;
     }
 
     header h1 {
@@ -40,6 +41,31 @@
 
     header p {
       font-size: 1.2rem;
+    }
+
+    .cart-icon {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 1.2rem;
+    }
+
+    .cart-icon a {
+      position: relative;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    #cart-count {
+      position: absolute;
+      top: -10px;
+      right: -15px;
+      background: #d63384;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 12px;
     }
 
     section {
@@ -195,6 +221,12 @@
   <header>
     <h1>AtiyaTrinkets</h1>
     <p>Graceful. Affordable. You.</p>
+    <!-- Cart Icon with Badge -->
+    <div class="cart-icon">
+      <a href="cart.html">
+        🛒 <span id="cart-count">0</span>
+      </a>
+    </div>
   </header>
 
   <section id="products">
@@ -251,6 +283,18 @@
   <footer>
     <p>&copy; 2025 AtiyaTrinkets</p>
   </footer>
+
+  <!-- Cart Badge Script -->
+  <script>
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const count = cart.reduce((sum, item) => sum + item.qty, 0);
+      const badge = document.getElementById('cart-count');
+      if (badge) badge.textContent = count;
+    }
+
+    window.onload = updateCartCount;
+  </script>
 
 </body>
 </html>
