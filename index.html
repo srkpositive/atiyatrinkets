@@ -28,22 +28,22 @@
     header {
       background: var(--primary);
       text-align: center;
-      padding: 40px 20px;
+      padding: 50px 20px;
       animation: fadeInDown 1s ease;
     }
 
     header h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 2.5rem;
+      font-size: 3rem;
       margin-bottom: 10px;
     }
 
     header p {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
     }
 
     section {
-      padding: 40px 20px;
+      padding: 50px 20px;
       max-width: 1000px;
       margin: auto;
       text-align: center;
@@ -122,6 +122,7 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+      margin-top: 20px;
     }
 
     .contact input,
@@ -144,6 +145,17 @@
 
     .contact button:hover {
       background: #c29dc3;
+    }
+
+    .contact a {
+      color: var(--accent);
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .contact a:hover {
+      text-decoration: underline;
+      color: #c29dc3;
     }
 
     footer {
@@ -220,21 +232,20 @@
 
   <section class="contact" id="contact">
     <h2>Contact Us</h2>
-    <p>You can also contact us via:</p>
-<p>
-  📞 <a href="https://wa.me/918960458885" target="_blank">WhatsApp</a> |
-  ✉️ <a href="mailto:atiyatrinkets@gmail.com">Email</a>
-</p>
-    <form action="https://formsubmit.co/atiyatrinkets@gmail.com" method="POST">
-  <input type="text" name="name" placeholder="Your Name" required />
-  <input type="email" name="email" placeholder="Your Email" required />
-  <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
-  <button type="submit">Send Message</button>
+    <p>Prefer direct chat or email?</p>
+    <p>
+      📱 <a href="https://wa.me/918960458885" target="_blank">WhatsApp</a><br>
+      📧 <a href="mailto:atiyatrinkets@gmail.com">Email us</a>
+    </p>
 
-  <!-- optional: success redirect -->
-  <input type="hidden" name="_next" value="https://srkpositive.github.io/atiyatrinkets/thankyou.html">
-  <input type="hidden" name="_captcha" value="false">
-</form>
+    <form action="https://formsubmit.co/atiyatrinkets@gmail.com" method="POST">
+      <input type="text" name="name" placeholder="Your Name" required />
+      <input type="email" name="email" placeholder="Your Email" required />
+      <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+      <input type="hidden" name="_next" value="https://srkpositive.github.io/atiyatrinkets/thankyou.html">
+      <input type="hidden" name="_captcha" value="false">
+    </form>
   </section>
 
   <footer>
