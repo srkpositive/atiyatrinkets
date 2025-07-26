@@ -1,128 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
   <title>Your Cart - AtiyaTrinkets</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    :root {
+      --primary: #f8e1e7;
+      --accent: #d8b4d3;
+      --background: #fff9f7;
+      --text: #333;
+    }
+
     body {
-      font-family: 'Open Sans', sans-serif;
-      background-color: #fdf6f0;
-      padding: 20px;
       margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--background);
+      color: var(--text);
+      text-align: center;
+      padding: 30px 15px;
     }
 
     h1 {
-      text-align: center;
-      color: #d8b4d3;
+      color: var(--text);
+      font-size: 2rem;
+      margin-bottom: 20px;
     }
 
-    .cart {
-      max-width: 800px;
-      margin: auto;
+    table {
+      width: 100%;
+      max-width: 700px;
+      margin: 0 auto 30px;
+      border-collapse: collapse;
       background: #fff;
-      padding: 20px;
       border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
-    .cart-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 0;
+    th, td {
+      padding: 15px;
       border-bottom: 1px solid #eee;
     }
 
-    .cart-item:last-child {
-      border-bottom: none;
+    th {
+      background: var(--primary);
     }
 
-    .item-details {
-      flex: 1;
-    }
-
-    .item-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .btn {
-      background-color: #d8b4d3;
-      color: #fff;
-      padding: 8px 12px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      background-color: #c29dc3;
+    td input {
+      width: 50px;
+      text-align: center;
     }
 
     .total {
-      text-align: right;
       font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .empty {
+      color: gray;
+      font-size: 1.1rem;
+    }
+
+    button {
+      padding: 6px 12px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #c29dc3;
+    }
+
+    a {
+      display: inline-block;
       margin-top: 20px;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    @media screen and (max-width: 600px) {
+      table, th, td {
+        font-size: 0.9rem;
+      }
+
+      td input {
+        width: 40px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <h1>Your Cart</h1>
-  <div class="cart" id="cart-items">
-    <!-- Cart items will be inserted here -->
-  </div>
+  <h1>Your Shopping Cart</h1>
 
-  <div class="total" id="total-price">
-    Total: ₹0
-  </div>
+  <div id="cart-container"></div>
 
-  <div style="text-align:center; margin-top: 20px;">
-    <a href="checkout.html"><button class="btn">Proceed to Checkout</button></a>
-  </div>
+  <a href="index.html">← Continue Shopping</a>
 
   <script>
-    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-
     function renderCart() {
-      const cartContainer = document.getElementById('cart-items');
-      const totalDiv = document.getElementById('total-price');
-      let total = 0;
-      cartContainer.innerHTML = '';
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const container = document.getElementById('cart-container');
 
-      if (cartItems.length === 0) {
-        cartContainer.innerHTML = '<p>Your cart is empty.</p>';
-        totalDiv.innerText = 'Total: ₹0';
+      if (cart.length === 0) {
+        container.innerHTML = '<p class="empty">Your cart is empty.</p>';
         return;
       }
 
-      cartItems.forEach((item, index) => {
-        total += item.price * item.quantity;
+      let total = 0;
+      let html = `
+        <table>
+          <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Qty</th>
+            <th>Remove</th>
+          </tr>
+      `;
 
-        const div = document.createElement('div');
-        div.className = 'cart-item';
-        div.innerHTML = `
-          <div class="item-details">
-            <strong>${item.name}</strong><br>
-            ₹${item.price} × ${item.quantity}
-          </div>
-          <div class="item-actions">
-            <button class="btn" onclick="removeItem(${index})">Remove</button>
-          </div>
+      cart.forEach((item, index) => {
+        total += item.price * item.qty;
+        html += `
+          <tr>
+            <td>${item.name}</td>
+            <td>₹${item.price}</td>
+            <td><input type="number" min="1" value="${item.qty}" onchange="updateQty(${index}, this.value)"></td>
+            <td><button onclick="removeItem(${index})">X</button></td>
+          </tr>
         `;
-        cartContainer.appendChild(div);
       });
 
-      totalDiv.innerText = 'Total: ₹' + total;
+      html += `</table><div class="total">Total: ₹${total}</div>`;
+      container.innerHTML = html;
     }
 
-    function removeItem(index) {
-      cartItems.splice(index, 1);
-      localStorage.setItem('cart', JSON.stringify(cartItems));
+    function updateQty(index, qty) {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart[index].qty = parseInt(qty);
+      localStorage.setItem('cart', JSON.stringify(cart));
       renderCart();
     }
 
-    renderCart();
+    function removeItem(index) {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+    }
+
+    window.onload = renderCart;
   </script>
 
 </body>
