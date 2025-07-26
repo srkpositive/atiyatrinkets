@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Your Cart - AtiyaTrinkets</title>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Cart - AtiyaTrinkets</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap" rel="stylesheet">
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <style>
     :root {
       --primary: #f8e1e7;
@@ -14,150 +16,164 @@
 
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Open Sans', sans-serif;
       background: var(--background);
       color: var(--text);
+      padding: 40px 20px;
       text-align: center;
-      padding: 30px 15px;
     }
 
     h1 {
-      color: var(--text);
-      font-size: 2rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
       margin-bottom: 20px;
     }
 
-    table {
-      width: 100%;
-      max-width: 700px;
-      margin: 0 auto 30px;
-      border-collapse: collapse;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    .cart-container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      animation: fadeInUp 0.7s ease;
     }
 
-    th, td {
-      padding: 15px;
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       border-bottom: 1px solid #eee;
+      padding: 15px 0;
     }
 
-    th {
-      background: var(--primary);
+    .cart-item:last-child {
+      border: none;
     }
 
-    td input {
-      width: 50px;
-      text-align: center;
+    .cart-item h3 {
+      margin: 0;
+    }
+
+    .qty {
+      font-weight: bold;
+      color: var(--accent);
     }
 
     .total {
-      font-size: 1.2rem;
-      font-weight: bold;
-      margin-bottom: 20px;
+      font-size: 1.4rem;
+      margin: 30px 0;
+      color: var(--accent);
     }
 
-    .empty {
-      color: gray;
-      font-size: 1.1rem;
-    }
-
-    button {
-      padding: 6px 12px;
+    button.checkout {
       background: var(--accent);
       color: white;
+      padding: 12px 30px;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
+      font-size: 1rem;
       cursor: pointer;
+      transition: background 0.3s ease;
     }
 
-    button:hover {
+    button.checkout:hover {
       background: #c29dc3;
     }
 
     a {
-      display: inline-block;
-      margin-top: 20px;
       color: var(--accent);
       text-decoration: none;
       font-weight: bold;
+      display: inline-block;
+      margin-top: 30px;
     }
 
-    a:hover {
-      text-decoration: underline;
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @media screen and (max-width: 600px) {
-      table, th, td {
-        font-size: 0.9rem;
-      }
-
-      td input {
-        width: 40px;
+      .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
       }
     }
   </style>
 </head>
 <body>
 
-  <h1>Your Shopping Cart</h1>
-
-  <div id="cart-container"></div>
-
+  <h1>Your Cart</h1>
+  <div class="cart-container" id="cartItems"></div>
+  <div class="total" id="cartTotal">Total: ₹0</div>
+  <button class="checkout" onclick="checkoutCart()">Proceed to Checkout</button><br>
   <a href="index.html">← Continue Shopping</a>
 
   <script>
+    const cartContainer = document.getElementById('cartItems');
+    const cartTotal = document.getElementById('cartTotal');
+
     function renderCart() {
       const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      const container = document.getElementById('cart-container');
+      cartContainer.innerHTML = '';
+      let total = 0;
 
       if (cart.length === 0) {
-        container.innerHTML = '<p class="empty">Your cart is empty.</p>';
+        cartContainer.innerHTML = '<p>Your cart is empty.</p>';
+        cartTotal.textContent = '';
+        document.querySelector('button.checkout').style.display = 'none';
         return;
       }
 
-      let total = 0;
-      let html = `
-        <table>
-          <tr>
-            <th>Product</th>
-            <th>Price</th>
-            <th>Qty</th>
-            <th>Remove</th>
-          </tr>
-      `;
-
-      cart.forEach((item, index) => {
+      cart.forEach(item => {
         total += item.price * item.qty;
-        html += `
-          <tr>
-            <td>${item.name}</td>
-            <td>₹${item.price}</td>
-            <td><input type="number" min="1" value="${item.qty}" onchange="updateQty(${index}, this.value)"></td>
-            <td><button onclick="removeItem(${index})">X</button></td>
-          </tr>
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+          <h3>${item.name}</h3>
+          <div class="qty">Qty: ${item.qty}</div>
+          <div>₹${item.price * item.qty}</div>
         `;
+        cartContainer.appendChild(div);
       });
 
-      html += `</table><div class="total">Total: ₹${total}</div>`;
-      container.innerHTML = html;
+      cartTotal.textContent = `Total: ₹${total}`;
     }
 
-    function updateQty(index, qty) {
+    function checkoutCart() {
       const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      cart[index].qty = parseInt(qty);
-      localStorage.setItem('cart', JSON.stringify(cart));
-      renderCart();
+      if (cart.length === 0) return alert("Your cart is empty.");
+
+      const totalAmount = cart.reduce((sum, item) => sum + item.price * item.qty, 0) * 100;
+
+      const options = {
+        key: "YOUR_RAZORPAY_KEY_ID", // replace with your actual Razorpay Key ID
+        amount: totalAmount,
+        currency: "INR",
+        name: "AtiyaTrinkets",
+        description: "Order Payment",
+        image: "https://via.placeholder.com/100x100?text=Atiya",
+        handler: function (response) {
+          alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
+          localStorage.removeItem('cart');
+          window.location.href = "thankyou.html";
+        },
+        prefill: {
+          name: "",
+          email: "",
+          contact: ""
+        },
+        theme: {
+          color: "#d63384"
+        }
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.open();
     }
 
-    function removeItem(index) {
-      const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      cart.splice(index, 1);
-      localStorage.setItem('cart', JSON.stringify(cart));
-      renderCart();
-    }
-
-    window.onload = renderCart;
+    renderCart();
   </script>
 
 </body>
