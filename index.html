@@ -4,71 +4,72 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>AtiyaTrinkets - Artificial Jewellery</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Open+Sans&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary: #f8e1e7;
-      --secondary: #fdf6f0;
+      --background: #fff9f7;
       --accent: #d8b4d3;
       --text: #333;
-      --muted: #888;
+    }
+
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
     }
 
     body {
       margin: 0;
       font-family: 'Open Sans', sans-serif;
-      background-color: var(--secondary);
+      background: var(--background);
       color: var(--text);
     }
 
     header {
-      background-color: var(--primary);
-      padding: 20px;
+      background: var(--primary);
       text-align: center;
-      border-bottom: 1px solid #eee;
+      padding: 40px 20px;
+      animation: fadeInDown 1s ease;
     }
 
     header h1 {
-      margin: 0;
       font-family: 'Playfair Display', serif;
       font-size: 2.5rem;
-    }
-
-    .hero {
-      padding: 40px 20px;
-      text-align: center;
-      background-color: #fff;
-    }
-
-    .hero h2 {
-      font-size: 2rem;
       margin-bottom: 10px;
     }
 
-    .hero p {
-      font-size: 1rem;
-      color: var(--muted);
+    header p {
+      font-size: 1.1rem;
     }
 
-    .section {
+    section {
       padding: 40px 20px;
-      max-width: 1200px;
+      max-width: 1000px;
       margin: auto;
+      text-align: center;
     }
 
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    .product-grid {
+      display: flex;
+      flex-wrap: wrap;
       gap: 20px;
+      justify-content: center;
+      animation: fadeInUp 1s ease;
     }
 
     .product-card {
-      background: #fff;
-      border-radius: 8px;
-      padding: 15px;
-      text-align: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-      transition: transform 0.3s;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 250px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
     }
 
     .product-card:hover {
@@ -77,40 +78,103 @@
 
     .product-card img {
       width: 100%;
-      border-radius: 8px;
+      border-radius: 10px;
     }
 
-    .product-card h4 {
+    .product-card h3 {
       margin: 10px 0 5px;
+      font-size: 1.2rem;
     }
 
-    .product-card p {
-      font-size: 0.9rem;
-      color: var(--muted);
+    .price {
+      font-weight: bold;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .testimonial {
+      background: #fff;
+      border-left: 4px solid var(--accent);
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 600px;
+      font-style: italic;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      animation: fadeInUp 1s ease;
+    }
+
+    .testimonial p {
+      margin: 0;
     }
 
     .about,
-    .testimonials {
-      background-color: #fff;
-      border-radius: 10px;
+    .contact {
+      background: #fff;
       padding: 30px;
-      margin-bottom: 20px;
+      margin-top: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      animation: fadeInUp 1s ease;
     }
 
-    .footer {
+    .contact form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .contact input,
+    .contact textarea {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-family: inherit;
+    }
+
+    .contact button {
+      background: var(--accent);
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .contact button:hover {
+      background: #c29dc3;
+    }
+
+    footer {
       text-align: center;
       padding: 20px;
       background-color: var(--primary);
-      font-size: 0.9rem;
+      margin-top: 40px;
     }
 
-    a {
-      color: var(--text);
-      text-decoration: none;
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    a:hover {
-      text-decoration: underline;
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media screen and (max-width: 600px) {
+      .product-card {
+        width: 90%;
+      }
+
+      header h1 {
+        font-size: 2rem;
+      }
+
+      .testimonial {
+        padding: 15px;
+      }
     }
   </style>
 </head>
@@ -121,45 +185,52 @@
     <p>Graceful. Affordable. You.</p>
   </header>
 
-  <div class="hero">
-    <h2>Discover Stunning Artificial Earrings</h2>
-    <p>Crafted with love, worn with pride</p>
-  </div>
-
-  <div class="section">
-    <h3>Featured Earrings</h3>
-    <div class="products" id="product-grid">
-      <!-- Placeholder products for now -->
+  <section id="products">
+    <h2>Featured Earrings</h2>
+    <div class="product-grid">
       <div class="product-card">
-        <img src="https://via.placeholder.com/200x200?text=Earring+1" alt="Earring 1" />
-        <h4>Golden Hoop</h4>
-        <p>₹499</p>
-        <a href="product.html?id=1">View Details</a>
+        <img src="https://via.placeholder.com/300x300?text=Earring+1" alt="Earring 1">
+        <h3>Golden Hoop</h3>
+        <div class="price">₹499</div>
+        <a href="product.html?id=1"><button>Add to Cart</button></a>
       </div>
       <div class="product-card">
-        <img src="https://via.placeholder.com/200x200?text=Earring+2" alt="Earring 2" />
-        <h4>Pastel Studs</h4>
-        <p>₹349</p>
-        <a href="product.html?id=2">View Details</a>
+        <img src="https://via.placeholder.com/300x300?text=Earring+2" alt="Earring 2">
+        <h3>Silver Drops</h3>
+        <div class="price">₹399</div>
+        <a href="product.html?id=2"><button>Add to Cart</button></a>
       </div>
     </div>
-  </div>
+  </section>
 
-  <div class="section about">
-    <h3>About AtiyaTrinkets</h3>
-    <p>At AtiyaTrinkets, we bring you a curated collection of elegant artificial jewellery. Our mission is to make style accessible and beautiful for every woman. Handmade with passion and pastel dreams.</p>
-  </div>
+  <section id="testimonials">
+    <h2>What Our Customers Say</h2>
+    <div class="testimonial">
+      <p>"Absolutely love the quality and designs. Perfect for gifting!"</p>
+    </div>
+    <div class="testimonial">
+      <p>"Elegant earrings at affordable prices. I wear them daily!"</p>
+    </div>
+  </section>
 
-  <div class="section testimonials">
-    <h3>Testimonials</h3>
-    <p><strong>Riya S.</strong>: “Absolutely love the quality and design. I got so many compliments!”</p>
-    <p><strong>Megha K.</strong>: “The pastel packaging is so cute! Will definitely order again.”</p>
-  </div>
+  <section class="about" id="about">
+    <h2>About AtiyaTrinkets</h2>
+    <p>We craft elegant, affordable artificial jewellery that reflects the beauty in every woman. At AtiyaTrinkets, we believe style shouldn’t come at a high price — our collections are carefully curated to suit festive occasions, everyday wear, and everything in between.</p>
+  </section>
 
-  <footer class="footer">
-    <p>&copy; 2025 AtiyaTrinkets | <a href="#">Instagram</a> | <a href="#">Contact Us</a></p>
+  <section class="contact" id="contact">
+    <h2>Contact Us</h2>
+    <form onsubmit="event.preventDefault(); alert('Thanks! We’ll get in touch soon.')">
+      <input type="text" placeholder="Your Name" required />
+      <input type="email" placeholder="Your Email" required />
+      <textarea rows="4" placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 AtiyaTrinkets</p>
   </footer>
 
 </body>
 </html>
-
