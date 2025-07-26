@@ -19,14 +19,85 @@
       font-family: 'Open Sans', sans-serif;
       background: var(--background);
       color: var(--text);
-      padding: 40px 20px;
+      padding: 0;
       text-align: center;
+    }
+
+    .navbar {
+      background: var(--primary);
+      padding: 10px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .nav-links li a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: bold;
+      transition: color 0.2s;
+    }
+
+    .nav-links li a:hover {
+      color: var(--accent);
+    }
+
+    .burger {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    @media screen and (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        background: var(--primary);
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        padding: 10px 20px;
+        border-radius: 10px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .burger {
+        display: block;
+      }
     }
 
     h1 {
       font-family: 'Playfair Display', serif;
       font-size: 2.5rem;
-      margin-bottom: 20px;
+      margin: 40px 20px 20px;
     }
 
     .cart-container {
@@ -93,16 +164,24 @@
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
-    @media screen and (max-width: 600px) {
-      .cart-item {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
   </style>
 </head>
 <body>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand">AtiyaTrinkets</a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#products">Products</a></li>
+        <li><a href="index.html#testimonials">Testimonials</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+        <li><a href="cart.html">🛒 <span id="nav-cart-count">0</span></a></li>
+      </ul>
+      <div class="burger" onclick="toggleMenu()">☰</div>
+    </div>
+  </nav>
 
   <h1>Your Cart</h1>
   <div class="cart-container" id="cartItems"></div>
@@ -111,6 +190,17 @@
   <a href="index.html">← Continue Shopping</a>
 
   <script>
+    function toggleMenu() {
+      document.getElementById('navLinks').classList.toggle('active');
+    }
+
+    function updateCartBadge() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const count = cart.reduce((sum, item) => sum + item.qty, 0);
+      const badge = document.getElementById('nav-cart-count');
+      if (badge) badge.textContent = count;
+    }
+
     const cartContainer = document.getElementById('cartItems');
     const cartTotal = document.getElementById('cartTotal');
 
@@ -148,7 +238,7 @@
       const totalAmount = cart.reduce((sum, item) => sum + item.price * item.qty, 0) * 100;
 
       const options = {
-        key: "rzp_live_8dfpF64rA0trja", // replace with your actual Razorpay Key ID
+        key: "YOUR_RAZORPAY_KEY_ID", // replace with your actual Razorpay Key ID
         amount: totalAmount,
         currency: "INR",
         name: "AtiyaTrinkets",
@@ -174,6 +264,7 @@
     }
 
     renderCart();
+    updateCartBadge();
   </script>
 
 </body>
