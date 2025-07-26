@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product - AtiyaTrinkets</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Open+Sans&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #f8e1e7;
+      --secondary: #fdf6f0;
+      --accent: #d8b4d3;
+      --text: #333;
+    }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background-color: var(--secondary);
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: var(--primary);
+      text-align: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+    }
+
+    .product-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+
+    .product-image {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .product-image img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .product-info {
+      flex: 2;
+    }
+
+    .product-info h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+    }
+
+    .price {
+      color: var(--text);
+      font-size: 1.5rem;
+      margin-top: 10px;
+    }
+
+    .description {
+      margin-top: 20px;
+      font-size: 1rem;
+    }
+
+    .add-to-cart {
+      margin-top: 30px;
+      padding: 12px 20px;
+      font-size: 1rem;
+      background-color: var(--accent);
+      border: none;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .add-to-cart:hover {
+      background-color: #c49cc5;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>AtiyaTrinkets</h1>
+    <p>Graceful. Affordable. You.</p>
+  </header>
+
+  <div class="container">
+    <div class="product-wrapper">
+      <div class="product-image">
+        <img id="product-image" src="https://via.placeholder.com/400x400?text=Earring+1" alt="Earring" />
+      </div>
+      <div class="product-info">
+        <h2 id="product-title">Golden Hoop</h2>
+        <div class="price" id="product-price">₹499</div>
+        <p class="description" id="product-description">
+          Elegant gold-plated hoop earrings for daily and festive wear. Lightweight and skin-friendly.
+        </p>
+        <button class="add-to-cart" onclick="addToCart()">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 AtiyaTrinkets</p>
+  </footer>
+
+  <script>
+    // Later: Fetch dynamic data from Firebase using ?id=...
+    function addToCart() {
+      alert('Item added to cart! (Feature coming soon)');
+      // Later: Save to localStorage or Firebase cart
+    }
+  </script>
+
+</body>
+</html>
