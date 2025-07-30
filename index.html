@@ -26,97 +26,88 @@
       color: var(--text);
     }
 
-    /* NAVIGATION */
     .navbar {
       position: sticky;
       top: 0;
-      width: 100%;
-      background-color: var(--background);
+      background: white;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       z-index: 1000;
     }
 
     .nav-container {
+      max-width: 1200px;
+      margin: auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 15px 30px;
-      max-width: 1200px;
-      margin: auto;
     }
 
     .logo {
       font-family: 'Playfair Display', serif;
       font-size: 1.8rem;
       font-weight: bold;
+      color: var(--text);
     }
 
     nav ul {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin: 0;
-  padding: 0;
-}
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
 
-nav ul li {
-  position: relative;
-}
+    nav ul li {
+      position: relative;
+    }
 
-nav ul li a {
-  text-decoration: none;
-  color: var(--text);
-  font-weight: 600;
-  padding: 8px 12px;
-}
+    nav ul li a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+      padding: 8px 12px;
+    }
 
-nav ul li:hover > ul {
-  display: block;
-}
+    nav ul li:hover > ul {
+      display: block;
+    }
 
-nav ul ul {
-  display: none;
-  position: absolute;
-  top: 38px;
-  left: 0;
-  background: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1001;
-  padding: 10px;
-  min-width: 160px;
-}
+    nav ul ul {
+      display: none;
+      position: absolute;
+      top: 38px;
+      left: 0;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      z-index: 1001;
+      padding: 10px;
+      min-width: 160px;
+    }
 
-nav ul ul li {
-  margin: 0;
-}
+    nav ul ul li a {
+      display: block;
+      padding: 8px;
+    }
 
-nav ul ul li a {
-  display: block;
-  padding: 8px;
-  white-space: nowrap;
-}
+    .cart-icon {
+      position: relative;
+    }
 
-.cart-icon {
-  position: relative;
-  display: inline-block;
-}
-
-.cart-icon span {
-  position: absolute;
-  top: -6px;
-  right: -10px;
-  background: var(--accent);
-  color: white;
-  border-radius: 50%;
-  font-size: 0.75rem;
-  padding: 2px 6px;
-}
+    .cart-icon span {
+      position: absolute;
+      top: -6px;
+      right: -10px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      font-size: 0.75rem;
+      padding: 2px 6px;
+    }
 
     header {
       background: var(--primary);
-      text-align: center;
       padding: 60px 20px 40px;
+      text-align: center;
       animation: fadeInDown 1s ease;
     }
 
@@ -156,7 +147,7 @@ nav ul ul li a {
       padding: 20px;
       border-radius: 10px;
       width: 250px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
       transition: transform 0.3s ease;
     }
 
@@ -180,8 +171,22 @@ nav ul ul li a {
       margin-bottom: 10px;
     }
 
+    .product-card button {
+      background: var(--accent);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .product-card button:hover {
+      background: #c29dc3;
+    }
+
     .testimonial {
-      background: #fff;
+      background: white;
       border-left: 4px solid var(--accent);
       margin: 20px auto;
       padding: 20px;
@@ -189,27 +194,21 @@ nav ul ul li a {
       max-width: 600px;
       font-style: italic;
       box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      animation: fadeInUp 1s ease;
     }
 
-    .testimonial p {
-      margin: 0;
-    }
-
-    .about,
-    .contact {
-      background: #fff;
+    .about, .contact {
+      background: white;
       padding: 30px;
       margin-top: 30px;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      animation: fadeInUp 1s ease;
     }
 
     .contact form {
       display: flex;
       flex-direction: column;
       gap: 10px;
+      margin-top: 15px;
     }
 
     .contact input,
@@ -266,55 +265,41 @@ nav ul ul li a {
       header h1 {
         font-size: 2rem;
       }
-
-      .testimonial {
-        padding: 15px;
-      }
     }
   </style>
 </head>
 <body>
 
-  <header>
   <div class="navbar">
-    <div class="logo">AtiyaTrinkets</div>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="#">New Arrivals</a></li>
-        <li><a href="#">Earrings</a>
-          <ul>
-            <li><a href="#">Studs</a></li>
-            <li><a href="#">Hoops</a></li>
-            <li><a href="#">Drops</a></li>
-          </ul>
-        </li>
-        <li><a href="#">Necklace</a>
-          <ul>
-            <li><a href="#">Chokers</a></li>
-            <li><a href="#">Chains</a></li>
-          </ul>
-        </li>
-        <li><a href="#">Rings</a></li>
-        <li><a href="#">Bracelets</a></li>
-        <li><a href="#">Gifting</a></li>
-        <li><a href="#">Combos</a></li>
-        <li><a href="#">Couple Jewellery</a></li>
-        <li><a href="#">Ethnic</a></li>
-        <li><a href="#">Hair Accessories</a></li>
-        <li><a href="#">Handbags</a></li>
-        <li><a href="#about">About Us</a></li>
-        <li><a href="#contact">Contact Us</a></li>
-        <li>
-          <a href="cart.html" class="cart-icon">
-            🛒 <span id="cart-count">0</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <div class="nav-container">
+      <div class="logo">AtiyaTrinkets</div>
+      <nav>
+        <ul>
+          <li><a href="#">New Arrivals</a></li>
+          <li><a href="#">Earrings</a>
+            <ul>
+              <li><a href="#">Studs</a></li>
+              <li><a href="#">Hoops</a></li>
+              <li><a href="#">Drops</a></li>
+            </ul>
+          </li>
+          <li><a href="#">Necklace</a>
+            <ul>
+              <li><a href="#">Chokers</a></li>
+              <li><a href="#">Chains</a></li>
+            </ul>
+          </li>
+          <li><a href="#">Bracelets</a></li>
+          <li><a href="#">Combos</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="cart.html" class="cart-icon">🛒 <span id="cart-count">0</span></a></li>
+        </ul>
+      </nav>
+    </div>
   </div>
-</header>
 
+  <header>
     <h1>AtiyaTrinkets</h1>
     <p>Graceful. Affordable. You.</p>
   </header>
@@ -323,16 +308,16 @@ nav ul ul li a {
     <h2>Featured Earrings</h2>
     <div class="product-grid">
       <div class="product-card">
-        <img src="https://via.placeholder.com/300x300?text=Earring+1" alt="Earring 1">
+        <img src="https://via.placeholder.com/300x300?text=Earring+1" alt="Golden Hoop">
         <h3>Golden Hoop</h3>
         <div class="price">₹499</div>
-        <a href="product.html?id=1"><button>Add to Cart</button></a>
+        <a href="product.html?id=1"><button>View Product</button></a>
       </div>
       <div class="product-card">
-        <img src="https://via.placeholder.com/300x300?text=Earring+2" alt="Earring 2">
+        <img src="https://via.placeholder.com/300x300?text=Earring+2" alt="Silver Drops">
         <h3>Silver Drops</h3>
         <div class="price">₹399</div>
-        <a href="product.html?id=2"><button>Add to Cart</button></a>
+        <a href="product.html?id=2"><button>View Product</button></a>
       </div>
     </div>
   </section>
@@ -349,7 +334,7 @@ nav ul ul li a {
 
   <section class="about" id="about">
     <h2>About AtiyaTrinkets</h2>
-    <p>We craft elegant, affordable artificial jewellery that reflects the beauty in every woman. At AtiyaTrinkets, we believe style shouldn’t come at a high price — our collections are carefully curated to suit festive occasions, everyday wear, and everything in between.</p>
+    <p>We craft elegant, affordable artificial jewellery that reflects the beauty in every woman. Style shouldn’t come at a high price — our collections are carefully curated for every occasion.</p>
   </section>
 
   <section class="contact" id="contact">
@@ -374,11 +359,10 @@ nav ul ul li a {
   </footer>
 
   <script>
-    // Update cart badge from localStorage
     function updateCartBadge() {
       const cart = JSON.parse(localStorage.getItem('cart')) || [];
       const totalQty = cart.reduce((acc, item) => acc + item.qty, 0);
-      document.getElementById('cartBadge').setAttribute('data-count', totalQty);
+      document.getElementById('cart-count').innerText = totalQty;
     }
 
     updateCartBadge();
