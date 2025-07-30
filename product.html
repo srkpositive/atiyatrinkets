@@ -13,10 +13,7 @@
       --text: #333;
     }
 
-    * {
-      box-sizing: border-box;
-      scroll-behavior: smooth;
-    }
+    * { box-sizing: border-box; scroll-behavior: smooth; }
 
     body {
       margin: 0;
@@ -57,9 +54,7 @@
       padding: 0;
     }
 
-    nav ul li {
-      position: relative;
-    }
+    nav ul li { position: relative; }
 
     nav ul li a {
       text-decoration: none;
@@ -79,9 +74,7 @@
       z-index: 1001;
     }
 
-    nav ul li:hover > ul {
-      display: block;
-    }
+    nav ul li:hover > ul { display: block; }
 
     .cart-icon {
       position: relative;
@@ -156,106 +149,69 @@
     }
 
     @media screen and (max-width: 768px) {
-      .navbar {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      nav ul {
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .product-section img {
-        width: 100%;
-      }
+      .navbar { flex-direction: column; align-items: flex-start; }
+      nav ul { flex-direction: column; gap: 10px; }
+      .product-section img { width: 100%; }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="navbar">
-      <a href="index.html" class="logo">AtiyaTrinkets</a>
-      <nav>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="#">New Arrivals</a></li>
-          <li><a href="#">Earrings</a>
-            <ul>
-              <li><a href="#">Studs</a></li>
-              <li><a href="#">Hoops</a></li>
-              <li><a href="#">Drops</a></li>
-            </ul>
-          </li>
-          <li><a href="#">Necklace</a>
-            <ul>
-              <li><a href="#">Chokers</a></li>
-              <li><a href="#">Chains</a></li>
-            </ul>
-          </li>
-          <li><a href="#">Rings</a></li>
-          <li><a href="#">Bracelets</a></li>
-          <li><a href="#">Gifting</a></li>
-          <li><a href="#">Combos</a></li>
-          <li><a href="#">Couple Jewellery</a></li>
-          <li><a href="#">Ethnic</a></li>
-          <li><a href="#">Hair Accessories</a></li>
-          <li><a href="#">Handbags</a></li>
-          <li><a href="index.html#about">About Us</a></li>
-          <li><a href="index.html#contact">Contact Us</a></li>
-          <li>
-            <a href="cart.html" class="cart-icon">
-              🛒 <span id="cart-count">0</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+<header>
+  <div class="navbar">
+    <a href="index.html" class="logo">AtiyaTrinkets</a>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#">New Arrivals</a></li>
+        <li><a href="#">Earrings</a></li>
+        <li><a href="#">Necklace</a></li>
+        <li><a href="#">Rings</a></li>
+        <li><a href="#">Bracelets</a></li>
+        <li><a href="#">Combos</a></li>
+        <li><a href="#">Contact</a></li>
+        <li>
+          <a href="cart.html" class="cart-icon">🛒 <span id="cart-count">0</span></a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
 
-  <section class="product-section">
-    <img src="https://via.placeholder.com/300x300?text=Earring+1" alt="Golden Hoop Earring" />
-    <h1>Golden Hoop</h1>
-    <div class="price">₹499</div>
-    <p>Elegant gold-plated hoop earrings for daily and festive wear. Lightweight and skin-friendly.</p>
-    <button onclick="addToCart()">Add to Cart</button>
-  </section>
+<section class="product-section">
+  <img src="https://via.placeholder.com/300x300?text=Earring+1" alt="Golden Hoop Earring" />
+  <h1>Golden Hoop</h1>
+  <div class="price">₹499</div>
+  <p>Elegant gold-plated hoop earrings for daily and festive wear. Lightweight and skin-friendly.</p>
+  <button onclick="addToCart()">Add to Cart</button>
+</section>
 
-  <footer>
-    <p>&copy; 2025 AtiyaTrinkets</p>
-  </footer>
+<footer>
+  <p>&copy; 2025 AtiyaTrinkets</p>
+</footer>
 
-  <script>
-    function addToCart() {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-      const product = {
-        id: 1,
-        name: "Golden Hoop",
-        price: 499,
-        qty: 1
-      };
-
-      const existingIndex = cart.findIndex(item => item.id === product.id);
-      if (existingIndex > -1) {
-        cart[existingIndex].qty += 1;
-      } else {
-        cart.push(product);
-      }
-
-      localStorage.setItem("cart", JSON.stringify(cart));
-      updateCartCount();
-      alert("Item added to cart!");
+<script>
+  function addToCart() {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const product = { id: 1, name: "Golden Hoop", price: 499, qty: 1 };
+    const i = cart.findIndex(item => item.id === product.id);
+    if (i > -1) {
+      cart[i].qty += 1;
+    } else {
+      cart.push(product);
     }
-
-    function updateCartCount() {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      let totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
-      document.getElementById("cart-count").innerText = totalItems;
-    }
-
+    localStorage.setItem("cart", JSON.stringify(cart));
     updateCartCount();
-  </script>
+    alert("Item added to cart!");
+  }
+
+  function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const total = cart.reduce((sum, item) => sum + item.qty, 0);
+    document.getElementById("cart-count").innerText = total;
+  }
+
+  updateCartCount();
+</script>
 </body>
 </html>
