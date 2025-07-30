@@ -14,10 +14,7 @@
       --text: #333;
     }
 
-    * {
-      box-sizing: border-box;
-      scroll-behavior: smooth;
-    }
+    * { box-sizing: border-box; scroll-behavior: smooth; }
 
     body {
       margin: 0;
@@ -58,9 +55,7 @@
       padding: 0;
     }
 
-    nav ul li {
-      position: relative;
-    }
+    nav ul li { position: relative; }
 
     nav ul li a {
       text-decoration: none;
@@ -80,9 +75,7 @@
       z-index: 1001;
     }
 
-    nav ul li:hover > ul {
-      display: block;
-    }
+    nav ul li:hover > ul { display: block; }
 
     .cart-icon {
       position: relative;
@@ -118,17 +111,9 @@
       border-bottom: 1px solid #eee;
     }
 
-    .cart-item:last-child {
-      border-bottom: none;
-    }
+    .cart-item:last-child { border-bottom: none; }
 
-    .cart-item .info {
-      flex: 1;
-    }
-
-    .cart-item h3 {
-      margin: 0 0 5px;
-    }
+    .info { flex: 1; }
 
     .qty-controls {
       display: flex;
@@ -175,9 +160,7 @@
       cursor: pointer;
     }
 
-    .checkout-btn:hover {
-      background: #c29dc3;
-    }
+    .checkout-btn:hover { background: #c29dc3; }
 
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(20px); }
@@ -185,14 +168,8 @@
     }
 
     @media screen and (max-width: 768px) {
-      .cart-item {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .total {
-        text-align: center;
-      }
+      .cart-item { flex-direction: column; align-items: flex-start; }
+      .total { text-align: center; }
     }
   </style>
 </head>
@@ -211,9 +188,7 @@
         <li><a href="#">Combos</a></li>
         <li><a href="#">Contact</a></li>
         <li>
-          <a href="cart.html" class="cart-icon">
-            🛒 <span id="cart-count">0</span>
-          </a>
+          <a href="cart.html" class="cart-icon">🛒 <span id="cart-count">0</span></a>
         </li>
       </ul>
     </nav>
@@ -276,9 +251,7 @@
     if (!cart[index]) return;
 
     cart[index].qty += delta;
-    if (cart[index].qty <= 0) {
-      cart.splice(index, 1);
-    }
+    if (cart[index].qty <= 0) cart.splice(index, 1);
 
     localStorage.setItem("cart", JSON.stringify(cart));
     renderCart();
@@ -303,7 +276,7 @@
     const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
 
     const options = {
-      key: "rzp_live_8dfpF64rA0trja", // ✅ your live key here
+      key: "rzp_live_8dfpF64rA0trja", // ✅ Replace with your actual live key
       amount: total * 100,
       currency: "INR",
       name: "AtiyaTrinkets",
@@ -314,14 +287,8 @@
         localStorage.removeItem("cart");
         window.location.href = "thankyou.html";
       },
-      prefill: {
-        name: "",
-        email: "",
-        contact: ""
-      },
-      theme: {
-        color: "#d63384"
-      }
+      prefill: { name: "", email: "", contact: "" },
+      theme: { color: "#d63384" }
     };
 
     const rzp = new Razorpay(options);
