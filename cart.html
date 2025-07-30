@@ -7,6 +7,57 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap" rel="stylesheet">
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <style>
+    .cart-section {
+  max-width: 900px;
+  margin: 50px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+  animation: fadeInUp 0.7s ease;
+  text-align: center;
+}
+
+#cart-items {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.cart-item-name {
+  font-weight: bold;
+}
+
+.cart-item-qty {
+  margin: 0 10px;
+}
+
+.checkout {
+  margin-top: 30px;
+}
+
+.checkout button {
+  padding: 10px 20px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.checkout button:hover {
+  background: #c29dc3;
+}
+
     nav ul {
   list-style: none;
   display: flex;
