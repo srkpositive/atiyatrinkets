@@ -171,34 +171,45 @@
 </head>
 <body>
 
-  <nav class="navbar" id="navbar">
-    <div class="nav-container">
-      <a href="index.html" class="brand">AtiyaTrinkets</a>
-      <ul class="nav-links" id="navLinks">
+  <header>
+  <div class="navbar">
+    <div class="logo">AtiyaTrinkets</div>
+    <nav>
+      <ul>
         <li><a href="index.html">Home</a></li>
-        <li>
-          <a href="index.html#about">About</a>
-          <div class="dropdown">
-            <a href="index.html#about">Our Story</a>
-            <a href="#">Team</a>
-          </div>
+        <li><a href="#">New Arrivals</a></li>
+        <li><a href="#">Earrings</a>
+          <ul>
+            <li><a href="#">Studs</a></li>
+            <li><a href="#">Hoops</a></li>
+            <li><a href="#">Drops</a></li>
+          </ul>
         </li>
-        <li>
-          <a href="index.html#products">Products</a>
-          <div class="dropdown">
-            <a href="index.html#products">Earrings</a>
-            <a href="#">Necklaces</a>
-            <a href="#">Bracelets</a>
-          </div>
+        <li><a href="#">Necklace</a>
+          <ul>
+            <li><a href="#">Chokers</a></li>
+            <li><a href="#">Chains</a></li>
+          </ul>
         </li>
-        <li><a href="index.html#testimonials">Testimonials</a></li>
-        <li><a href="index.html#contact">Contact</a></li>
-        <li><a href="cart.html">🛒 <span id="nav-cart-count">0</span></a></li>
+        <li><a href="#">Rings</a></li>
+        <li><a href="#">Bracelets</a></li>
+        <li><a href="#">Gifting</a></li>
+        <li><a href="#">Combos</a></li>
+        <li><a href="#">Couple Jewellery</a></li>
+        <li><a href="#">Ethnic</a></li>
+        <li><a href="#">Hair Accessories</a></li>
+        <li><a href="#">Handbags</a></li>
+        <li><a href="index.html#about">About Us</a></li>
+        <li><a href="index.html#contact">Contact Us</a></li>
+        <li>
+          <a href="cart.html" class="cart-icon">
+            🛒 <span id="cart-count">0</span>
+          </a>
+        </li>
       </ul>
-      <div class="burger" onclick="toggleMenu()">☰</div>
-    </div>
-  </nav>
-
+    </nav>
+  </div>
+</header>
   <main class="product-detail">
     <h1 id="productName">Loading...</h1>
     <img id="productImage" src="" alt="Product"/>
