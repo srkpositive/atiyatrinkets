@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Your Cart | AtiyaTrinkets</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap" rel="stylesheet">
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
@@ -13,13 +13,20 @@
       --accent: #d8b4d3;
       --text: #333;
     }
-    * { box-sizing: border-box; scroll-behavior: smooth; }
-    body {
+
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
       margin: 0;
+      padding: 0;
+    }
+
+    body {
       font-family: 'Open Sans', sans-serif;
       background: var(--background);
       color: var(--text);
     }
+
     header {
       background: white;
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
@@ -27,6 +34,7 @@
       top: 0;
       z-index: 1000;
     }
+
     .navbar {
       display: flex;
       justify-content: space-between;
@@ -34,29 +42,32 @@
       padding: 15px 30px;
       flex-wrap: wrap;
     }
+
     .logo {
       font-family: 'Playfair Display', serif;
       font-size: 1.6rem;
       color: var(--text);
       text-decoration: none;
     }
+
     nav ul {
       list-style: none;
       display: flex;
       flex-wrap: wrap;
       gap: 15px;
-      margin: 0;
-      padding: 0;
     }
+
     nav ul li {
       position: relative;
     }
+
     nav ul li a {
       text-decoration: none;
       color: var(--text);
       font-weight: 600;
       padding: 8px 12px;
     }
+
     nav ul ul {
       display: none;
       position: absolute;
@@ -67,11 +78,16 @@
       padding: 10px;
       z-index: 1001;
     }
-    nav ul li:hover > ul { display: block; }
+
+    nav ul li:hover > ul {
+      display: block;
+    }
+
     .cart-icon {
       position: relative;
       display: inline-block;
     }
+
     .cart-icon span {
       position: absolute;
       top: -6px;
@@ -82,6 +98,7 @@
       font-size: 0.75rem;
       padding: 2px 6px;
     }
+
     .cart-container {
       max-width: 900px;
       margin: 40px auto;
@@ -91,44 +108,71 @@
       box-shadow: 0 5px 15px rgba(0,0,0,0.05);
       animation: fadeInUp 0.6s ease;
     }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
     .cart-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 15px 0;
       border-bottom: 1px solid #eee;
+      flex-wrap: wrap;
     }
-    .cart-item:last-child { border-bottom: none; }
-    .cart-item .info { flex: 1; }
-    .cart-item h3 { margin: 0 0 5px; }
+
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+
+    .info {
+      flex: 1;
+    }
+
+    .cart-item h3 {
+      margin-bottom: 5px;
+    }
+
     .qty-controls {
       display: flex;
       align-items: center;
       gap: 10px;
+      margin-bottom: 5px;
     }
+
     .qty-controls button {
-      background: #ddd;
+      background: #eee;
       border: none;
       padding: 4px 10px;
+      font-size: 1rem;
       cursor: pointer;
       border-radius: 4px;
     }
+
     .qty-controls span {
       font-weight: bold;
     }
+
     .remove-btn {
       background: none;
       border: none;
       color: crimson;
       cursor: pointer;
       font-size: 0.9rem;
+      padding-top: 6px;
     }
+
     .total {
       text-align: right;
       font-size: 1.4rem;
       margin-top: 30px;
       color: var(--accent);
     }
+
     .checkout-btn {
       display: block;
       margin: 30px auto 0;
@@ -139,19 +183,25 @@
       border-radius: 6px;
       font-size: 1rem;
       cursor: pointer;
+      transition: background 0.3s;
     }
+
     .checkout-btn:hover {
       background: #c29dc3;
     }
+
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
     @media screen and (max-width: 768px) {
       .cart-item {
         flex-direction: column;
         align-items: flex-start;
+        gap: 10px;
       }
+
       .total {
         text-align: center;
       }
@@ -265,7 +315,7 @@
     const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
 
     const options = {
-      key: "rzp_live_8dfpF64rA0trja", // Replace with your Razorpay key
+      key: "rzp_live_8dfpF64rA0trja",
       amount: total * 100,
       currency: "INR",
       name: "AtiyaTrinkets",
@@ -276,8 +326,14 @@
         localStorage.removeItem("cart");
         window.location.href = "thankyou.html";
       },
-      prefill: { name: "", email: "", contact: "" },
-      theme: { color: "#d63384" }
+      prefill: {
+        name: "",
+        email: "",
+        contact: ""
+      },
+      theme: {
+        color: "#d63384"
+      }
     };
 
     const rzp = new Razorpay(options);
