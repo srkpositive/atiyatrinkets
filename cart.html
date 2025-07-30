@@ -13,16 +13,13 @@
       --accent: #d8b4d3;
       --text: #333;
     }
-
     * { box-sizing: border-box; scroll-behavior: smooth; }
-
     body {
       margin: 0;
       font-family: 'Open Sans', sans-serif;
       background: var(--background);
       color: var(--text);
     }
-
     header {
       background: white;
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
@@ -30,7 +27,6 @@
       top: 0;
       z-index: 1000;
     }
-
     .navbar {
       display: flex;
       justify-content: space-between;
@@ -38,14 +34,12 @@
       padding: 15px 30px;
       flex-wrap: wrap;
     }
-
     .logo {
       font-family: 'Playfair Display', serif;
       font-size: 1.6rem;
       color: var(--text);
       text-decoration: none;
     }
-
     nav ul {
       list-style: none;
       display: flex;
@@ -54,16 +48,15 @@
       margin: 0;
       padding: 0;
     }
-
-    nav ul li { position: relative; }
-
+    nav ul li {
+      position: relative;
+    }
     nav ul li a {
       text-decoration: none;
       color: var(--text);
       font-weight: 600;
       padding: 8px 12px;
     }
-
     nav ul ul {
       display: none;
       position: absolute;
@@ -74,14 +67,11 @@
       padding: 10px;
       z-index: 1001;
     }
-
     nav ul li:hover > ul { display: block; }
-
     .cart-icon {
       position: relative;
       display: inline-block;
     }
-
     .cart-icon span {
       position: absolute;
       top: -6px;
@@ -92,7 +82,6 @@
       font-size: 0.75rem;
       padding: 2px 6px;
     }
-
     .cart-container {
       max-width: 900px;
       margin: 40px auto;
@@ -102,7 +91,6 @@
       box-shadow: 0 5px 15px rgba(0,0,0,0.05);
       animation: fadeInUp 0.6s ease;
     }
-
     .cart-item {
       display: flex;
       justify-content: space-between;
@@ -110,17 +98,14 @@
       padding: 15px 0;
       border-bottom: 1px solid #eee;
     }
-
     .cart-item:last-child { border-bottom: none; }
-
-    .info { flex: 1; }
-
+    .cart-item .info { flex: 1; }
+    .cart-item h3 { margin: 0 0 5px; }
     .qty-controls {
       display: flex;
       align-items: center;
       gap: 10px;
     }
-
     .qty-controls button {
       background: #ddd;
       border: none;
@@ -128,11 +113,9 @@
       cursor: pointer;
       border-radius: 4px;
     }
-
     .qty-controls span {
       font-weight: bold;
     }
-
     .remove-btn {
       background: none;
       border: none;
@@ -140,14 +123,12 @@
       cursor: pointer;
       font-size: 0.9rem;
     }
-
     .total {
       text-align: right;
       font-size: 1.4rem;
       margin-top: 30px;
       color: var(--accent);
     }
-
     .checkout-btn {
       display: block;
       margin: 30px auto 0;
@@ -159,17 +140,21 @@
       font-size: 1rem;
       cursor: pointer;
     }
-
-    .checkout-btn:hover { background: #c29dc3; }
-
+    .checkout-btn:hover {
+      background: #c29dc3;
+    }
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
     @media screen and (max-width: 768px) {
-      .cart-item { flex-direction: column; align-items: flex-start; }
-      .total { text-align: center; }
+      .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .total {
+        text-align: center;
+      }
     }
   </style>
 </head>
@@ -188,7 +173,9 @@
         <li><a href="#">Combos</a></li>
         <li><a href="#">Contact</a></li>
         <li>
-          <a href="cart.html" class="cart-icon">🛒 <span id="cart-count">0</span></a>
+          <a href="cart.html" class="cart-icon">
+            🛒 <span id="cart-count">0</span>
+          </a>
         </li>
       </ul>
     </nav>
@@ -251,7 +238,9 @@
     if (!cart[index]) return;
 
     cart[index].qty += delta;
-    if (cart[index].qty <= 0) cart.splice(index, 1);
+    if (cart[index].qty <= 0) {
+      cart.splice(index, 1);
+    }
 
     localStorage.setItem("cart", JSON.stringify(cart));
     renderCart();
@@ -276,7 +265,7 @@
     const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
 
     const options = {
-      key: "rzp_live_8dfpF64rA0trja", // ✅ Replace with your actual live key
+      key: "rzp_live_8dfpF64rA0trja", // Replace with your Razorpay key
       amount: total * 100,
       currency: "INR",
       name: "AtiyaTrinkets",
