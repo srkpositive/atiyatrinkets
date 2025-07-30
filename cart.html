@@ -1,121 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Your Cart - AtiyaTrinkets</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap" rel="stylesheet">
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <style>
-    .cart-section {
-  max-width: 900px;
-  margin: 50px auto;
-  background: white;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.05);
-  animation: fadeInUp 0.7s ease;
-  text-align: center;
-}
-
-#cart-items {
-  margin-top: 20px;
-  text-align: left;
-}
-
-.cart-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
-}
-
-.cart-item-name {
-  font-weight: bold;
-}
-
-.cart-item-qty {
-  margin: 0 10px;
-}
-
-.checkout {
-  margin-top: 30px;
-}
-
-.checkout button {
-  padding: 10px 20px;
-  background: var(--accent);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.checkout button:hover {
-  background: #c29dc3;
-}
-
-    nav ul {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin: 0;
-  padding: 0;
-}
-
-nav ul li {
-  position: relative;
-}
-
-nav ul li a {
-  text-decoration: none;
-  color: var(--text);
-  font-weight: 600;
-  padding: 8px 12px;
-}
-
-nav ul li:hover > ul {
-  display: block;
-}
-
-nav ul ul {
-  display: none;
-  position: absolute;
-  top: 38px;
-  left: 0;
-  background: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1001;
-  padding: 10px;
-  min-width: 160px;
-}
-
-nav ul ul li a {
-  display: block;
-  padding: 8px;
-  white-space: nowrap;
-}
-
-.cart-icon {
-  position: relative;
-  display: inline-block;
-}
-
-.cart-icon span {
-  position: absolute;
-  top: -6px;
-  right: -10px;
-  background: var(--accent);
-  color: white;
-  border-radius: 50%;
-  font-size: 0.75rem;
-  padding: 2px 6px;
-}
-
     :root {
       --primary: #f8e1e7;
       --accent: #d8b4d3;
@@ -128,8 +19,6 @@ nav ul ul li a {
       font-family: 'Open Sans', sans-serif;
       background: var(--background);
       color: var(--text);
-      padding: 0;
-      text-align: center;
     }
 
     .navbar {
@@ -137,86 +26,90 @@ nav ul ul li a {
       padding: 10px 20px;
       position: sticky;
       top: 0;
-      z-index: 999;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
-    .nav-container {
+    .navbar .nav-container {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      max-width: 1000px;
+      max-width: 1200px;
       margin: auto;
+      flex-wrap: wrap;
     }
 
-    .brand {
+    .logo {
       font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      text-decoration: none;
-      color: var(--text);
+      font-size: 1.8rem;
     }
 
-    .nav-links {
+    nav ul {
       list-style: none;
       display: flex;
-      gap: 20px;
+      flex-wrap: wrap;
+      gap: 15px;
       padding-left: 0;
       margin: 0;
     }
 
-    .nav-links li a {
+    nav ul li {
+      position: relative;
+    }
+
+    nav ul li a {
       text-decoration: none;
       color: var(--text);
       font-weight: bold;
-      transition: color 0.2s;
+      padding: 8px 12px;
     }
 
-    .nav-links li a:hover {
-      color: var(--accent);
+    nav ul li:hover > ul {
+      display: block;
     }
 
-    .burger {
+    nav ul ul {
       display: none;
-      font-size: 1.5rem;
-      cursor: pointer;
+      position: absolute;
+      top: 38px;
+      left: 0;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      z-index: 1001;
+      padding: 10px;
+      min-width: 160px;
     }
 
-    @media screen and (max-width: 768px) {
-      .nav-links {
-        display: none;
-        flex-direction: column;
-        background: var(--primary);
-        position: absolute;
-        top: 60px;
-        right: 20px;
-        padding: 10px 20px;
-        border-radius: 10px;
-        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-      }
-
-      .nav-links.active {
-        display: flex;
-      }
-
-      .burger {
-        display: block;
-      }
+    nav ul ul li a {
+      display: block;
+      padding: 8px;
+      white-space: nowrap;
     }
 
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.5rem;
-      margin: 40px 20px 20px;
+    .cart-icon {
+      position: relative;
     }
 
-    .cart-container {
-      max-width: 800px;
-      margin: auto;
+    .cart-icon span {
+      position: absolute;
+      top: -6px;
+      right: -10px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      font-size: 0.75rem;
+      padding: 2px 6px;
+    }
+
+    .cart-section {
+      max-width: 900px;
+      margin: 50px auto;
       background: white;
       padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.05);
       animation: fadeInUp 0.7s ease;
+      text-align: center;
     }
 
     .cart-item {
@@ -231,22 +124,29 @@ nav ul ul li a {
       border: none;
     }
 
-    .cart-item h3 {
-      margin: 0;
-    }
-
-    .qty {
+    .cart-item-name {
       font-weight: bold;
+    }
+
+    .cart-item-qty {
+      margin: 0 10px;
       color: var(--accent);
     }
 
-    .total {
-      font-size: 1.4rem;
-      margin: 30px 0;
+    .cart-item-price {
+      font-weight: bold;
+    }
+
+    .checkout {
+      margin-top: 30px;
+    }
+
+    .checkout h2 {
+      font-size: 1.5rem;
       color: var(--accent);
     }
 
-    button.checkout {
+    .checkout button {
       background: var(--accent);
       color: white;
       padding: 12px 30px;
@@ -257,147 +157,140 @@ nav ul ul li a {
       transition: background 0.3s ease;
     }
 
-    button.checkout:hover {
+    .checkout button:hover {
       background: #c29dc3;
     }
 
-    a {
-      color: var(--accent);
-      text-decoration: none;
-      font-weight: bold;
-      display: inline-block;
-      margin-top: 30px;
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: var(--primary);
+      margin-top: 40px;
     }
 
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    @media screen and (max-width: 768px) {
+      nav ul {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
   </style>
 </head>
 <body>
 
- <header>
-  <div class="navbar">
-    <div class="logo">AtiyaTrinkets</div>
-    <nav>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="#">New Arrivals</a></li>
-        <li><a href="#">Earrings</a>
-          <ul>
-            <li><a href="#">Studs</a></li>
-            <li><a href="#">Hoops</a></li>
-            <li><a href="#">Drops</a></li>
-          </ul>
-        </li>
-        <li><a href="#">Necklace</a>
-          <ul>
-            <li><a href="#">Chokers</a></li>
-            <li><a href="#">Chains</a></li>
-          </ul>
-        </li>
-        <li><a href="#">Rings</a></li>
-        <li><a href="#">Bracelets</a></li>
-        <li><a href="#">Gifting</a></li>
-        <li><a href="#">Combos</a></li>
-        <li><a href="#">Couple Jewellery</a></li>
-        <li><a href="#">Ethnic</a></li>
-        <li><a href="#">Hair Accessories</a></li>
-        <li><a href="#">Handbags</a></li>
-        <li><a href="index.html#about">About Us</a></li>
-        <li><a href="index.html#contact">Contact Us</a></li>
-        <li>
-          <a href="cart.html" class="cart-icon">
-            🛒 <span id="cart-count">0</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
-  </div>
-</header>
-
-      <div class="burger" onclick="toggleMenu()">☰</div>
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="logo">AtiyaTrinkets</div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="#">New Arrivals</a></li>
+          <li><a href="#">Earrings</a>
+            <ul>
+              <li><a href="#">Studs</a></li>
+              <li><a href="#">Hoops</a></li>
+              <li><a href="#">Drops</a></li>
+            </ul>
+          </li>
+          <li><a href="#">Necklace</a>
+            <ul>
+              <li><a href="#">Chokers</a></li>
+              <li><a href="#">Chains</a></li>
+            </ul>
+          </li>
+          <li><a href="#">Rings</a></li>
+          <li><a href="#">Bracelets</a></li>
+          <li><a href="#">Gifting</a></li>
+          <li><a href="#">Combos</a></li>
+          <li><a href="#">Couple Jewellery</a></li>
+          <li><a href="#">Ethnic</a></li>
+          <li><a href="#">Hair Accessories</a></li>
+          <li><a href="#">Handbags</a></li>
+          <li><a href="index.html#about">About Us</a></li>
+          <li><a href="index.html#contact">Contact Us</a></li>
+          <li>
+            <a href="cart.html" class="cart-icon">
+              🛒 <span id="cart-count">0</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </div>
-  </nav>
+  </header>
 
   <section class="cart-section">
-  <h1>Your Cart</h1>
-  <div id="cart-items"></div>
+    <h1>Your Cart</h1>
+    <div id="cart-items"></div>
 
-  <div class="checkout">
-    <h2>Total: ₹<span id="cart-total">0</span></h2>
-    <button onclick="checkout()">Proceed to Checkout</button>
-  </div>
-</section>
+    <div class="checkout">
+      <h2>Total: ₹<span id="cart-total">0</span></h2>
+      <button onclick="checkout()">Proceed to Checkout</button>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 AtiyaTrinkets</p>
+  </footer>
 
   <script>
-    function toggleMenu() {
-      document.getElementById('navLinks').classList.toggle('active');
+    function updateCartCount() {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      let totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      document.getElementById("cart-count").innerText = totalItems;
     }
-
-    function updateCartBadge() {
-      const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      const count = cart.reduce((sum, item) => sum + item.qty, 0);
-      const badge = document.getElementById('nav-cart-count');
-      if (badge) badge.textContent = count;
-    }
-
-    const cartContainer = document.getElementById('cartItems');
-    const cartTotal = document.getElementById('cartTotal');
 
     function renderCart() {
-      const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      cartContainer.innerHTML = '';
+      const container = document.getElementById("cart-items");
+      const totalSpan = document.getElementById("cart-total");
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      container.innerHTML = "";
       let total = 0;
 
       if (cart.length === 0) {
-        cartContainer.innerHTML = '<p>Your cart is empty.</p>';
-        cartTotal.textContent = '';
-        document.querySelector('button.checkout').style.display = 'none';
+        container.innerHTML = "<p>Your cart is empty.</p>";
+        totalSpan.innerText = "0";
         return;
       }
 
       cart.forEach(item => {
-        total += item.price * item.qty;
-        const div = document.createElement('div');
-        div.className = 'cart-item';
-        div.innerHTML = `
-          <h3>${item.name}</h3>
-          <div class="qty">Qty: ${item.qty}</div>
-          <div>₹${item.price * item.qty}</div>
+        total += item.price * item.quantity;
+        container.innerHTML += `
+          <div class="cart-item">
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-qty">Qty: ${item.quantity}</div>
+            <div class="cart-item-price">₹${item.price * item.quantity}</div>
+          </div>
         `;
-        cartContainer.appendChild(div);
       });
 
-      cartTotal.textContent = `Total: ₹${total}`;
+      totalSpan.innerText = total;
     }
 
-    function checkoutCart() {
-      const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      if (cart.length === 0) return alert("Your cart is empty.");
+    function checkout() {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      if (cart.length === 0) return alert("Your cart is empty!");
 
-      const totalAmount = cart.reduce((sum, item) => sum + item.price * item.qty, 0) * 100;
+      const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0) * 100;
 
       const options = {
-        key: "rzp_live_8dfpF64rA0trja", // replace with your actual Razorpay Key ID
-        amount: totalAmount,
+        key: "rzp_live_8dfpF64rA0trja", // Replace with your real Razorpay Key
+        amount: total,
         currency: "INR",
         name: "AtiyaTrinkets",
         description: "Order Payment",
         image: "https://via.placeholder.com/100x100?text=Atiya",
         handler: function (response) {
           alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
-          localStorage.removeItem('cart');
+          localStorage.removeItem("cart");
           window.location.href = "thankyou.html";
         },
-        prefill: {
-          name: "",
-          email: "",
-          contact: ""
-        },
         theme: {
-          color: "#d63384"
+          color: "#d8b4d3"
         }
       };
 
@@ -406,52 +299,7 @@ nav ul ul li a {
     }
 
     renderCart();
-    updateCartBadge();
+    updateCartCount();
   </script>
-<script>
-  function updateCartCount() {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    let totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    document.getElementById("cart-count").innerText = totalItems;
-  }
-
-  updateCartCount();
-</script>
-<script>
-  function renderCart() {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    let container = document.getElementById("cart-items");
-    let total = 0;
-    container.innerHTML = "";
-
-    if (cart.length === 0) {
-      container.innerHTML = "<p>Your cart is empty.</p>";
-      document.getElementById("cart-total").innerText = "0";
-      return;
-    }
-
-    cart.forEach((item, index) => {
-      total += item.price * item.quantity;
-      container.innerHTML += `
-        <div class="cart-item">
-          <div class="cart-item-name">${item.name}</div>
-          <div class="cart-item-qty">Qty: ${item.quantity}</div>
-          <div class="cart-item-price">₹${item.price * item.quantity}</div>
-        </div>
-      `;
-    });
-
-    document.getElementById("cart-total").innerText = total;
-  }
-
-  function checkout() {
-    alert("Redirecting to payment...");
-    // In production: Redirect to Razorpay or PayPal payment gateway
-  }
-
-  renderCart();
-  updateCartCount();
-</script>
-
 </body>
 </html>
