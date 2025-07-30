@@ -2,10 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Golden Hoop | AtiyaTrinkets</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap" rel="stylesheet">
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <style>
     :root {
       --primary: #f8e1e7;
@@ -13,27 +12,19 @@
       --accent: #d8b4d3;
       --text: #333;
     }
-
-    * {
-      box-sizing: border-box;
-      scroll-behavior: smooth;
-    }
-
     body {
       margin: 0;
       font-family: 'Open Sans', sans-serif;
       background: var(--background);
       color: var(--text);
     }
-
     header {
       position: sticky;
       top: 0;
-      z-index: 1000;
       background: white;
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      z-index: 1000;
     }
-
     .navbar {
       display: flex;
       justify-content: space-between;
@@ -41,12 +32,10 @@
       padding: 15px 40px;
       flex-wrap: wrap;
     }
-
     .navbar .logo {
       font-family: 'Playfair Display', serif;
       font-size: 1.8rem;
     }
-
     nav ul {
       list-style: none;
       display: flex;
@@ -55,22 +44,18 @@
       margin: 0;
       padding: 0;
     }
-
     nav ul li {
       position: relative;
     }
-
     nav ul li a {
       text-decoration: none;
       color: var(--text);
       font-weight: 600;
       padding: 8px 12px;
     }
-
     nav ul li:hover > ul {
       display: block;
     }
-
     nav ul ul {
       display: none;
       position: absolute;
@@ -82,22 +67,15 @@
       padding: 10px;
       min-width: 160px;
     }
-
-    nav ul ul li {
-      margin: 0;
-    }
-
     nav ul ul li a {
       display: block;
       padding: 8px;
       white-space: nowrap;
     }
-
     .cart-icon {
       position: relative;
       display: inline-block;
     }
-
     .cart-icon span {
       position: absolute;
       top: -6px;
@@ -108,7 +86,6 @@
       font-size: 0.75rem;
       padding: 2px 6px;
     }
-
     .product-section {
       padding: 60px 20px;
       max-width: 800px;
@@ -119,26 +96,22 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.05);
       animation: fadeInUp 0.7s ease;
     }
-
     .product-section img {
       width: 60%;
       max-width: 300px;
       margin-bottom: 20px;
       border-radius: 10px;
     }
-
     .product-section h1 {
       font-family: 'Playfair Display', serif;
       font-size: 2rem;
       margin-bottom: 10px;
     }
-
     .price {
       font-size: 1.5rem;
       color: var(--accent);
       margin: 10px 0;
     }
-
     button {
       background: var(--accent);
       color: white;
@@ -149,29 +122,24 @@
       font-weight: bold;
       transition: background 0.3s;
     }
-
     button:hover {
       background: #c29dc3;
     }
-
     footer {
       text-align: center;
       padding: 20px;
       background: var(--primary);
       margin-top: 40px;
     }
-
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
     @media screen and (max-width: 768px) {
       .navbar {
         flex-direction: column;
         align-items: flex-start;
       }
-
       nav ul {
         flex-direction: column;
         gap: 10px;
@@ -181,88 +149,89 @@
 </head>
 <body>
 
-  <header>
-    <div class="navbar">
-      <div class="logo">AtiyaTrinkets</div>
-      <nav>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="#">New Arrivals</a></li>
-          <li><a href="#">Earrings</a>
-            <ul>
-              <li><a href="#">Studs</a></li>
-              <li><a href="#">Hoops</a></li>
-              <li><a href="#">Drops</a></li>
-            </ul>
-          </li>
-          <li><a href="#">Necklace</a>
-            <ul>
-              <li><a href="#">Chokers</a></li>
-              <li><a href="#">Chains</a></li>
-            </ul>
-          </li>
-          <li><a href="#">Rings</a></li>
-          <li><a href="#">Bracelets</a></li>
-          <li><a href="#">Gifting</a></li>
-          <li><a href="#">Combos</a></li>
-          <li><a href="#">Couple Jewellery</a></li>
-          <li><a href="#">Ethnic</a></li>
-          <li><a href="#">Hair Accessories</a></li>
-          <li><a href="#">Handbags</a></li>
-          <li><a href="index.html#about">About Us</a></li>
-          <li><a href="index.html#contact">Contact Us</a></li>
-          <li>
-            <a href="cart.html" class="cart-icon">
-              🛒 <span id="cart-count">0</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+<header>
+  <div class="navbar">
+    <div class="logo">AtiyaTrinkets</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#">New Arrivals</a></li>
+        <li><a href="#">Earrings</a>
+          <ul>
+            <li><a href="#">Studs</a></li>
+            <li><a href="#">Hoops</a></li>
+            <li><a href="#">Drops</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Necklace</a>
+          <ul>
+            <li><a href="#">Chokers</a></li>
+            <li><a href="#">Chains</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Rings</a></li>
+        <li><a href="#">Bracelets</a></li>
+        <li><a href="#">Gifting</a></li>
+        <li><a href="#">Combos</a></li>
+        <li><a href="#">Couple Jewellery</a></li>
+        <li><a href="#">Ethnic</a></li>
+        <li><a href="#">Hair Accessories</a></li>
+        <li><a href="#">Handbags</a></li>
+        <li><a href=\"index.html#about\">About Us</a></li>
+        <li><a href=\"index.html#contact\">Contact Us</a></li>
+        <li>
+          <a href=\"cart.html\" class=\"cart-icon\">
+            🛒 <span id=\"cart-count\">0</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
 
-  <section class="product-section">
-    <img src="https://via.placeholder.com/300x300?text=Earring+1" alt="Earring">
-    <h1>Golden Hoop</h1>
-    <div class="price">₹499</div>
-    <p>Elegant gold-plated hoop earrings for daily and festive wear. Lightweight and skin-friendly.</p>
-    <button onclick="addToCart()">Add to Cart</button>
-  </section>
+<section class=\"product-section\">
+  <img src=\"https://via.placeholder.com/300x300?text=Earring+1\" alt=\"Earring\">
+  <h1>Golden Hoop</h1>
+  <div class=\"price\">₹499</div>
+  <p>Elegant gold-plated hoop earrings for daily and festive wear. Lightweight and skin-friendly.</p>
+  <button onclick=\"addToCart()\">Add to Cart</button>
+</section>
 
-  <footer>
-    <p>&copy; 2025 AtiyaTrinkets</p>
-  </footer>
+<footer>
+  <p>&copy; 2025 AtiyaTrinkets</p>
+</footer>
 
-  <script>
-    function addToCart() {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      const product = {
-        id: 1,
-        name: "Golden Hoop",
-        price: 499,
-        quantity: 1
-      };
+<script>
+  function addToCart() {
+    const product = {
+      id: 1,
+      name: \"Golden Hoop\",
+      price: 499,
+      quantity: 1
+    };
 
-      const index = cart.findIndex(item => item.id === product.id);
-      if (index > -1) {
-        cart[index].quantity += 1;
-      } else {
-        cart.push(product);
-      }
+    let cart = JSON.parse(localStorage.getItem(\"cart\")) || [];
+    const existing = cart.find(item => item.id === product.id);
 
-      localStorage.setItem("cart", JSON.stringify(cart));
-      updateCartCount();
-      alert("Item added to cart!");
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      cart.push(product);
     }
 
-    function updateCartCount() {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      let totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-      document.getElementById("cart-count").innerText = totalItems;
-    }
-
+    localStorage.setItem(\"cart\", JSON.stringify(cart));
     updateCartCount();
-  </script>
+    alert(\"Item added to cart!\");
+  }
+
+  function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem(\"cart\")) || [];
+    const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+    document.getElementById(\"cart-count\").textContent = total;
+  }
+
+  updateCartCount();
+</script>
 
 </body>
 </html>
