@@ -14,6 +14,11 @@
       --text: #333;
     }
 
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
       font-family: 'Open Sans', sans-serif;
@@ -21,25 +26,23 @@
       color: var(--text);
     }
 
-    .navbar {
-      background: var(--primary);
-      padding: 10px 20px;
+    header {
       position: sticky;
       top: 0;
       z-index: 1000;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      background: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
 
-    .navbar .nav-container {
+    .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      max-width: 1200px;
-      margin: auto;
+      padding: 15px 40px;
       flex-wrap: wrap;
     }
 
-    .logo {
+    .navbar .logo {
       font-family: 'Playfair Display', serif;
       font-size: 1.8rem;
     }
@@ -49,8 +52,8 @@
       display: flex;
       flex-wrap: wrap;
       gap: 15px;
-      padding-left: 0;
       margin: 0;
+      padding: 0;
     }
 
     nav ul li {
@@ -60,7 +63,7 @@
     nav ul li a {
       text-decoration: none;
       color: var(--text);
-      font-weight: bold;
+      font-weight: 600;
       padding: 8px 12px;
     }
 
@@ -88,6 +91,7 @@
 
     .cart-icon {
       position: relative;
+      display: inline-block;
     }
 
     .cart-icon span {
@@ -116,12 +120,9 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 15px;
       border-bottom: 1px solid #eee;
-      padding: 15px 0;
-    }
-
-    .cart-item:last-child {
-      border: none;
+      padding-bottom: 10px;
     }
 
     .cart-item-name {
@@ -130,31 +131,25 @@
 
     .cart-item-qty {
       margin: 0 10px;
-      color: var(--accent);
     }
 
     .cart-item-price {
       font-weight: bold;
+      color: var(--accent);
     }
 
     .checkout {
       margin-top: 30px;
     }
 
-    .checkout h2 {
-      font-size: 1.5rem;
-      color: var(--accent);
-    }
-
     .checkout button {
+      padding: 10px 20px;
       background: var(--accent);
       color: white;
-      padding: 12px 30px;
       border: none;
       border-radius: 6px;
-      font-size: 1rem;
+      font-weight: bold;
       cursor: pointer;
-      transition: background 0.3s ease;
     }
 
     .checkout button:hover {
@@ -174,17 +169,27 @@
     }
 
     @media screen and (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
       nav ul {
         flex-direction: column;
         gap: 10px;
+      }
+
+      .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
       }
     }
   </style>
 </head>
 <body>
 
-  <header class="navbar">
-    <div class="nav-container">
+  <header>
+    <div class="navbar">
       <div class="logo">AtiyaTrinkets</div>
       <nav>
         <ul>
@@ -245,19 +250,18 @@
     }
 
     function renderCart() {
-      const container = document.getElementById("cart-items");
-      const totalSpan = document.getElementById("cart-total");
       let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      container.innerHTML = "";
+      let container = document.getElementById("cart-items");
       let total = 0;
+      container.innerHTML = "";
 
       if (cart.length === 0) {
         container.innerHTML = "<p>Your cart is empty.</p>";
-        totalSpan.innerText = "0";
+        document.getElementById("cart-total").innerText = "0";
         return;
       }
 
-      cart.forEach(item => {
+      cart.forEach((item, index) => {
         total += item.price * item.quantity;
         container.innerHTML += `
           <div class="cart-item">
@@ -268,26 +272,34 @@
         `;
       });
 
-      totalSpan.innerText = total;
+      document.getElementById("cart-total").innerText = total;
     }
 
     function checkout() {
-      const cart = JSON.parse(localStorage.getItem("cart")) || [];
-      if (cart.length === 0) return alert("Your cart is empty!");
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      if (cart.length === 0) {
+        alert("Your cart is empty.");
+        return;
+      }
 
-      const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0) * 100;
+      const totalAmount = cart.reduce((sum, item) => sum + item.price * item.quantity, 0) * 100;
 
       const options = {
-        key: "rzp_live_8dfpF64rA0trja", // Replace with your real Razorpay Key
-        amount: total,
+        key: "rzp_live_8dfpF64rA0trja", // ✅ Replace with your real Razorpay Key ID
+        amount: totalAmount,
         currency: "INR",
         name: "AtiyaTrinkets",
         description: "Order Payment",
         image: "https://via.placeholder.com/100x100?text=Atiya",
         handler: function (response) {
-          alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
+          alert("Payment successful! ID: " + response.razorpay_payment_id);
           localStorage.removeItem("cart");
           window.location.href = "thankyou.html";
+        },
+        prefill: {
+          name: "",
+          email: "",
+          contact: ""
         },
         theme: {
           color: "#d8b4d3"
@@ -301,5 +313,6 @@
     renderCart();
     updateCartCount();
   </script>
+
 </body>
 </html>
