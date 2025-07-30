@@ -1,79 +1,130 @@
-<!-- auth.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login | AtiyaTrinkets</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login / Sign Up - AtiyaTrinkets</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: #fff9f7;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .auth-container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #d8b4d3;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #d8b4d3;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #c29dc3;
+    }
+
+    .switch {
+      margin-top: 15px;
+      color: #666;
+    }
+
+    .switch a {
+      color: #d8b4d3;
+      cursor: pointer;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-  <h2>Sign In / Sign Up</h2>
-  <input type="email" id="email" placeholder="Email" />
-  <input type="password" id="password" placeholder="Password" />
-  <button onclick="signUp()">Sign Up</button>
-  <button onclick="signIn()">Sign In</button>
-  <button onclick="signOut()">Sign Out</button>
-  <p id="user-status"></p>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+<div class="auth-container">
+  <h2 id="form-title">Sign In</h2>
+  <input type="email" id="email" placeholder="Email" required />
+  <input type="password" id="password" placeholder="Password" required />
+  <button onclick="handleAuth()" id="submit-btn">Sign In</button>
+  <div class="switch">
+    <span id="toggle-msg">Don't have an account? <a onclick="toggleForm()">Sign Up</a></span>
+  </div>
+</div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
-      authDomain: "atiyatrinkets-ce4b6.firebaseapp.com",
-      projectId: "atiyatrinkets-ce4b6",
-      storageBucket: "atiyatrinkets-ce4b6.firebaseapp.com",
-      messagingSenderId: "562847025664",
-      appId: "1:562847025664:web:c200328acd5643c32e66e5",
-      measurementId: "G-WBWWBHQTHJ"
-    };
+<!-- Firebase Auth -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+  const firebaseConfig = {
+    apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
+    authDomain: "atiyatrinkets-ce4b6.firebaseapp.com",
+    projectId: "atiyatrinkets-ce4b6",
+    storageBucket: "atiyatrinkets-ce4b6.appspot.com",
+    messagingSenderId: "562847025664",
+    appId: "1:562847025664:web:c200328acd5643c32e66e5",
+    measurementId: "G-WBWWBHQTHJ"
+  };
 
-    function signUp() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          alert("Signed up successfully!");
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
-    }
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-    function signIn() {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          alert("Logged in successfully!");
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
-    }
+  let isSignup = false;
 
-    function signOutUser() {
-      signOut(auth).then(() => {
-        alert("Signed out");
-      });
-    }
+  window.toggleForm = () => {
+    isSignup = !isSignup;
+    document.getElementById("form-title").textContent = isSignup ? "Sign Up" : "Sign In";
+    document.getElementById("submit-btn").textContent = isSignup ? "Sign Up" : "Sign In";
+    document.getElementById("toggle-msg").innerHTML = isSignup
+      ? 'Already have an account? <a onclick="toggleForm()">Sign In</a>'
+      : 'Don\'t have an account? <a onclick="toggleForm()">Sign Up</a>';
+  }
 
-    onAuthStateChanged(auth, (user) => {
-      const status = document.getElementById("user-status");
-      if (user) {
-        status.innerText = "Logged in as " + user.email;
+  window.handleAuth = async () => {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    try {
+      if (isSignup) {
+        await createUserWithEmailAndPassword(auth, email, password);
+        alert("Account created successfully!");
       } else {
-        status.innerText = "Not logged in";
+        await signInWithEmailAndPassword(auth, email, password);
+        alert("Signed in successfully!");
+        window.location.href = "index.html";
       }
-    });
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+</script>
 
-    window.signUp = signUp;
-    window.signIn = signIn;
-    window.signOut = signOutUser;
-  </script>
 </body>
 </html>
