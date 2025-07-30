@@ -16,10 +16,11 @@
     * {
       box-sizing: border-box;
       scroll-behavior: smooth;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
       font-family: 'Open Sans', sans-serif;
       background: var(--background);
       color: var(--text);
@@ -39,11 +40,14 @@
       align-items: center;
       padding: 15px 30px;
       flex-wrap: wrap;
+      max-width: 1200px;
+      margin: auto;
     }
 
     .logo {
       font-family: 'Playfair Display', serif;
       font-size: 1.8rem;
+      font-weight: bold;
       color: var(--text);
       text-decoration: none;
     }
@@ -53,8 +57,8 @@
       display: flex;
       flex-wrap: wrap;
       gap: 15px;
-      margin: 0;
       padding: 0;
+      margin: 0;
     }
 
     nav ul li {
@@ -68,6 +72,10 @@
       padding: 8px 12px;
     }
 
+    nav ul li:hover > ul {
+      display: block;
+    }
+
     nav ul ul {
       display: none;
       position: absolute;
@@ -75,23 +83,15 @@
       left: 0;
       background: white;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      padding: 10px;
       z-index: 1001;
+      padding: 10px;
       min-width: 160px;
-    }
-
-    nav ul ul li {
-      margin: 0;
     }
 
     nav ul ul li a {
       display: block;
       padding: 8px;
       white-space: nowrap;
-    }
-
-    nav ul li:hover > ul {
-      display: block;
     }
 
     .cart-icon {
@@ -140,6 +140,11 @@
       margin-bottom: 20px;
     }
 
+    .product-section p {
+      margin-bottom: 25px;
+      font-size: 1rem;
+    }
+
     button {
       background: var(--accent);
       color: white;
@@ -148,6 +153,7 @@
       border-radius: 6px;
       cursor: pointer;
       font-weight: bold;
+      font-size: 1rem;
     }
 
     button:hover {
@@ -157,7 +163,7 @@
     footer {
       text-align: center;
       padding: 20px;
-      background: var(--primary);
+      background-color: var(--primary);
       margin-top: 40px;
     }
 
@@ -175,6 +181,8 @@
       nav ul {
         flex-direction: column;
         gap: 10px;
+        background: var(--primary);
+        padding: 10px;
       }
 
       .product-section img {
@@ -214,7 +222,7 @@
           <li><a href="#">Hair Accessories</a></li>
           <li><a href="#">Handbags</a></li>
           <li><a href="index.html#about">About Us</a></li>
-          <li><a href="index.html#contact">Contact Us</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
           <li>
             <a href="cart.html" class="cart-icon">
               🛒 <span id="cart-count">0</span>
