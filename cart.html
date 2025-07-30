@@ -19,7 +19,6 @@
       font-family: 'Open Sans', sans-serif;
       background: var(--background);
       color: var(--text);
-      text-align: center;
     }
 
     .navbar {
@@ -31,35 +30,40 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
 
-    .navbar ul {
+    .navbar .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    nav ul {
       list-style: none;
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
       gap: 15px;
-      padding: 0;
       margin: 0;
+      padding: 0;
     }
 
-    .navbar li {
+    nav ul li {
       position: relative;
     }
 
-    .navbar a {
+    nav ul li a {
       text-decoration: none;
       color: var(--text);
-      font-weight: bold;
-      padding: 8px 12px;
+      font-weight: 600;
     }
 
     .cart-icon {
       position: relative;
+      display: inline-block;
     }
 
     .cart-icon span {
       position: absolute;
-      top: -8px;
-      right: -12px;
+      top: -6px;
+      right: -10px;
       background: var(--accent);
       color: white;
       border-radius: 50%;
@@ -67,40 +71,36 @@
       padding: 2px 6px;
     }
 
-    .cart-section {
+    .cart-container {
       max-width: 900px;
       margin: 40px auto;
       background: white;
       padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-      animation: fadeInUp 0.7s ease;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.05);
     }
 
     .cart-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #eee;
       padding: 15px 0;
-      flex-wrap: wrap;
+      border-bottom: 1px solid #eee;
     }
 
-    .cart-item div {
-      margin: 5px;
-    }
-
-    .cart-item-name {
-      font-weight: bold;
+    .cart-item-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .cart-item button {
-      padding: 5px 10px;
-      margin: 0 5px;
       background: var(--accent);
       color: white;
       border: none;
-      border-radius: 4px;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-weight: bold;
       cursor: pointer;
     }
 
@@ -108,86 +108,74 @@
       background: #c29dc3;
     }
 
+    .cart-total {
+      text-align: right;
+      font-size: 1.5rem;
+      margin-top: 20px;
+      color: var(--accent);
+    }
+
     .checkout {
+      text-align: center;
       margin-top: 30px;
     }
 
-    .checkout h2 {
-      color: var(--accent);
-      margin-bottom: 20px;
-    }
-
     .checkout button {
+      padding: 12px 30px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
       background: var(--accent);
       color: white;
-      padding: 12px 30px;
-      border: none;
-      border-radius: 6px;
-      font-size: 1rem;
+      font-weight: bold;
       cursor: pointer;
-      transition: background 0.3s ease;
     }
 
     .checkout button:hover {
       background: #c29dc3;
     }
 
-    footer {
-      margin-top: 40px;
-      background: var(--primary);
-      padding: 15px;
-    }
+    @media (max-width: 768px) {
+      nav ul {
+        flex-direction: column;
+        gap: 10px;
+      }
 
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @media screen and (max-width: 600px) {
       .cart-item {
         flex-direction: column;
         align-items: flex-start;
+      }
+
+      .cart-item-controls {
+        margin-top: 10px;
       }
     }
   </style>
 </head>
 <body>
 
-  <header class="navbar">
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="#">New Arrivals</a></li>
-      <li><a href="#">Earrings</a></li>
-      <li><a href="#">Necklace</a></li>
-      <li><a href="#">Rings</a></li>
-      <li><a href="#">Bracelets</a></li>
-      <li><a href="#">Combos</a></li>
-      <li><a href="#">Gifting</a></li>
-      <li><a href="#">Ethnic</a></li>
-      <li><a href="#">Hair Accessories</a></li>
-      <li><a href="#">Handbags</a></li>
-      <li><a href="index.html#about">About</a></li>
-      <li><a href="index.html#contact">Contact</a></li>
-      <li>
-        <a href="cart.html" class="cart-icon">🛒
-          <span id="cart-count">0</span>
-        </a>
-      </li>
-    </ul>
-  </header>
+  <div class="navbar">
+    <div class="logo">AtiyaTrinkets</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li>
+          <a href="cart.html" class="cart-icon">
+            🛒 <span id="cart-count">0</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
 
-  <section class="cart-section">
+  <div class="cart-container">
     <h1>Your Cart</h1>
     <div id="cart-items"></div>
+    <div class="cart-total">Total: ₹<span id="cart-total">0</span></div>
     <div class="checkout">
-      <h2>Total: ₹<span id="cart-total">0</span></h2>
       <button onclick="checkout()">Proceed to Checkout</button>
     </div>
-  </section>
-
-  <footer>
-    <p>&copy; 2025 AtiyaTrinkets</p>
-  </footer>
+  </div>
 
   <script>
     function updateCartCount() {
@@ -197,71 +185,71 @@
     }
 
     function renderCart() {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      let container = document.getElementById("cart-items");
-      let total = 0;
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const container = document.getElementById("cart-items");
+      const totalElement = document.getElementById("cart-total");
       container.innerHTML = "";
 
       if (cart.length === 0) {
         container.innerHTML = "<p>Your cart is empty.</p>";
-        document.getElementById("cart-total").innerText = "0";
+        totalElement.innerText = "0";
         return;
       }
 
+      let total = 0;
       cart.forEach((item, index) => {
         total += item.price * item.quantity;
-        container.innerHTML += `
-          <div class="cart-item">
-            <div class="cart-item-name">${item.name}</div>
-            <div>
-              <button onclick="updateQuantity(${index}, -1)">−</button>
-              <span>Qty: ${item.quantity}</span>
-              <button onclick="updateQuantity(${index}, 1)">+</button>
-            </div>
+        const div = document.createElement("div");
+        div.className = "cart-item";
+        div.innerHTML = `
+          <div><strong>${item.name}</strong></div>
+          <div class="cart-item-controls">
+            <button onclick="changeQty(${index}, -1)">−</button>
+            <span>${item.quantity}</span>
+            <button onclick="changeQty(${index}, 1)">+</button>
+            <button onclick="removeItem(${index})">🗑️</button>
             <div>₹${item.price * item.quantity}</div>
-            <div>
-              <button onclick="removeFromCart(${index})" style="background:#eee;color:#333;">Remove</button>
-            </div>
           </div>
         `;
+        container.appendChild(div);
       });
 
-      document.getElementById("cart-total").innerText = total;
+      totalElement.innerText = total;
+    }
+
+    function changeQty(index, delta) {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      if (!cart[index]) return;
+      cart[index].quantity += delta;
+      if (cart[index].quantity < 1) cart[index].quantity = 1;
+      localStorage.setItem("cart", JSON.stringify(cart));
+      renderCart();
       updateCartCount();
     }
 
-    function updateQuantity(index, change) {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      cart[index].quantity += change;
-      if (cart[index].quantity <= 0) {
-        cart.splice(index, 1);
-      }
-      localStorage.setItem("cart", JSON.stringify(cart));
-      renderCart();
-    }
-
-    function removeFromCart(index) {
+    function removeItem(index) {
       let cart = JSON.parse(localStorage.getItem("cart")) || [];
       cart.splice(index, 1);
       localStorage.setItem("cart", JSON.stringify(cart));
       renderCart();
+      updateCartCount();
     }
 
     function checkout() {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      if (cart.length === 0) return alert("Cart is empty");
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      if (cart.length === 0) return alert("Cart is empty.");
 
-      let totalAmount = cart.reduce((sum, item) => sum + item.price * item.quantity, 0) * 100;
+      const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0) * 100;
 
-      let options = {
-        key: "rzp_live_XXXXXXX", // 🔁 Replace this with your Razorpay LIVE Key
-        amount: totalAmount,
+      const options = {
+        key: "rzp_live_8dfpF64rA0trja", // Replace with your Razorpay live key
+        amount: total,
         currency: "INR",
         name: "AtiyaTrinkets",
         description: "Order Payment",
         image: "https://via.placeholder.com/100x100?text=Atiya",
         handler: function (response) {
-          alert("Payment Successful! ID: " + response.razorpay_payment_id);
+          alert("Payment successful! ID: " + response.razorpay_payment_id);
           localStorage.removeItem("cart");
           window.location.href = "thankyou.html";
         },
@@ -275,12 +263,12 @@
         }
       };
 
-      let rzp = new Razorpay(options);
+      const rzp = new Razorpay(options);
       rzp.open();
     }
 
     renderCart();
+    updateCartCount();
   </script>
-
 </body>
 </html>
