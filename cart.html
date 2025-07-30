@@ -270,11 +270,15 @@ nav ul ul li a {
     </div>
   </nav>
 
+  <section class="cart-section">
   <h1>Your Cart</h1>
-  <div class="cart-container" id="cartItems"></div>
-  <div class="total" id="cartTotal">Total: ₹0</div>
-  <button class="checkout" onclick="checkoutCart()">Proceed to Checkout</button><br>
-  <a href="index.html">← Continue Shopping</a>
+  <div id="cart-items"></div>
+
+  <div class="checkout">
+    <h2>Total: ₹<span id="cart-total">0</span></h2>
+    <button onclick="checkout()">Proceed to Checkout</button>
+  </div>
+</section>
 
   <script>
     function toggleMenu() {
