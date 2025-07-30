@@ -63,6 +63,13 @@
       font-size: 0.9rem;
       margin-top: 10px;
     }
+    .google-btn {
+      background: #4285F4;
+      margin-top: 20px;
+    }
+    .google-btn:hover {
+      background: #357ae8;
+    }
   </style>
 </head>
 <body>
@@ -72,16 +79,23 @@
   <input type="email" id="email" placeholder="Email" required />
   <input type="password" id="password" placeholder="Password" required />
   <button id="submitBtn">Sign In</button>
+  <button class="google-btn" id="googleSignInBtn">Continue with Google</button>
   <div class="toggle-link">
     <span id="toggleText">Don't have an account? <a id="toggleLink">Sign Up</a></span>
   </div>
   <div class="message" id="message"></div>
 </div>
 
-<!-- Firebase -->
+<!-- Firebase Auth Scripts -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    GoogleAuthProvider,
+    signInWithPopup
+  } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
@@ -95,6 +109,7 @@
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
 
   let isLogin = true;
 
@@ -105,6 +120,7 @@
   const title = document.getElementById("form-title");
   const toggleText = document.getElementById("toggleText");
   const toggleLink = document.getElementById("toggleLink");
+  const googleBtn = document.getElementById("googleSignInBtn");
 
   toggleLink.addEventListener("click", () => {
     isLogin = !isLogin;
@@ -121,21 +137,32 @@
     const password = passEl.value;
     msg.textContent = "";
 
-    if (isLogin) {
-      try {
+    try {
+      if (isLogin) {
         await signInWithEmailAndPassword(auth, email, password);
-        window.location.href = "index.html";
-      } catch (err) {
-        msg.textContent = err.message;
-      }
-    } else {
-      try {
+      } else {
         await createUserWithEmailAndPassword(auth, email, password);
         msg.textContent = "Signup successful. Please login.";
-        toggleLink.click();
-      } catch (err) {
-        msg.textContent = err.message;
+        isLogin = true;
+        title.textContent = "Sign In";
+        btn.textContent = "Sign In";
+        toggleText.innerHTML = `Don't have an account? <a id="toggleLink">Sign Up</a>`;
       }
+      localStorage.setItem("userEmail", email);
+      window.location.href = "index.html";
+    } catch (err) {
+      msg.textContent = err.message;
+    }
+  });
+
+  googleBtn.addEventListener("click", async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      localStorage.setItem("userEmail", user.email);
+      window.location.href = "index.html";
+    } catch (err) {
+      msg.textContent = err.message;
     }
   });
 </script>
