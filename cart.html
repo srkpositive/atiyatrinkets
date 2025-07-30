@@ -3,18 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Your Cart - AtiyaTrinkets</title>
+  <title>Your Cart | AtiyaTrinkets</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap" rel="stylesheet">
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <style>
     :root {
       --primary: #f8e1e7;
-      --accent: #d8b4d3;
       --background: #fff9f7;
+      --accent: #d8b4d3;
       --text: #333;
     }
 
     * {
       box-sizing: border-box;
+      scroll-behavior: smooth;
     }
 
     body {
@@ -26,8 +28,7 @@
 
     header {
       background: white;
-      padding: 15px 30px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
       position: sticky;
       top: 0;
       z-index: 1000;
@@ -37,20 +38,24 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 15px 30px;
+      flex-wrap: wrap;
     }
 
     .logo {
       font-family: 'Playfair Display', serif;
-      font-size: 1.8rem;
+      font-size: 1.6rem;
+      color: var(--text);
+      text-decoration: none;
     }
 
     nav ul {
       list-style: none;
       display: flex;
+      flex-wrap: wrap;
       gap: 15px;
-      padding: 0;
       margin: 0;
-      align-items: center;
+      padding: 0;
     }
 
     nav ul li {
@@ -61,107 +66,113 @@
       text-decoration: none;
       color: var(--text);
       font-weight: 600;
-      padding: 8px 10px;
+      padding: 8px 12px;
+    }
+
+    nav ul ul {
+      display: none;
+      position: absolute;
+      top: 38px;
+      left: 0;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 10px;
+      z-index: 1001;
     }
 
     nav ul li:hover > ul {
       display: block;
     }
 
-    nav ul ul {
-      display: none;
-      position: absolute;
-      background: white;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      padding: 10px;
-      top: 35px;
-      z-index: 1000;
-    }
-
-    nav ul ul li {
-      padding: 5px 0;
-    }
-
     .cart-icon {
       position: relative;
+      display: inline-block;
     }
 
     .cart-icon span {
       position: absolute;
-      top: -5px;
+      top: -6px;
       right: -10px;
       background: var(--accent);
       color: white;
       border-radius: 50%;
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       padding: 2px 6px;
     }
 
-    .cart-section {
+    .cart-container {
       max-width: 900px;
-      margin: 50px auto;
-      background: white;
+      margin: 40px auto;
       padding: 30px;
+      background: white;
       border-radius: 10px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.05);
-      animation: fadeInUp 0.7s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      animation: fadeInUp 0.6s ease;
     }
 
     .cart-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      padding: 15px 0;
       border-bottom: 1px solid #eee;
-      padding-bottom: 15px;
     }
 
-    .cart-item-name {
-      font-weight: bold;
-      flex: 2;
+    .cart-item:last-child {
+      border-bottom: none;
     }
 
-    .cart-item-qty {
+    .cart-item .info {
+      flex: 1;
+    }
+
+    .cart-item h3 {
+      margin: 0 0 5px;
+    }
+
+    .qty-controls {
       display: flex;
       align-items: center;
-      gap: 8px;
-      flex: 1;
+      gap: 10px;
     }
 
-    .cart-item-qty button,
-    .cart-item-remove {
-      background: var(--accent);
-      color: white;
+    .qty-controls button {
+      background: #ddd;
       border: none;
-      padding: 6px 10px;
-      border-radius: 4px;
+      padding: 4px 10px;
       cursor: pointer;
-      font-size: 1rem;
+      border-radius: 4px;
     }
 
-    .cart-item-price {
-      flex: 1;
-      text-align: right;
+    .qty-controls span {
+      font-weight: bold;
+    }
+
+    .remove-btn {
+      background: none;
+      border: none;
+      color: crimson;
+      cursor: pointer;
+      font-size: 0.9rem;
     }
 
     .total {
       text-align: right;
-      font-size: 1.5rem;
-      margin-top: 20px;
+      font-size: 1.4rem;
+      margin-top: 30px;
       color: var(--accent);
     }
 
     .checkout-btn {
-      margin-top: 30px;
-      padding: 12px 25px;
+      display: block;
+      margin: 30px auto 0;
       background: var(--accent);
       color: white;
+      padding: 12px 30px;
       border: none;
       border-radius: 6px;
       font-size: 1rem;
       cursor: pointer;
-      display: block;
-      margin-left: auto;
     }
 
     .checkout-btn:hover {
@@ -172,35 +183,33 @@
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    @media screen and (max-width: 768px) {
+      .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .total {
+        text-align: center;
+      }
+    }
   </style>
 </head>
 <body>
 
 <header>
   <div class="navbar">
-    <div class="logo">AtiyaTrinkets</div>
+    <a href="index.html" class="logo">AtiyaTrinkets</a>
     <nav>
       <ul>
         <li><a href="index.html">Home</a></li>
-        <li><a href="#">New Arrivals</a></li>
-        <li><a href="#">Earrings</a>
-          <ul>
-            <li><a href="#">Studs</a></li>
-            <li><a href="#">Hoops</a></li>
-            <li><a href="#">Drops</a></li>
-          </ul>
-        </li>
+        <li><a href="#">Earrings</a></li>
         <li><a href="#">Necklace</a></li>
         <li><a href="#">Rings</a></li>
         <li><a href="#">Bracelets</a></li>
-        <li><a href="#">Gifting</a></li>
         <li><a href="#">Combos</a></li>
-        <li><a href="#">Couple Jewellery</a></li>
-        <li><a href="#">Ethnic</a></li>
-        <li><a href="#">Hair Accessories</a></li>
-        <li><a href="#">Handbags</a></li>
-        <li><a href="index.html#about">About Us</a></li>
-        <li><a href="index.html#contact">Contact Us</a></li>
+        <li><a href="#">Contact</a></li>
         <li>
           <a href="cart.html" class="cart-icon">
             🛒 <span id="cart-count">0</span>
@@ -211,8 +220,8 @@
   </div>
 </header>
 
-<section class="cart-section">
-  <h1>Your Cart</h1>
+<section class="cart-container">
+  <h2>Your Cart</h2>
   <div id="cart-items"></div>
   <div class="total">Total: ₹<span id="cart-total">0</span></div>
   <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
@@ -220,32 +229,63 @@
 
 <script>
   function updateCartCount() {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    let totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    document.getElementById("cart-count").innerText = totalItems;
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const total = cart.reduce((sum, item) => sum + item.qty, 0);
+    document.getElementById("cart-count").innerText = total;
   }
 
-  function increaseQty(index) {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    cart[index].quantity++;
-    localStorage.setItem("cart", JSON.stringify(cart));
-    renderCart();
-    updateCartCount();
+  function renderCart() {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const cartItems = document.getElementById("cart-items");
+    const cartTotal = document.getElementById("cart-total");
+    cartItems.innerHTML = "";
+    let total = 0;
+
+    if (cart.length === 0) {
+      cartItems.innerHTML = "<p>Your cart is empty.</p>";
+      cartTotal.textContent = "0";
+      return;
+    }
+
+    cart.forEach((item, index) => {
+      const itemTotal = item.price * item.qty;
+      total += itemTotal;
+
+      const div = document.createElement("div");
+      div.className = "cart-item";
+      div.innerHTML = `
+        <div class="info">
+          <h3>${item.name}</h3>
+          <div class="qty-controls">
+            <button onclick="changeQty(${index}, -1)">−</button>
+            <span>${item.qty}</span>
+            <button onclick="changeQty(${index}, 1)">+</button>
+          </div>
+          <p>₹${itemTotal}</p>
+        </div>
+        <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+      `;
+      cartItems.appendChild(div);
+    });
+
+    cartTotal.textContent = total;
   }
 
-  function decreaseQty(index) {
+  function changeQty(index, delta) {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    if (cart[index].quantity > 1) {
-      cart[index].quantity--;
-    } else {
+    if (!cart[index]) return;
+
+    cart[index].qty += delta;
+    if (cart[index].qty <= 0) {
       cart.splice(index, 1);
     }
+
     localStorage.setItem("cart", JSON.stringify(cart));
     renderCart();
     updateCartCount();
   }
 
-  function removeFromCart(index) {
+  function removeItem(index) {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
     cart.splice(index, 1);
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -253,48 +293,43 @@
     updateCartCount();
   }
 
-  function renderCart() {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const container = document.getElementById("cart-items");
-    container.innerHTML = "";
-    let total = 0;
-
+  function checkout() {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
     if (cart.length === 0) {
-      container.innerHTML = "<p>Your cart is empty.</p>";
-      document.getElementById("cart-total").innerText = "0";
+      alert("Your cart is empty.");
       return;
     }
 
-    cart.forEach((item, index) => {
-      total += item.price * item.quantity;
-      const div = document.createElement("div");
-      div.className = "cart-item";
-      div.innerHTML = `
-        <div class="cart-item-name">${item.name}</div>
-        <div class="cart-item-qty">
-          <button onclick="decreaseQty(${index})">−</button>
-          <span>${item.quantity}</span>
-          <button onclick="increaseQty(${index})">+</button>
-          <button class="cart-item-remove" onclick="removeFromCart(${index})">🗑️</button>
-        </div>
-        <div class="cart-item-price">₹${item.price * item.quantity}</div>
-      `;
-      container.appendChild(div);
-    });
+    const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
 
-    document.getElementById("cart-total").innerText = total;
-  }
+    const options = {
+      key: "rzp_live_8dfpF64rA0trja", // ✅ your live key here
+      amount: total * 100,
+      currency: "INR",
+      name: "AtiyaTrinkets",
+      description: "Order Payment",
+      image: "https://via.placeholder.com/100x100?text=Atiya",
+      handler: function (response) {
+        alert("Payment Successful!\nPayment ID: " + response.razorpay_payment_id);
+        localStorage.removeItem("cart");
+        window.location.href = "thankyou.html";
+      },
+      prefill: {
+        name: "",
+        email: "",
+        contact: ""
+      },
+      theme: {
+        color: "#d63384"
+      }
+    };
 
-  function checkout() {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    if (cart.length === 0) return alert("Your cart is empty.");
-    alert("Redirecting to payment gateway...");
-    // Replace with Razorpay/PayPal redirect
+    const rzp = new Razorpay(options);
+    rzp.open();
   }
 
   renderCart();
   updateCartCount();
 </script>
-
 </body>
 </html>
