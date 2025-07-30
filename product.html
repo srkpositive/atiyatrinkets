@@ -3,8 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Golden Hoop | AtiyaTrinkets</title>
+  <title>Product | AtiyaTrinkets</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap" rel="stylesheet">
+
+  <!-- SEO Tags -->
+  <meta name="description" content="Elegant artificial jewellery by AtiyaTrinkets – trendy, affordable and festive-ready.">
+  <meta name="keywords" content="AtiyaTrinkets, earrings, rings, necklace, artificial jewellery, women's accessories">
+  <meta name="author" content="AtiyaTrinkets">
+  <meta property="og:title" content="Product | AtiyaTrinkets" />
+  <meta property="og:description" content="Beautiful handcrafted artificial jewellery for all occasions." />
+  <meta property="og:image" content="https://yourwebsite.com/img/product1-1.jpg" />
+  <meta property="og:url" content="https://yourwebsite.com/product.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+
   <style>
     :root {
       --primary: #f8e1e7;
@@ -16,11 +27,10 @@
     * {
       box-sizing: border-box;
       scroll-behavior: smooth;
-      margin: 0;
-      padding: 0;
     }
 
     body {
+      margin: 0;
       font-family: 'Open Sans', sans-serif;
       background: var(--background);
       color: var(--text);
@@ -40,14 +50,11 @@
       align-items: center;
       padding: 15px 30px;
       flex-wrap: wrap;
-      max-width: 1200px;
-      margin: auto;
     }
 
     .logo {
       font-family: 'Playfair Display', serif;
       font-size: 1.8rem;
-      font-weight: bold;
       color: var(--text);
       text-decoration: none;
     }
@@ -57,8 +64,8 @@
       display: flex;
       flex-wrap: wrap;
       gap: 15px;
-      padding: 0;
       margin: 0;
+      padding: 0;
     }
 
     nav ul li {
@@ -72,10 +79,6 @@
       padding: 8px 12px;
     }
 
-    nav ul li:hover > ul {
-      display: block;
-    }
-
     nav ul ul {
       display: none;
       position: absolute;
@@ -83,15 +86,23 @@
       left: 0;
       background: white;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      z-index: 1001;
       padding: 10px;
+      z-index: 1001;
       min-width: 160px;
+    }
+
+    nav ul ul li {
+      margin: 0;
     }
 
     nav ul ul li a {
       display: block;
       padding: 8px;
       white-space: nowrap;
+    }
+
+    nav ul li:hover > ul {
+      display: block;
     }
 
     .cart-icon {
@@ -121,28 +132,42 @@
       animation: fadeInUp 0.6s ease;
     }
 
-    .product-section img {
+    .main-image img {
       width: 60%;
       max-width: 300px;
       margin-bottom: 20px;
       border-radius: 10px;
     }
 
+    .gallery {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .gallery img {
+      width: 60px;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+
+    .gallery img:hover {
+      border-color: var(--accent);
+    }
+
     .product-section h1 {
       font-family: 'Playfair Display', serif;
       font-size: 2rem;
-      margin-bottom: 10px;
+      margin: 15px 0 10px;
     }
 
     .price {
       font-size: 1.5rem;
       color: var(--accent);
       margin-bottom: 20px;
-    }
-
-    .product-section p {
-      margin-bottom: 25px;
-      font-size: 1rem;
     }
 
     button {
@@ -153,7 +178,6 @@
       border-radius: 6px;
       cursor: pointer;
       font-weight: bold;
-      font-size: 1rem;
     }
 
     button:hover {
@@ -163,7 +187,7 @@
     footer {
       text-align: center;
       padding: 20px;
-      background-color: var(--primary);
+      background: var(--primary);
       margin-top: 40px;
     }
 
@@ -181,11 +205,9 @@
       nav ul {
         flex-direction: column;
         gap: 10px;
-        background: var(--primary);
-        padding: 10px;
       }
 
-      .product-section img {
+      .main-image img {
         width: 100%;
       }
     }
@@ -222,7 +244,7 @@
           <li><a href="#">Hair Accessories</a></li>
           <li><a href="#">Handbags</a></li>
           <li><a href="index.html#about">About Us</a></li>
-          <li><a href="index.html#contact">Contact</a></li>
+          <li><a href="index.html#contact">Contact Us</a></li>
           <li>
             <a href="cart.html" class="cart-icon">
               🛒 <span id="cart-count">0</span>
@@ -234,11 +256,7 @@
   </header>
 
   <section class="product-section">
-    <img src="https://via.placeholder.com/300x300?text=Earring+1" alt="Golden Hoop Earring" />
-    <h1>Golden Hoop</h1>
-    <div class="price">₹499</div>
-    <p>Elegant gold-plated hoop earrings for daily and festive wear. Lightweight and skin-friendly.</p>
-    <button onclick="addToCart()">Add to Cart</button>
+    <!-- Product data will be dynamically injected here -->
   </section>
 
   <footer>
@@ -246,22 +264,58 @@
   </footer>
 
   <script>
-    function addToCart() {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-      const product = {
+    const products = [
+      {
         id: 1,
         name: "Golden Hoop",
         price: 499,
-        qty: 1
-      };
-
-      const existingIndex = cart.findIndex(item => item.id === product.id);
-      if (existingIndex > -1) {
-        cart[existingIndex].qty += 1;
-      } else {
-        cart.push(product);
+        desc: "Elegant gold-plated hoop earrings for daily and festive wear. Lightweight and skin-friendly.",
+        images: ["img/product1-1.jpg", "img/product1-2.jpg", "img/product1-3.jpg"]
+      },
+      {
+        id: 2,
+        name: "Silver Drops",
+        price: 399,
+        desc: "Sleek silver drop earrings with polished finish and comfortable wear.",
+        images: ["img/product2-1.jpg", "img/product2-2.jpg"]
       }
+    ];
+
+    function getProductFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      const id = parseInt(params.get("id"));
+      return products.find(p => p.id === id);
+    }
+
+    function renderProduct() {
+      const product = getProductFromURL();
+      if (!product) {
+        document.querySelector(".product-section").innerHTML = "<p>Product not found</p>";
+        return;
+      }
+
+      document.title = `${product.name} | AtiyaTrinkets`;
+
+      document.querySelector(".product-section").innerHTML = `
+        <div class="main-image">
+          <img id="mainProductImage" src="${product.images[0]}" alt="${product.name}" />
+        </div>
+        <div class="gallery">
+          ${product.images.map(img => `<img src="${img}" onclick="changeImage('${img}')">`).join('')}
+        </div>
+        <h1>${product.name}</h1>
+        <div class="price">₹${product.price}</div>
+        <p>${product.desc}</p>
+        <button onclick="addToCart(${product.id})">Add to Cart</button>
+      `;
+    }
+
+    function addToCart(productId) {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const product = products.find(p => p.id === productId);
+      const existing = cart.find(item => item.id === productId);
+      if (existing) existing.qty += 1;
+      else cart.push({ id: product.id, name: product.name, price: product.price, qty: 1 });
 
       localStorage.setItem("cart", JSON.stringify(cart));
       updateCartCount();
@@ -270,10 +324,15 @@
 
     function updateCartCount() {
       let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      let totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
-      document.getElementById("cart-count").innerText = totalItems;
+      let total = cart.reduce((sum, item) => sum + item.qty, 0);
+      document.getElementById("cart-count").innerText = total;
     }
 
+    function changeImage(src) {
+      document.getElementById("mainProductImage").src = src;
+    }
+
+    renderProduct();
     updateCartCount();
   </script>
 </body>
