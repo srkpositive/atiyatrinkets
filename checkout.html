@@ -134,7 +134,7 @@
       rzp.open();
     }
 
-    <script>
+   <script>
   function payWithCOD() {
     const name = document.getElementById('name').value.trim();
     const address = document.getElementById('address').value.trim();
@@ -145,14 +145,6 @@
       return;
     }
 
-    // Optional: Save order details to Firebase or backend
-
-    alert(`Order placed successfully via Cash on Delivery!\n\nName: ${name}\nAddress: ${address}\nPhone: ${phone}`);
-    localStorage.removeItem('cart');
-    window.location.href = "index.html";
-  }
-</script>
-
     const orderData = {
       name,
       address,
@@ -162,7 +154,7 @@
       timestamp: new Date().toISOString()
     };
 
-    console.log("COD Order:", orderData); // (Optional: Save to Firebase or send to backend)
+    console.log("COD Order:", orderData); // Optional: Save to Firebase or send to backend
 
     alert("Your order has been placed successfully! You chose Cash on Delivery.");
     localStorage.removeItem("cart");
