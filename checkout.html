@@ -85,8 +85,8 @@
     </div>
   </div>
 
-  <!-- Cart & Razorpay Script -->
-  <script type="text/javascript">
+  <!-- Cart & Payment Scripts -->
+  <script>
     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
     const summaryList = document.getElementById('summary-items');
     const summaryTotal = document.getElementById('summary-total');
@@ -134,10 +134,7 @@
       const rzp = new Razorpay(options);
       rzp.open();
     }
-  </script>
 
-  <!-- Cash on Delivery Script -->
-  <script type="text/javascript">
     function payWithCOD() {
       const name = document.getElementById('name').value.trim();
       const address = document.getElementById('address').value.trim();
@@ -152,20 +149,19 @@
         name,
         address,
         phone,
-        cart: JSON.parse(localStorage.getItem('cart')) || [],
+        cart: cartItems,
         paymentMethod: "Cash on Delivery",
         timestamp: new Date().toISOString()
       };
 
       console.log("COD Order:", orderData);
-
       alert("Your order has been placed successfully! You chose Cash on Delivery.");
       localStorage.removeItem("cart");
       window.location.href = "thankyou.html";
     }
   </script>
 
-  <!-- PayPal Script -->
+  <!-- PayPal SDK -->
   <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
   <script>
     paypal.Buttons({
