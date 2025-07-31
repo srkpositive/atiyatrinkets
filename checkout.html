@@ -24,7 +24,7 @@
     firebase.initializeApp(firebaseConfig);
 
     // ✅ Define Firestore DB globally
-    window.db = firebase.firestore();
+    const db = firebase.firestore();
   </script>
 
   <style>
@@ -164,7 +164,7 @@
       };
 
       try {
-        await window.db.collection("orders").doc(orderId).set(orderData);
+        await db.collection("orders").doc(orderId).set(orderData);
         alert("Order placed successfully! Order ID: " + orderId);
         localStorage.removeItem("cart");
         window.location.href = "thankyou.html";
