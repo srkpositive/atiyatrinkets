@@ -355,6 +355,49 @@
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
 </script>
+<!-- Firebase Auth Display -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
+    authDomain: "atiyatrinkets-ce4b6.firebaseapp.com",
+    projectId: "atiyatrinkets-ce4b6",
+    storageBucket: "atiyatrinkets-ce4b6.appspot.com",
+    messagingSenderId: "562847025664",
+    appId: "1:562847025664:web:c200328acd5643c32e66e5",
+    measurementId: "G-WBWWBHQTHJ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const navArea = document.querySelector("nav ul");
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const email = user.email || "Logged In";
+      localStorage.setItem("userEmail", email);
+      const userItem = document.createElement("li");
+      userItem.innerHTML = `<span style="font-weight:bold;">👤 ${email}</span>`;
+      const logoutItem = document.createElement("li");
+      logoutItem.innerHTML = `<a href="#" id="logoutBtn">Logout</a>`;
+      navArea.appendChild(userItem);
+      navArea.appendChild(logoutItem);
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        signOut(auth).then(() => {
+          localStorage.removeItem("userEmail");
+          window.location.reload();
+        });
+      });
+    } else {
+      const loginItem = document.createElement("li");
+      loginItem.innerHTML = `<a href="auth.html">Login</a>`;
+      navArea.appendChild(loginItem);
+    }
+  });
+</script>
 
 </body>
 </html>
