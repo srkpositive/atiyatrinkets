@@ -79,17 +79,12 @@
 
     <button class="btn" onclick="payWithRazorpay()">Pay with Razorpay</button>
     <button class="btn" onclick="payWithCOD()">Cash on Delivery</button>
-
-    <div class="paypal-button">
-      <div id="paypal-button-container"></div>
-    </div>
   </div>
 
-  <!-- Firebase + Firestore + Auth -->
+  <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
@@ -102,21 +97,85 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const auth = getAuth(app);
 
-    const summaryList = document.getElementById('summary-items');
-    const summaryTotal = document.getElementById('summary-total');
-    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    window.payWithCOD = async function () {
+      const name = document.getElementById("name").value.trim();
+      const address = document.getElementById("address").value.trim();
+      const phone = document.getElementById("phone").value.trim();
 
-    let totalAmount = 0;
-    cartItems.forEach(item => {
-      const li = document.createElement('li');
-      li.innerHTML = `<span>${item.name} × ${item.qty}</span><span>₹${item.qty * item.price}</span>`;
-      summaryList.appendChild(li);
-      totalAmount += item.qty * item.price;
-    });
-    summaryTotal.textContent = totalAmount;
+      if (!name || !address || !phone) {
+        alert("Please fill all the fields before placing the order.");
+        return;
+      }
 
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const orderData = {
+        name,
+        address,
+        phone,
+        cart,
+        paymentMethod: "Cash on Delivery",
+        timestamp: new Date().toISOString()
+      };
+
+      try {
+        const docRef = await addDoc(collection(db, "orders"), orderData);
+        localStorage.setItem("orderId", docRef.id); // ✅ Store order ID
+        localStorage.removeItem("cart");
+        alert("Order placed successfully!");
+        window.location.href = "thankyou.html";
+      } catch (err) {
+        console.error("Error placing order:", err);
+        alert("Error placing order: " + err.message);
+      }
+    };
+
+    window.payWithRazorpay = function () {
+      if (!validateDetails()) return;
+
+      const options = {
+        key: "rzp_live_8dfpF64rA0trja",
+        amount: totalAmount * 100,
+        currency: "INR",
+        name: "AtiyaTrinkets",
+        description: "Jewellery Order",
+        handler: async function (response) {
+          const name = document.getElementById("name").value.trim();
+          const address = document.getElementById("address").value.trim();
+          const phone = document.getElementById("phone").value.trim();
+          const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+          const orderData = {
+            name,
+            address,
+            phone,
+            cart,
+            paymentMethod: "Razorpay",
+            razorpayId: response.razorpay_payment_id,
+            timestamp: new Date().toISOString()
+          };
+
+          try {
+            const docRef = await addDoc(collection(db, "orders"), orderData);
+            localStorage.setItem("orderId", docRef.id); // ✅ Store order ID
+            localStorage.removeItem("cart");
+            alert("Payment Successful!");
+            window.location.href = "thankyou.html";
+          } catch (err) {
+            alert("Error saving order: " + err.message);
+          }
+        },
+        prefill: {
+          name: document.getElementById("name").value,
+          contact: document.getElementById("phone").value
+        },
+        theme: { color: "#d8b4d3" }
+      };
+      const rzp = new Razorpay(options);
+      rzp.open();
+    };
+
+    // Validate input before checkout
     function validateDetails() {
       const name = document.getElementById('name').value.trim();
       const address = document.getElementById('address').value.trim();
@@ -128,89 +187,20 @@
       return true;
     }
 
-    window.payWithRazorpay = function () {
-      if (!validateDetails()) return;
+    // Populate order summary
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    const summaryList = document.getElementById('summary-items');
+    const summaryTotal = document.getElementById('summary-total');
+    let totalAmount = 0;
 
-      const options = {
-        key: "rzp_live_8dfpF64rA0trja",
-        amount: totalAmount * 100,
-        currency: "INR",
-        name: "AtiyaTrinkets",
-        description: "Jewellery Order",
-        handler: function (response) {
-          alert("Payment Successful: " + response.razorpay_payment_id);
-          localStorage.removeItem('cart');
-          window.location.href = "thankyou.html";
-        },
-        prefill: {
-          name: document.getElementById('name').value,
-          contact: document.getElementById('phone').value
-        },
-        theme: { color: "#d8b4d3" }
-      };
-      const rzp = new Razorpay(options);
-      rzp.open();
-    };
+    cartItems.forEach(item => {
+      const li = document.createElement('li');
+      li.innerHTML = `<span>${item.name} × ${item.qty}</span><span>₹${item.qty * item.price}</span>`;
+      summaryList.appendChild(li);
+      totalAmount += item.qty * item.price;
+    });
 
-    window.payWithCOD = async function () {
-      if (!validateDetails()) return;
-
-      const name = document.getElementById('name').value.trim();
-      const address = document.getElementById('address').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-      const user = auth.currentUser;
-      if (!user) {
-        alert("Please sign in before placing an order.");
-        return;
-      }
-
-      const orderData = {
-        userId: user.uid,
-        userEmail: user.email,
-        name,
-        address,
-        phone,
-        cart,
-        paymentMethod: "Cash on Delivery",
-        createdAt: serverTimestamp()
-      };
-
-      try {
-        const docRef = await addDoc(collection(db, "orders"), orderData);
-        localStorage.setItem("orderId", orderId);
-        alert("Order placed successfully! Order ID: " + docRef.id);
-        localStorage.removeItem("cart");
-        window.location.href = "thankyou.html?orderId=" + docRef.id;
-      } catch (error) {
-        console.error("Error placing order:", error);
-        alert("Error placing order: " + error.message);
-      }
-    };
-  </script>
-
-  <!-- PayPal -->
-  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
-  <script>
-    paypal.Buttons({
-      createOrder: function(data, actions) {
-        return actions.order.create({
-          purchase_units: [{
-            amount: {
-              value: (totalAmount / 83).toFixed(2)
-            }
-          }]
-        });
-      },
-      onApprove: function(data, actions) {
-        return actions.order.capture().then(function(details) {
-          alert('Payment Successful, ' + details.payer.name.given_name + '!');
-          localStorage.removeItem('cart');
-          window.location.href = "thankyou.html";
-        });
-      }
-    }).render('#paypal-button-container');
+    summaryTotal.textContent = totalAmount;
   </script>
 </body>
 </html>
