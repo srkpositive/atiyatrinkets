@@ -76,9 +76,9 @@
 
 <div class="auth-container">
   <h2 id="form-title">Sign In</h2>
-<input type="text" id="name" placeholder="Full Name" style="display:none;" />
-<input type="email" id="email" placeholder="Email" required />
-<input type="password" id="password" placeholder="Password" required />
+  <input type="text" id="name" placeholder="Full Name" style="display: none;" />
+  <input type="email" id="email" placeholder="Email" required />
+  <input type="password" id="password" placeholder="Password" required />
   <button id="submitBtn">Sign In</button>
   <button class="google-btn" id="googleSignInBtn">Continue with Google</button>
   <div class="toggle-link">
@@ -95,85 +95,7 @@
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     GoogleAuthProvider,
-    signInWithPopup
-  } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
-    authDomain: "atiyatrinkets-ce4b6.firebaseapp.com",
-    projectId: "atiyatrinkets-ce4b6",
-    storageBucket: "atiyatrinkets-ce4b6.appspot.com",
-    messagingSenderId: "562847025664",
-    appId: "1:562847025664:web:c200328acd5643c32e66e5",
-    measurementId: "G-WBWWBHQTHJ"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const provider = new GoogleAuthProvider();
-
-  let isLogin = true;
-
-  const emailEl = document.getElementById("email");
-  const passEl = document.getElementById("password");
-  const btn = document.getElementById("submitBtn");
-  const msg = document.getElementById("message");
-  const title = document.getElementById("form-title");
-  const toggleText = document.getElementById("toggleText");
-  const toggleLink = document.getElementById("toggleLink");
-  const googleBtn = document.getElementById("googleSignInBtn");
-
-  toggleLink.addEventListener("click", () => {
-    isLogin = !isLogin;
-    title.textContent = isLogin ? "Sign In" : "Sign Up";
-    btn.textContent = isLogin ? "Sign In" : "Sign Up";
-    toggleText.innerHTML = isLogin
-      ? `Don't have an account? <a id="toggleLink">Sign Up</a>`
-      : `Already have an account? <a id="toggleLink">Sign In</a>`;
-    msg.textContent = "";
-  });
-
-  btn.addEventListener("click", async () => {
-    const email = emailEl.value;
-    const password = passEl.value;
-    msg.textContent = "";
-
-    try {
-      if (isLogin) {
-        await signInWithEmailAndPassword(auth, email, password);
-      } else {
-        await createUserWithEmailAndPassword(auth, email, password);
-        msg.textContent = "Signup successful. Please login.";
-        isLogin = true;
-        title.textContent = "Sign In";
-        btn.textContent = "Sign In";
-        toggleText.innerHTML = `Don't have an account? <a id="toggleLink">Sign Up</a>`;
-      }
-      localStorage.setItem("userEmail", email);
-      window.location.href = "index.html";
-    } catch (err) {
-      msg.textContent = err.message;
-    }
-  });
-
-  googleBtn.addEventListener("click", async () => {
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      localStorage.setItem("userEmail", user.email);
-      window.location.href = "index.html";
-    } catch (err) {
-      msg.textContent = err.message;
-    }
-  });
-</script>
-<script type="module">
-  import {
-    initializeApp
-  } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-  import {
-    getAuth,
-    createUserWithEmailAndPassword,
+    signInWithPopup,
     updateProfile
   } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
@@ -188,21 +110,65 @@
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
 
-  // Sign Up Logic
-  document.getElementById("signup-form").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const name = document.getElementById("signup-name").value.trim();
-    const email = document.getElementById("signup-email").value.trim();
-    const password = document.getElementById("signup-password").value;
+  let isLogin = true;
+
+  const nameEl = document.getElementById("name");
+  const emailEl = document.getElementById("email");
+  const passEl = document.getElementById("password");
+  const btn = document.getElementById("submitBtn");
+  const msg = document.getElementById("message");
+  const title = document.getElementById("form-title");
+  const toggleText = document.getElementById("toggleText");
+  const toggleLink = document.getElementById("toggleLink");
+  const googleBtn = document.getElementById("googleSignInBtn");
+
+  toggleLink.addEventListener("click", () => {
+    isLogin = !isLogin;
+    title.textContent = isLogin ? "Sign In" : "Sign Up";
+    btn.textContent = isLogin ? "Sign In" : "Sign Up";
+    nameEl.style.display = isLogin ? "none" : "block";
+    toggleText.innerHTML = isLogin
+      ? `Don't have an account? <a id="toggleLink">Sign Up</a>`
+      : `Already have an account? <a id="toggleLink">Sign In</a>`;
+    msg.textContent = "";
+  });
+
+  btn.addEventListener("click", async () => {
+    const email = emailEl.value.trim();
+    const password = passEl.value;
+    const name = nameEl.value.trim();
+    msg.textContent = "";
 
     try {
-      const result = await createUserWithEmailAndPassword(auth, email, password);
-      await updateProfile(result.user, { displayName: name });
-      alert("Account created successfully!");
+      if (isLogin) {
+        const result = await signInWithEmailAndPassword(auth, email, password);
+        localStorage.setItem("userEmail", result.user.email);
+        localStorage.setItem("userName", result.user.displayName || "Customer");
+        window.location.href = "index.html";
+      } else {
+        const result = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(result.user, { displayName: name });
+        localStorage.setItem("userEmail", email);
+        localStorage.setItem("userName", name);
+        msg.textContent = "Signup successful. Redirecting...";
+        setTimeout(() => window.location.href = "index.html", 1000);
+      }
+    } catch (err) {
+      msg.textContent = err.message;
+    }
+  });
+
+  googleBtn.addEventListener("click", async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      localStorage.setItem("userEmail", user.email);
+      localStorage.setItem("userName", user.displayName || "Customer");
       window.location.href = "index.html";
-    } catch (error) {
-      alert("Error: " + error.message);
+    } catch (err) {
+      msg.textContent = err.message;
     }
   });
 </script>
