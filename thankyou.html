@@ -60,5 +60,14 @@
     <p>Your message has been sent. We'll contact you soon.</p>
     <a href="index.html">Return Home</a>
   </div>
+  <!-- thankyou.html -->
+<h2>Thank you for your order!</h2>
+<p>Your Order ID is: <span id="orderId"></span></p>
+
+<script>
+  const orderId = localStorage.getItem("orderId");
+  document.getElementById("orderId").textContent = orderId || "N/A";
+  localStorage.removeItem("orderId"); // optional: clear it after showing
+</script>
 </body>
 </html>
