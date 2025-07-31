@@ -12,7 +12,7 @@
       padding: 20px;
     }
     .container {
-      max-width: 600px;
+      max-width: 700px;
       background: #fff;
       margin: auto;
       padding: 30px;
@@ -41,16 +41,44 @@
     .paypal-button {
       margin-top: 20px;
     }
+    .order-summary {
+      background: #fff9f7;
+      padding: 15px;
+      margin-top: 20px;
+      border: 1px solid #eee;
+      border-radius: 6px;
+    }
+    .order-summary h3 {
+      margin-bottom: 10px;
+    }
+    .order-summary ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .order-summary li {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #eee;
+      padding: 6px 0;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>Checkout</h2>
+
     <input type="text" id="name" placeholder="Full Name" required>
     <input type="text" id="address" placeholder="Shipping Address" required>
     <input type="tel" id="phone" placeholder="Phone Number" required>
 
+    <div class="order-summary" id="order-summary">
+      <h3>Order Summary</h3>
+      <ul id="summary-items"></ul>
+      <strong>Total: ₹<span id="summary-total">0</span></strong>
+    </div>
+
     <button class="btn" onclick="payWithRazorpay()">Pay with Razorpay</button>
+    <button class="btn" onclick="payWithCOD()">Cash on Delivery</button>
 
     <div class="paypal-button">
       <div id="paypal-button-container"></div>
@@ -59,20 +87,34 @@
 
   <script>
     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-    const totalAmount = cartItems.reduce((sum, item) => sum + item.price * item.qty, 0);
+    const summaryList = document.getElementById('summary-items');
+    const summaryTotal = document.getElementById('summary-total');
 
-    function payWithRazorpay() {
+    let totalAmount = 0;
+    cartItems.forEach(item => {
+      const li = document.createElement('li');
+      li.innerHTML = `<span>${item.name} × ${item.qty}</span><span>₹${item.qty * item.price}</span>`;
+      summaryList.appendChild(li);
+      totalAmount += item.qty * item.price;
+    });
+    summaryTotal.textContent = totalAmount;
+
+    function validateDetails() {
       const name = document.getElementById('name').value.trim();
       const address = document.getElementById('address').value.trim();
       const phone = document.getElementById('phone').value.trim();
-
       if (!name || !address || !phone) {
         alert("Please fill all details before proceeding.");
-        return;
+        return false;
       }
+      return true;
+    }
+
+    function payWithRazorpay() {
+      if (!validateDetails()) return;
 
       const options = {
-        key: "rzp_live_8dfpF64rA0trja", // 🔁 Replace with your Razorpay Key
+        key: "rzp_live_8dfpF64rA0trja", // 🔁 Replace with your Razorpay key
         amount: totalAmount * 100,
         currency: "INR",
         name: "AtiyaTrinkets",
@@ -83,16 +125,20 @@
           window.location.href = "thankyou.html";
         },
         prefill: {
-          name: name,
-          contact: phone
+          name: document.getElementById('name').value,
+          contact: document.getElementById('phone').value
         },
-        theme: {
-          color: "#d8b4d3"
-        }
+        theme: { color: "#d8b4d3" }
       };
-
       const rzp = new Razorpay(options);
       rzp.open();
+    }
+
+    function payWithCOD() {
+      if (!validateDetails()) return;
+      alert("Order placed successfully. You chose Cash on Delivery.");
+      localStorage.removeItem('cart');
+      window.location.href = "thankyou.html";
     }
   </script>
 
