@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Checkout - AtiyaTrinkets</title>
 
-  <!-- Razorpay SDK -->
+  <!-- Razorpay -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
   <!-- ✅ Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js"></script>
 
+  <!-- ✅ Initialize Firebase BEFORE anything else -->
   <script>
-    // ✅ Initialize Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
       authDomain: "atiyatrinkets-ce4b6.firebaseapp.com",
       projectId: "atiyatrinkets-ce4b6",
     };
+
+    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+
+    // ✅ Define Firestore DB globally
+    window.db = firebase.firestore();
   </script>
 
   <style>
@@ -64,15 +67,12 @@
       border: 1px solid #eee;
       border-radius: 6px;
     }
-    .order-summary h3 {
-      margin-bottom: 10px;
-    }
     .order-summary li {
       display: flex;
       justify-content: space-between;
+      list-style: none;
       border-bottom: 1px solid #eee;
       padding: 6px 0;
-      list-style: none;
     }
   </style>
 </head>
@@ -80,9 +80,9 @@
   <div class="container">
     <h2>Checkout</h2>
 
-    <input type="text" id="name" placeholder="Full Name" required>
-    <input type="text" id="address" placeholder="Shipping Address" required>
-    <input type="tel" id="phone" placeholder="Phone Number" required>
+    <input type="text" id="name" placeholder="Full Name" required />
+    <input type="text" id="address" placeholder="Shipping Address" required />
+    <input type="tel" id="phone" placeholder="Phone Number" required />
 
     <div class="order-summary">
       <h3>Order Summary</h3>
@@ -94,7 +94,7 @@
     <button class="btn" onclick="payWithCOD()">Cash on Delivery</button>
   </div>
 
-  <!-- ✅ Order Script -->
+  <!-- Scripts -->
   <script>
     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
     const summaryList = document.getElementById('summary-items');
@@ -164,8 +164,8 @@
       };
 
       try {
-        await db.collection("orders").doc(orderId).set(orderData);
-        alert("Order placed! Order ID: " + orderId);
+        await window.db.collection("orders").doc(orderId).set(orderData);
+        alert("Order placed successfully! Order ID: " + orderId);
         localStorage.removeItem("cart");
         window.location.href = "thankyou.html";
       } catch (error) {
