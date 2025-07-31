@@ -85,10 +85,11 @@
     </div>
   </div>
 
-  <!-- Firebase + Logic Script -->
+  <!-- Firebase + Firestore + Auth -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
@@ -101,10 +102,11 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const auth = getAuth(app);
 
-    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
     const summaryList = document.getElementById('summary-items');
     const summaryTotal = document.getElementById('summary-total');
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
 
     let totalAmount = 0;
     cartItems.forEach(item => {
@@ -138,7 +140,7 @@
         handler: function (response) {
           alert("Payment Successful: " + response.razorpay_payment_id);
           localStorage.removeItem('cart');
-          window.location.href = "thankyou.html?razorpay_id=" + response.razorpay_payment_id;
+          window.location.href = "thankyou.html";
         },
         prefill: {
           name: document.getElementById('name').value,
@@ -156,39 +158,46 @@
       const name = document.getElementById('name').value.trim();
       const address = document.getElementById('address').value.trim();
       const phone = document.getElementById('phone').value.trim();
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      const user = auth.currentUser;
+      if (!user) {
+        alert("Please sign in before placing an order.");
+        return;
+      }
 
       const orderData = {
+        userId: user.uid,
+        userEmail: user.email,
         name,
         address,
         phone,
-        cart: cartItems,
-        total: totalAmount,
+        cart,
         paymentMethod: "Cash on Delivery",
-        timestamp: new Date().toISOString()
+        createdAt: serverTimestamp()
       };
 
       try {
         const docRef = await addDoc(collection(db, "orders"), orderData);
-        alert("Order placed successfully! Your Order ID is: " + docRef.id);
+        alert("Order placed successfully! Order ID: " + docRef.id);
         localStorage.removeItem("cart");
         window.location.href = "thankyou.html?orderId=" + docRef.id;
       } catch (error) {
-        console.error("Error placing order: ", error);
+        console.error("Error placing order:", error);
         alert("Error placing order: " + error.message);
       }
     };
   </script>
 
-  <!-- PayPal Button -->
+  <!-- PayPal -->
   <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
   <script>
-    const paypalAmount = parseInt(document.getElementById("summary-total")?.textContent || 0);
     paypal.Buttons({
       createOrder: function(data, actions) {
         return actions.order.create({
           purchase_units: [{
             amount: {
-              value: (paypalAmount / 83).toFixed(2)
+              value: (totalAmount / 83).toFixed(2)
             }
           }]
         });
