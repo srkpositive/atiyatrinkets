@@ -11,7 +11,6 @@
       background-color: #fdf6f0;
       padding: 20px;
     }
-
     .container {
       max-width: 600px;
       background: #fff;
@@ -19,11 +18,9 @@
       padding: 30px;
       border-radius: 10px;
     }
-
     h2 {
       color: #d8b4d3;
     }
-
     input, button {
       width: 100%;
       padding: 10px;
@@ -32,25 +29,21 @@
       border-radius: 6px;
       border: 1px solid #ccc;
     }
-
     .btn {
       background-color: #d8b4d3;
       color: white;
       border: none;
       cursor: pointer;
     }
-
     .btn:hover {
       background-color: #c29dc3;
     }
-
     .paypal-button {
       margin-top: 20px;
     }
   </style>
 </head>
 <body>
-
   <div class="container">
     <h2>Checkout</h2>
     <input type="text" id="name" placeholder="Full Name" required>
@@ -69,8 +62,17 @@
     const totalAmount = cartItems.reduce((sum, item) => sum + item.price * item.qty, 0);
 
     function payWithRazorpay() {
+      const name = document.getElementById('name').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+
+      if (!name || !address || !phone) {
+        alert("Please fill all details before proceeding.");
+        return;
+      }
+
       const options = {
-        key: "rzp_live_8dfpF64rA0trja", // Replace with your Razorpay Key
+        key: "rzp_live_8dfpF64rA0trja", // 🔁 Replace with your Razorpay Key
         amount: totalAmount * 100,
         currency: "INR",
         name: "AtiyaTrinkets",
@@ -78,11 +80,14 @@
         handler: function (response) {
           alert("Payment Successful: " + response.razorpay_payment_id);
           localStorage.removeItem('cart');
-          window.location.href = "index.html";
+          window.location.href = "thankyou.html";
         },
         prefill: {
-          name: document.getElementById('name').value,
-          contact: document.getElementById('phone').value
+          name: name,
+          contact: phone
+        },
+        theme: {
+          color: "#d8b4d3"
         }
       };
 
@@ -98,7 +103,7 @@
         return actions.order.create({
           purchase_units: [{
             amount: {
-              value: (totalAmount / 83).toFixed(2) // Rough INR→USD conversion
+              value: (totalAmount / 83).toFixed(2)
             }
           }]
         });
@@ -107,11 +112,10 @@
         return actions.order.capture().then(function(details) {
           alert('Payment Successful, ' + details.payer.name.given_name + '!');
           localStorage.removeItem('cart');
-          window.location.href = "index.html";
+          window.location.href = "thankyou.html";
         });
       }
     }).render('#paypal-button-container');
   </script>
-
 </body>
 </html>
