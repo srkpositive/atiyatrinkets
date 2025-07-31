@@ -179,6 +179,7 @@
 
       try {
         const docRef = await addDoc(collection(db, "orders"), orderData);
+        localStorage.setItem("orderId", orderId);
         alert("Order placed successfully! Order ID: " + docRef.id);
         localStorage.removeItem("cart");
         window.location.href = "thankyou.html?orderId=" + docRef.id;
