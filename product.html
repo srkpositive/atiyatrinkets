@@ -205,22 +205,26 @@
     <div class="navbar">
       <a href="index.html" class="logo">AtiyaTrinkets</a>
       <nav>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="#">New Arrivals</a></li>
-          <li><a href="#">Earrings</a></li>
-          <li><a href="#">Necklace</a></li>
-          <li><a href="#">Rings</a></li>
-          <li><a href="#">Bracelets</a></li>
-          <li><a href="#">Gifting</a></li>
-          <li><a href="#">Combos</a></li>
-          <li><a href="#">Contact</a></li>
-          <li><a href="auth.html" id="auth-link">Sign In</a></li>
-          <li class="cart-icon">
-            <a href="cart.html">🛒 <span id="cart-count">0</span></a>
-          </li>
-        </ul>
-      </nav>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="#">New Arrivals</a></li>
+    <li><a href="#">Earrings</a></li>
+    <li><a href="#">Necklace</a></li>
+    <li><a href="#">Rings</a></li>
+    <li><a href="#">Bracelets</a></li>
+    <li><a href="#">Gifting</a></li>
+    <li><a href="#">Combos</a></li>
+    <li><a href="#">Contact</a></li>
+    <li><a href="cart.html" class="cart-icon">🛒 <span id="cart-count">0</span></a></li>
+    <li id="auth-section">
+      <div class="auth-actions">
+        <span id="user-email"></span>
+        <button id="logoutBtn" style="display: none;">Logout</button>
+        <a id="auth-link" href="auth.html">Sign In</a>
+      </div>
+    </li>
+  </ul>
+</nav>
       <div class="user-info" id="user-email"></div>
       <button class="logout-btn" id="logoutBtn" style="display: none;">Logout</button>
     </div>
