@@ -183,5 +183,59 @@
       }
     }).render('#paypal-button-container');
   </script>
+    <!-- ✅ Firebase COD Order Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
+      authDomain: "atiyatrinkets-ce4b6.firebaseapp.com",
+      databaseURL: "https://atiyatrinkets-ce4b6-default-rtdb.firebaseio.com",
+      projectId: "atiyatrinkets-ce4b6",
+      storageBucket: "atiyatrinkets-ce4b6.appspot.com",
+      messagingSenderId: "562847025664",
+      appId: "1:562847025664:web:c200328acd5643c32e66e5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    window.payWithCOD = async function () {
+      const name = document.getElementById('name').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+
+      if (!name || !address || !phone) {
+        alert("Please fill all the fields before placing the order.");
+        return;
+      }
+
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const orderId = Math.floor(100000 + Math.random() * 900000); // 6-digit ID
+
+      const orderData = {
+        orderId: orderId,
+        name,
+        address,
+        phone,
+        cart,
+        totalAmount: cart.reduce((sum, item) => sum + item.qty * item.price, 0),
+        paymentMethod: "Cash on Delivery",
+        status: "Placed",
+        timestamp: new Date().toISOString()
+      };
+
+      try {
+        await push(ref(db, 'orders'), orderData);
+        localStorage.removeItem("cart");
+        alert(`Order placed successfully!\nOrder ID: ${orderId}\nTrackable in your database.`);
+        window.location.href = "thankyou.html";
+      } catch (err) {
+        console.error("Error saving order:", err);
+        alert("Failed to place order. Please try again.");
+      }
+    }
+  </script>
 </body>
 </html>
