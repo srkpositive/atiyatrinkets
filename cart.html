@@ -242,18 +242,18 @@
       const div = document.createElement("div");
       div.className = "cart-item";
 
-      div.innerHTML = `
-        <div>
-          <h3>${item.name}</h3>
-          <div>Price: ₹${item.price}</div>
-          <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
-        </div>
-        <div class="quantity-controls">
-          <button onclick="updateQty(${index}, -1)">−</button>
-          <span>${item.qty}</span>
-          <button onclick="updateQty(${index}, 1)">+</button>
-        </div>
-      `;
+     div.innerHTML = `
+  <div>
+    <h3>${item.name}</h3>
+    <div>Price: ₹${item.price}</div>
+  </div>
+  <div class="quantity-controls">
+    <button onclick="updateQty(${index}, -1)">−</button>
+    <span>${item.qty}</span>
+    <button onclick="updateQty(${index}, 1)">+</button>
+    <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+  </div>
+`;
       cartItemsDiv.appendChild(div);
     });
 
