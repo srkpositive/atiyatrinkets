@@ -229,16 +229,16 @@
   const loginLink = document.getElementById("loginLink");
 
   onAuthStateChanged(auth, (user) => {
-    if (user) {
-      userEmailEl.textContent = user.email;
-      logoutBtn.style.display = "inline-block";
-      loginLink.style.display = "none";
-    } else {
-      userEmailEl.textContent = "";
-      logoutBtn.style.display = "none";
-      loginLink.style.display = "inline-block";
-    }
-  });
+  if (user) {
+    userEmailEl.textContent = user.displayName || user.email;
+    logoutBtn.style.display = "inline-block";
+    loginLink.style.display = "none";
+  } else {
+    userEmailEl.textContent = "";
+    logoutBtn.style.display = "none";
+    loginLink.style.display = "inline-block";
+  }
+});
 
   logoutBtn.addEventListener("click", () => {
     signOut(auth);
