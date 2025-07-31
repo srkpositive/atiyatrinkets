@@ -66,7 +66,6 @@
 <body>
   <div class="container">
     <h2>Checkout</h2>
-
     <input type="text" id="name" placeholder="Full Name" required>
     <input type="text" id="address" placeholder="Shipping Address" required>
     <input type="tel" id="phone" placeholder="Phone Number" required>
@@ -77,18 +76,18 @@
       <strong>Total: ₹<span id="summary-total">0</span></strong>
     </div>
 
-    <button class="btn" onclick="payWithRazorpay()">Pay with Razorpay</button>
-    <button class="btn" onclick="payWithCOD()">Cash on Delivery</button>
+    <button class="btn" id="razorpayBtn">Pay with Razorpay</button>
+    <button class="btn" id="codBtn">Cash on Delivery</button>
 
     <div class="paypal-button">
       <div id="paypal-button-container"></div>
     </div>
   </div>
 
-  <!-- Firebase SDK -->
+  <!-- Firebase SDKs -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
@@ -96,32 +95,19 @@
       projectId: "atiyatrinkets-ce4b6",
       storageBucket: "atiyatrinkets-ce4b6.appspot.com",
       messagingSenderId: "562847025664",
-      appId: "1:562847025664:web:c200328acd5643c32e66e5",
-      databaseURL: "https://atiyatrinkets-ce4b6-default-rtdb.asia-southeast1.firebasedatabase.app"
+      appId: "1:562847025664:web:c200328acd5643c32e66e5"
     };
 
     const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+    const db = getFirestore(app);
 
-    window.saveOrderToFirebase = function(orderData) {
-      const ordersRef = ref(db, 'orders');
-      const newOrderRef = push(ordersRef, orderData);
-      const orderId = newOrderRef.key;
-      alert("Order placed successfully!\nOrder ID: " + orderId);
-      localStorage.removeItem("cart");
-      window.location.href = "thankyou.html";
-    };
-  </script>
-
-  <!-- Main Checkout Logic -->
-  <script>
-    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-    const summaryList = document.getElementById('summary-items');
-    const summaryTotal = document.getElementById('summary-total');
+    const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+    const summaryList = document.getElementById("summary-items");
+    const summaryTotal = document.getElementById("summary-total");
 
     let totalAmount = 0;
     cartItems.forEach(item => {
-      const li = document.createElement('li');
+      const li = document.createElement("li");
       li.innerHTML = `<span>${item.name} × ${item.qty}</span><span>₹${item.qty * item.price}</span>`;
       summaryList.appendChild(li);
       totalAmount += item.qty * item.price;
@@ -129,11 +115,11 @@
     summaryTotal.textContent = totalAmount;
 
     function validateDetails() {
-      const name = document.getElementById('name').value.trim();
-      const address = document.getElementById('address').value.trim();
-      const phone = document.getElementById('phone').value.trim();
+      const name = document.getElementById("name").value.trim();
+      const address = document.getElementById("address").value.trim();
+      const phone = document.getElementById("phone").value.trim();
       if (!name || !address || !phone) {
-        alert("Please fill all details before proceeding.");
+        alert("Please fill all the fields.");
         return false;
       }
       return true;
@@ -149,20 +135,13 @@
         name: "AtiyaTrinkets",
         description: "Jewellery Order",
         handler: function (response) {
-          const orderData = {
-            name: document.getElementById('name').value,
-            address: document.getElementById('address').value,
-            phone: document.getElementById('phone').value,
-            cart: cartItems,
-            paymentMethod: "Razorpay",
-            paymentId: response.razorpay_payment_id,
-            timestamp: new Date().toISOString()
-          };
-          saveOrderToFirebase(orderData);
+          alert("Payment Successful: " + response.razorpay_payment_id);
+          localStorage.removeItem('cart');
+          window.location.href = "thankyou.html";
         },
         prefill: {
-          name: document.getElementById('name').value,
-          contact: document.getElementById('phone').value
+          name: document.getElementById("name").value,
+          contact: document.getElementById("phone").value
         },
         theme: { color: "#d8b4d3" }
       };
@@ -170,46 +149,53 @@
       rzp.open();
     }
 
-    function payWithCOD() {
+    async function payWithCOD() {
       if (!validateDetails()) return;
 
-      const orderData = {
-        name: document.getElementById('name').value,
-        address: document.getElementById('address').value,
-        phone: document.getElementById('phone').value,
+      const name = document.getElementById("name").value.trim();
+      const address = document.getElementById("address").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+
+      const order = {
+        name,
+        address,
+        phone,
         cart: cartItems,
+        totalAmount,
         paymentMethod: "Cash on Delivery",
         timestamp: new Date().toISOString()
       };
-      saveOrderToFirebase(orderData);
+
+      try {
+        const docRef = await addDoc(collection(db, "orders"), order);
+        alert("Order placed! Order ID: " + docRef.id);
+        localStorage.removeItem("cart");
+        window.location.href = "thankyou.html";
+      } catch (error) {
+        alert("Error placing order: " + error.message);
+      }
     }
+
+    document.getElementById("razorpayBtn").addEventListener("click", payWithRazorpay);
+    document.getElementById("codBtn").addEventListener("click", payWithCOD);
   </script>
 
-  <!-- PayPal -->
+  <!-- PayPal Script -->
   <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
   <script>
     paypal.Buttons({
       createOrder: function(data, actions) {
         return actions.order.create({
           purchase_units: [{
-            amount: {
-              value: (totalAmount / 83).toFixed(2)
-            }
+            amount: { value: (parseFloat(document.getElementById('summary-total').textContent) / 83).toFixed(2) }
           }]
         });
       },
       onApprove: function(data, actions) {
         return actions.order.capture().then(function(details) {
-          const orderData = {
-            name: document.getElementById('name').value,
-            address: document.getElementById('address').value,
-            phone: document.getElementById('phone').value,
-            cart: cartItems,
-            paymentMethod: "PayPal",
-            paypalDetails: details,
-            timestamp: new Date().toISOString()
-          };
-          saveOrderToFirebase(orderData);
+          alert("Payment Successful, " + details.payer.name.given_name + "!");
+          localStorage.removeItem("cart");
+          window.location.href = "thankyou.html";
         });
       }
     }).render('#paypal-button-container');
