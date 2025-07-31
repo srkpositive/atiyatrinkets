@@ -12,29 +12,24 @@
       --accent: #d8b4d3;
       --text: #333;
     }
-
     * {
       box-sizing: border-box;
       scroll-behavior: smooth;
       margin: 0;
       padding: 0;
     }
-
     body {
       font-family: 'Open Sans', sans-serif;
       background: var(--background);
       color: var(--text);
     }
-
     .navbar {
       position: sticky;
       top: 0;
-      width: 100%;
       background-color: var(--background);
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       z-index: 1000;
     }
-
     .nav-container {
       display: flex;
       justify-content: space-between;
@@ -42,14 +37,13 @@
       padding: 15px 30px;
       max-width: 1200px;
       margin: auto;
+      flex-wrap: wrap;
     }
-
     .logo {
       font-family: 'Playfair Display', serif;
       font-size: 1.8rem;
       font-weight: bold;
     }
-
     nav ul {
       list-style: none;
       display: flex;
@@ -58,18 +52,15 @@
       margin: 0;
       padding: 0;
     }
-
     nav ul li {
       position: relative;
     }
-
     nav ul li a {
       text-decoration: none;
       color: var(--text);
       font-weight: 600;
       padding: 8px 12px;
     }
-
     nav ul ul {
       display: none;
       position: absolute;
@@ -81,22 +72,13 @@
       padding: 10px;
       min-width: 160px;
     }
-
     nav ul li:hover > ul {
       display: block;
     }
-
-    nav ul ul li a {
-      display: block;
-      padding: 8px;
-      white-space: nowrap;
-    }
-
     .cart-icon {
       position: relative;
       display: inline-block;
     }
-
     .cart-icon span {
       position: absolute;
       top: -6px;
@@ -107,45 +89,48 @@
       font-size: 0.75rem;
       padding: 2px 6px;
     }
-
+    .auth-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .auth-actions span {
+      font-size: 0.9rem;
+    }
+    .auth-actions button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
     header {
       background: var(--primary);
       text-align: center;
       padding: 60px 20px 40px;
-      animation: fadeInDown 1s ease;
     }
-
     header h1 {
       font-family: 'Playfair Display', serif;
       font-size: 2.7rem;
       margin-bottom: 10px;
     }
-
     header p {
       font-size: 1.1rem;
     }
-
     section {
       padding: 40px 20px;
       max-width: 1000px;
       margin: auto;
       text-align: center;
     }
-
-    h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      margin-bottom: 20px;
-    }
-
     .product-grid {
       display: flex;
       flex-wrap: wrap;
       gap: 20px;
       justify-content: center;
-      animation: fadeInUp 1s ease;
     }
-
     .product-card {
       background: white;
       padding: 20px;
@@ -154,63 +139,35 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       transition: transform 0.3s ease;
     }
-
     .product-card:hover {
       transform: translateY(-5px);
     }
-
     .product-card img {
       width: 100%;
       border-radius: 10px;
     }
-
-    .product-card h3 {
-      margin: 10px 0 5px;
-      font-size: 1.2rem;
-    }
-
     .price {
       font-weight: bold;
       color: var(--accent);
       margin-bottom: 10px;
     }
-
-    .testimonial {
-      background: #fff;
-      border-left: 4px solid var(--accent);
-      margin: 20px auto;
-      padding: 20px;
-      border-radius: 8px;
-      max-width: 600px;
-      font-style: italic;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      animation: fadeInUp 1s ease;
-    }
-
-    .about,
-    .contact {
+    .testimonial, .about, .contact {
       background: #fff;
       padding: 30px;
-      margin-top: 30px;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      animation: fadeInUp 1s ease;
+      margin-top: 30px;
     }
-
     .contact form {
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
-
-    .contact input,
-    .contact textarea {
+    .contact input, .contact textarea {
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 6px;
-      font-family: inherit;
     }
-
     .contact button {
       background: var(--accent);
       color: white;
@@ -220,28 +177,15 @@
       cursor: pointer;
       font-weight: bold;
     }
-
     .contact button:hover {
       background: #c29dc3;
     }
-
     footer {
       text-align: center;
       padding: 20px;
       background-color: var(--primary);
       margin-top: 40px;
     }
-
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
     @media screen and (max-width: 600px) {
       nav ul {
         flex-direction: column;
@@ -249,175 +193,137 @@
         background: var(--primary);
         padding: 10px;
       }
-
       .product-card {
         width: 90%;
       }
-
       header h1 {
         font-size: 2rem;
-      }
-
-      .testimonial {
-        padding: 15px;
       }
     }
   </style>
 </head>
 <body>
 
-<header>
   <div class="navbar">
-    <div class="logo">AtiyaTrinkets</div>
-    <nav>
-      <ul>
-  <li><a href="index.html">Home</a></li>
-  <li><a href="#">New Arrivals</a></li>
-  <li><a href="#">Earrings</a>
-    <ul>
-      <li><a href="#">Studs</a></li>
-      <li><a href="#">Hoops</a></li>
-      <li><a href="#">Drops</a></li>
-    </ul>
-  </li>
-  <li><a href="#">Necklace</a>
-    <ul>
-      <li><a href="#">Chokers</a></li>
-      <li><a href="#">Chains</a></li>
-    </ul>
-  </li>
-  <li><a href="#">Rings</a></li>
-  <li><a href="#">Bracelets</a></li>
-  <li><a href="#">Gifting</a></li>
-  <li><a href="#">Combos</a></li>
-  <li><a href="#">Couple Jewellery</a></li>
-  <li><a href="#">Ethnic</a></li>
-  <li><a href="#">Hair Accessories</a></li>
-  <li><a href="#">Handbags</a></li>
-  <li><a href="index.html#about">About Us</a></li>
-  <li><a href="index.html#contact">Contact Us</a></li>
-  <li>
-    <a href="cart.html" class="cart-icon">
-      🛒 <span id="cart-count">0</span>
-    </a>
-  </li>
-</ul>
-
-    </nav>
-  </div>
-</header>
-
-<header>
-  <h1>AtiyaTrinkets</h1>
-  <p>Graceful. Affordable. You.</p>
-</header>
-
-<section id="products">
-  <h2>Featured Earrings</h2>
-  <div class="product-grid">
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300x300?text=Earring+1" alt="Earring 1">
-      <h3>Golden Hoop</h3>
-      <div class="price">₹499</div>
-      <a href="product.html?id=1"><button>Add to Cart</button></a>
-    </div>
-    <div class="product-card">
-      <img src="https://via.placeholder.com/300x300?text=Earring+2" alt="Earring 2">
-      <h3>Silver Drops</h3>
-      <div class="price">₹399</div>
-      <a href="product.html?id=2"><button>Add to Cart</button></a>
+    <div class="nav-container">
+      <div class="logo">AtiyaTrinkets</div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="#">New Arrivals</a></li>
+          <li><a href="#">Earrings</a></li>
+          <li><a href="#">Necklace</a></li>
+          <li><a href="#">Rings</a></li>
+          <li><a href="#">Gifting</a></li>
+          <li><a href="cart.html" class="cart-icon">🛒 <span id="cart-count">0</span></a></li>
+          <li class="auth-actions">
+            <span id="user-email"></span>
+            <button id="logoutBtn" style="display:none;">Logout</button>
+            <a id="loginLink" href="auth.html">Sign In</a>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
-</section>
 
-<section id="testimonials">
-  <h2>What Our Customers Say</h2>
-  <div class="testimonial">
-    <p>"Absolutely love the quality and designs. Perfect for gifting!"</p>
-  </div>
-  <div class="testimonial">
-    <p>"Elegant earrings at affordable prices. I wear them daily!"</p>
-  </div>
-</section>
+  <header>
+    <h1>AtiyaTrinkets</h1>
+    <p>Graceful. Affordable. You.</p>
+  </header>
 
-<section class="about" id="about">
-  <h2>About AtiyaTrinkets</h2>
-  <p>We craft elegant, affordable artificial jewellery that reflects the beauty in every woman. At AtiyaTrinkets, we believe style shouldn’t come at a high price — our collections are carefully curated to suit festive occasions, everyday wear, and everything in between.</p>
-</section>
+  <section id="products">
+    <h2>Featured Earrings</h2>
+    <div class="product-grid">
+      <div class="product-card">
+        <img src="https://via.placeholder.com/300x300?text=Earring+1" alt="Earring 1">
+        <h3>Golden Hoop</h3>
+        <div class="price">₹499</div>
+        <a href="product.html?id=1"><button>Add to Cart</button></a>
+      </div>
+      <div class="product-card">
+        <img src="https://via.placeholder.com/300x300?text=Earring+2" alt="Earring 2">
+        <h3>Silver Drops</h3>
+        <div class="price">₹399</div>
+        <a href="product.html?id=2"><button>Add to Cart</button></a>
+      </div>
+    </div>
+  </section>
 
-<section class="contact" id="contact">
-  <h2>Contact Us</h2>
-  <p>You can also contact us via:</p>
-  <p>
-    📞 <a href="https://wa.me/918960458885" target="_blank">WhatsApp</a> |
-    ✉️ <a href="mailto:atiyatrinkets@gmail.com">Email</a>
-  </p>
-  <form action="https://formsubmit.co/atiyatrinkets@gmail.com" method="POST">
-    <input type="text" name="name" placeholder="Your Name" required />
-    <input type="email" name="email" placeholder="Your Email" required />
-    <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
-    <button type="submit">Send Message</button>
-    <input type="hidden" name="_next" value="https://srkpositive.github.io/atiyatrinkets/thankyou.html">
-    <input type="hidden" name="_captcha" value="false">
-  </form>
-</section>
+  <section id="testimonials">
+    <h2>What Our Customers Say</h2>
+    <div class="testimonial">
+      <p>"Absolutely love the quality and designs. Perfect for gifting!"</p>
+    </div>
+    <div class="testimonial">
+      <p>"Elegant earrings at affordable prices. I wear them daily!"</p>
+    </div>
+  </section>
 
-<footer>
-  <p>&copy; 2025 AtiyaTrinkets</p>
-</footer>
+  <section class="about" id="about">
+    <h2>About AtiyaTrinkets</h2>
+    <p>We craft elegant, affordable artificial jewellery that reflects the beauty in every woman.</p>
+  </section>
 
-<script>
-  function updateCartBadge() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const totalQty = cart.reduce((acc, item) => acc + item.qty, 0);
-    document.getElementById('cart-count').innerText = totalQty;
-  }
+  <section class="contact" id="contact">
+    <h2>Contact Us</h2>
+    <p>
+      📞 <a href="https://wa.me/918960458885" target="_blank">WhatsApp</a> |
+      ✉️ <a href="mailto:atiyatrinkets@gmail.com">Email</a>
+    </p>
+    <form action="https://formsubmit.co/atiyatrinkets@gmail.com" method="POST">
+      <input type="text" name="name" placeholder="Your Name" required />
+      <input type="email" name="email" placeholder="Your Email" required />
+      <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+      <input type="hidden" name="_next" value="https://srkpositive.github.io/atiyatrinkets/thankyou.html">
+      <input type="hidden" name="_captcha" value="false">
+    </form>
+  </section>
 
-  updateCartBadge();
-</script>
-<!-- Firebase Auth Display -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+  <footer>
+    <p>&copy; 2025 AtiyaTrinkets</p>
+  </footer>
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
-    authDomain: "atiyatrinkets-ce4b6.firebaseapp.com",
-    projectId: "atiyatrinkets-ce4b6",
-    storageBucket: "atiyatrinkets-ce4b6.appspot.com",
-    messagingSenderId: "562847025664",
-    appId: "1:562847025664:web:c200328acd5643c32e66e5",
-    measurementId: "G-WBWWBHQTHJ"
-  };
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+    const firebaseConfig = {
+      apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
+      authDomain: "atiyatrinkets-ce4b6.firebaseapp.com",
+      projectId: "atiyatrinkets-ce4b6",
+      storageBucket: "atiyatrinkets-ce4b6.appspot.com",
+      messagingSenderId: "562847025664",
+      appId: "1:562847025664:web:c200328acd5643c32e66e5",
+      measurementId: "G-WBWWBHQTHJ"
+    };
 
-  const navArea = document.querySelector("nav ul");
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      const email = user.email || "Logged In";
-      localStorage.setItem("userEmail", email);
-      const userItem = document.createElement("li");
-      userItem.innerHTML = `<span style="font-weight:bold;">👤 ${email}</span>`;
-      const logoutItem = document.createElement("li");
-      logoutItem.innerHTML = `<a href="#" id="logoutBtn">Logout</a>`;
-      navArea.appendChild(userItem);
-      navArea.appendChild(logoutItem);
-      document.getElementById("logoutBtn").addEventListener("click", () => {
-        signOut(auth).then(() => {
-          localStorage.removeItem("userEmail");
-          window.location.reload();
-        });
-      });
-    } else {
-      const loginItem = document.createElement("li");
-      loginItem.innerHTML = `<a href="auth.html">Login</a>`;
-      navArea.appendChild(loginItem);
-    }
-  });
-</script>
+    const userEmailEl = document.getElementById("user-email");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const loginLink = document.getElementById("loginLink");
 
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        userEmailEl.textContent = user.email;
+        logoutBtn.style.display = "inline-block";
+        loginLink.style.display = "none";
+      } else {
+        userEmailEl.textContent = "";
+        logoutBtn.style.display = "none";
+        loginLink.style.display = "inline-block";
+      }
+    });
+
+    logoutBtn.addEventListener("click", () => {
+      signOut(auth);
+    });
+
+    const cartCount = document.getElementById("cart-count");
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cartCount.textContent = cart.reduce((sum, item) => sum + item.qty, 0);
+  </script>
 </body>
 </html>
