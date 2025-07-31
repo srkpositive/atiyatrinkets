@@ -1,73 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Thank You - AtiyaTrinkets</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f8e1e7;
+      font-family: 'Open Sans', sans-serif;
+      background: #fff9f7;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      height: 100vh;
+      justify-content: center;
+      min-height: 100vh;
       text-align: center;
+      color: #333;
     }
-
-    .container {
-      background: #fff;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      animation: fadeIn 1s ease-in-out;
-    }
-
     h1 {
-      font-size: 2rem;
-      margin-bottom: 10px;
-      color: #444;
+      color: #d63384;
     }
-
-    p {
-      font-size: 1.1rem;
-      margin-bottom: 20px;
-    }
-
-    a {
-      padding: 10px 20px;
-      background: #d8b4d3;
-      color: white;
-      text-decoration: none;
-      border-radius: 8px;
-      transition: background 0.3s;
-    }
-
-    a:hover {
-      background: #c29dc3;
-    }
-
-    @keyframes fadeIn {
-      0% { opacity: 0; transform: translateY(20px); }
-      100% { opacity: 1; transform: translateY(0); }
+    .order-id {
+      margin-top: 20px;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>🎉 Thank You!</h1>
-    <p>Your message has been sent. We'll contact you soon.</p>
-    <a href="index.html">Return Home</a>
-  </div>
-  <!-- thankyou.html -->
-<h2>Thank you for your order!</h2>
-<p>Your Order ID is: <span id="orderId"></span></p>
+  <h1>Thank You for Your Order!</h1>
+  <p class="order-id">Your Order ID is: <span id="orderId">Loading...</span></p>
 
-<script>
-  const orderId = localStorage.getItem("orderId");
-  document.getElementById("orderId").textContent = orderId || "N/A";
-  localStorage.removeItem("orderId"); // optional: clear it after showing
-</script>
+  <script>
+    const orderId = localStorage.getItem("orderId");
+    document.getElementById("orderId").textContent = orderId || "N/A";
+    localStorage.removeItem("orderId");
+  </script>
 </body>
 </html>
