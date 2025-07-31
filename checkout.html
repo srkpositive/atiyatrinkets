@@ -145,6 +145,14 @@
       return;
     }
 
+    // Optional: Save order details to Firebase or backend
+
+    alert(`Order placed successfully via Cash on Delivery!\n\nName: ${name}\nAddress: ${address}\nPhone: ${phone}`);
+    localStorage.removeItem('cart');
+    window.location.href = "index.html";
+  }
+</script>
+
     const orderData = {
       name,
       address,
