@@ -134,13 +134,33 @@
       rzp.open();
     }
 
-    function payWithCOD() {
-      if (!validateDetails()) return;
-      alert("Order placed successfully. You chose Cash on Delivery.");
-      localStorage.removeItem('cart');
-      window.location.href = "thankyou.html";
+    <script>
+  function payWithCOD() {
+    const name = document.getElementById('name').value.trim();
+    const address = document.getElementById('address').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+
+    if (!name || !address || !phone) {
+      alert("Please fill all the fields before placing the order.");
+      return;
     }
-  </script>
+
+    const orderData = {
+      name,
+      address,
+      phone,
+      cart: JSON.parse(localStorage.getItem('cart')) || [],
+      paymentMethod: "Cash on Delivery",
+      timestamp: new Date().toISOString()
+    };
+
+    console.log("COD Order:", orderData); // (Optional: Save to Firebase or send to backend)
+
+    alert("Your order has been placed successfully! You chose Cash on Delivery.");
+    localStorage.removeItem("cart");
+    window.location.href = "thankyou.html";
+  }
+</script>
 
   <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
   <script>
