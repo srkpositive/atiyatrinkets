@@ -76,8 +76,9 @@
 
 <div class="auth-container">
   <h2 id="form-title">Sign In</h2>
-  <input type="email" id="email" placeholder="Email" required />
-  <input type="password" id="password" placeholder="Password" required />
+<input type="text" id="name" placeholder="Full Name" style="display:none;" />
+<input type="email" id="email" placeholder="Email" required />
+<input type="password" id="password" placeholder="Password" required />
   <button id="submitBtn">Sign In</button>
   <button class="google-btn" id="googleSignInBtn">Continue with Google</button>
   <div class="toggle-link">
@@ -163,6 +164,45 @@
       window.location.href = "index.html";
     } catch (err) {
       msg.textContent = err.message;
+    }
+  });
+</script>
+<script type="module">
+  import {
+    initializeApp
+  } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    updateProfile
+  } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
+    authDomain: "atiyatrinkets-ce4b6.firebaseapp.com",
+    projectId: "atiyatrinkets-ce4b6",
+    storageBucket: "atiyatrinkets-ce4b6.appspot.com",
+    messagingSenderId: "562847025664",
+    appId: "1:562847025664:web:c200328acd5643c32e66e5"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // Sign Up Logic
+  document.getElementById("signup-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = document.getElementById("signup-name").value.trim();
+    const email = document.getElementById("signup-email").value.trim();
+    const password = document.getElementById("signup-password").value;
+
+    try {
+      const result = await createUserWithEmailAndPassword(auth, email, password);
+      await updateProfile(result.user, { displayName: name });
+      alert("Account created successfully!");
+      window.location.href = "index.html";
+    } catch (error) {
+      alert("Error: " + error.message);
     }
   });
 </script>
