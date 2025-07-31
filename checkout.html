@@ -85,7 +85,7 @@
     </div>
   </div>
 
-  <!-- Cart & Payment Scripts -->
+  <!-- Payment Logic -->
   <script>
     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
     const summaryList = document.getElementById('summary-items');
@@ -115,7 +115,7 @@
       if (!validateDetails()) return;
 
       const options = {
-        key: "rzp_live_8dfpF64rA0trja",
+        key: "rzp_live_8dfpF64rA0trja", // Replace with your actual key
         amount: totalAmount * 100,
         currency: "INR",
         name: "AtiyaTrinkets",
@@ -134,34 +134,9 @@
       const rzp = new Razorpay(options);
       rzp.open();
     }
-
-    function payWithCOD() {
-      const name = document.getElementById('name').value.trim();
-      const address = document.getElementById('address').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-
-      if (!name || !address || !phone) {
-        alert("Please fill all the fields before placing the order.");
-        return;
-      }
-
-      const orderData = {
-        name,
-        address,
-        phone,
-        cart: cartItems,
-        paymentMethod: "Cash on Delivery",
-        timestamp: new Date().toISOString()
-      };
-
-      console.log("COD Order:", orderData);
-      alert("Your order has been placed successfully! You chose Cash on Delivery.");
-      localStorage.removeItem("cart");
-      window.location.href = "thankyou.html";
-    }
   </script>
 
-  <!-- PayPal SDK -->
+  <!-- PayPal Script -->
   <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
   <script>
     paypal.Buttons({
@@ -169,7 +144,7 @@
         return actions.order.create({
           purchase_units: [{
             amount: {
-              value: (totalAmount / 83).toFixed(2)
+              value: (totalAmount / 83).toFixed(2) // INR to USD approx
             }
           }]
         });
@@ -183,7 +158,8 @@
       }
     }).render('#paypal-button-container');
   </script>
-    <!-- ✅ Firebase COD Order Script -->
+
+  <!-- Firebase COD Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
     import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
@@ -212,7 +188,7 @@
       }
 
       const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      const orderId = Math.floor(100000 + Math.random() * 900000); // 6-digit ID
+      const orderId = "ATIYA-" + Math.floor(100000 + Math.random() * 900000);
 
       const orderData = {
         orderId: orderId,
@@ -229,13 +205,14 @@
       try {
         await push(ref(db, 'orders'), orderData);
         localStorage.removeItem("cart");
-        alert(`Order placed successfully!\nOrder ID: ${orderId}\nTrackable in your database.`);
+        alert(`Your order has been placed!\nOrder ID: ${orderId}\nYou chose Cash on Delivery.`);
         window.location.href = "thankyou.html";
       } catch (err) {
-        console.error("Error saving order:", err);
-        alert("Failed to place order. Please try again.");
+        console.error("Error saving COD order:", err);
+        alert("Something went wrong. Please try again.");
       }
     }
   </script>
+
 </body>
 </html>
