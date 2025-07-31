@@ -158,6 +158,19 @@
       background: var(--primary);
       margin-top: 40px;
     }
+    #checkoutBtn {
+  background: var(--accent);
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+#checkoutBtn:hover {
+  background: #c29dc3;
+}
   </style>
 </head>
 <body>
@@ -185,6 +198,9 @@
   <h2>Your Shopping Cart</h2>
   <div id="cart-items"></div>
   <div class="cart-summary" id="total-amount">Total: ₹0</div>
+  <div style="text-align:right; margin-top: 10px;">
+  <button id="checkoutBtn" style="display: none;">Proceed to Checkout</button>
+</div>
 </main>
 
 <footer>
