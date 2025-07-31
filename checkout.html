@@ -85,7 +85,35 @@
     </div>
   </div>
 
-  <!-- Cart & Payment Scripts -->
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
+      authDomain: "atiyatrinkets-ce4b6.firebaseapp.com",
+      projectId: "atiyatrinkets-ce4b6",
+      storageBucket: "atiyatrinkets-ce4b6.appspot.com",
+      messagingSenderId: "562847025664",
+      appId: "1:562847025664:web:c200328acd5643c32e66e5",
+      databaseURL: "https://atiyatrinkets-ce4b6-default-rtdb.asia-southeast1.firebasedatabase.app"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    window.saveOrderToFirebase = function(orderData) {
+      const ordersRef = ref(db, 'orders');
+      const newOrderRef = push(ordersRef, orderData);
+      const orderId = newOrderRef.key;
+      alert("Order placed successfully!\nOrder ID: " + orderId);
+      localStorage.removeItem("cart");
+      window.location.href = "thankyou.html";
+    };
+  </script>
+
+  <!-- Main Checkout Logic -->
   <script>
     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
     const summaryList = document.getElementById('summary-items');
@@ -121,9 +149,16 @@
         name: "AtiyaTrinkets",
         description: "Jewellery Order",
         handler: function (response) {
-          alert("Payment Successful: " + response.razorpay_payment_id);
-          localStorage.removeItem('cart');
-          window.location.href = "thankyou.html";
+          const orderData = {
+            name: document.getElementById('name').value,
+            address: document.getElementById('address').value,
+            phone: document.getElementById('phone').value,
+            cart: cartItems,
+            paymentMethod: "Razorpay",
+            paymentId: response.razorpay_payment_id,
+            timestamp: new Date().toISOString()
+          };
+          saveOrderToFirebase(orderData);
         },
         prefill: {
           name: document.getElementById('name').value,
@@ -136,32 +171,21 @@
     }
 
     function payWithCOD() {
-      const name = document.getElementById('name').value.trim();
-      const address = document.getElementById('address').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-
-      if (!name || !address || !phone) {
-        alert("Please fill all the fields before placing the order.");
-        return;
-      }
+      if (!validateDetails()) return;
 
       const orderData = {
-        name,
-        address,
-        phone,
+        name: document.getElementById('name').value,
+        address: document.getElementById('address').value,
+        phone: document.getElementById('phone').value,
         cart: cartItems,
         paymentMethod: "Cash on Delivery",
         timestamp: new Date().toISOString()
       };
-
-      console.log("COD Order:", orderData);
-      alert("Your order has been placed successfully! You chose Cash on Delivery.");
-      localStorage.removeItem("cart");
-      window.location.href = "thankyou.html";
+      saveOrderToFirebase(orderData);
     }
   </script>
 
-  <!-- PayPal SDK -->
+  <!-- PayPal -->
   <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
   <script>
     paypal.Buttons({
@@ -176,68 +200,19 @@
       },
       onApprove: function(data, actions) {
         return actions.order.capture().then(function(details) {
-          alert('Payment Successful, ' + details.payer.name.given_name + '!');
-          localStorage.removeItem('cart');
-          window.location.href = "thankyou.html";
+          const orderData = {
+            name: document.getElementById('name').value,
+            address: document.getElementById('address').value,
+            phone: document.getElementById('phone').value,
+            cart: cartItems,
+            paymentMethod: "PayPal",
+            paypalDetails: details,
+            timestamp: new Date().toISOString()
+          };
+          saveOrderToFirebase(orderData);
         });
       }
     }).render('#paypal-button-container');
   </script>
-    <!-- ✅ Firebase COD Order Script -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
-      authDomain: "atiyatrinkets-ce4b6.firebaseapp.com",
-      databaseURL: "https://atiyatrinkets-ce4b6-default-rtdb.firebaseio.com",
-      projectId: "atiyatrinkets-ce4b6",
-      storageBucket: "atiyatrinkets-ce4b6.appspot.com",
-      messagingSenderId: "562847025664",
-      appId: "1:562847025664:web:c200328acd5643c32e66e5"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-
-    window.payWithCOD = async function () {
-      const name = document.getElementById('name').value.trim();
-      const address = document.getElementById('address').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-
-      if (!name || !address || !phone) {
-        alert("Please fill all the fields before placing the order.");
-        return;
-      }
-
-      const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      const orderId = "ATIYA-" + Math.floor(100000 + Math.random() * 900000); // 6-digit ID
-
-      const orderData = {
-        orderId: orderId,
-        name,
-        address,
-        phone,
-        cart,
-        totalAmount: cart.reduce((sum, item) => sum + item.qty * item.price, 0),
-        paymentMethod: "Cash on Delivery",
-        status: "Placed",
-        timestamp: new Date().toISOString()
-      };
-
-      try {
-        await push(ref(db, 'orders'), orderData);
-        localStorage.removeItem("cart");
-        alert(`Order placed successfully!\nOrder ID: ${orderId}\nTrackable in your database.`);
-        window.location.href = "thankyou.html";
-      } catch (err) {
-        console.error("Error saving order:", err);
-        alert("Failed to place order. Please try again.");
-      }
-    }
-  </script>
 </body>
 </html>
-
-
