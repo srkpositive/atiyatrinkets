@@ -85,7 +85,8 @@
     </div>
   </div>
 
-  <script>
+  <!-- Cart & Razorpay Script -->
+  <script type="text/javascript">
     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
     const summaryList = document.getElementById('summary-items');
     const summaryTotal = document.getElementById('summary-total');
@@ -114,7 +115,7 @@
       if (!validateDetails()) return;
 
       const options = {
-        key: "rzp_live_8dfpF64rA0trja", // 🔁 Replace with your Razorpay key
+        key: "rzp_live_8dfpF64rA0trja",
         amount: totalAmount * 100,
         currency: "INR",
         name: "AtiyaTrinkets",
@@ -133,35 +134,38 @@
       const rzp = new Razorpay(options);
       rzp.open();
     }
+  </script>
 
-   <script>
-  function payWithCOD() {
-    const name = document.getElementById('name').value.trim();
-    const address = document.getElementById('address').value.trim();
-    const phone = document.getElementById('phone').value.trim();
+  <!-- Cash on Delivery Script -->
+  <script type="text/javascript">
+    function payWithCOD() {
+      const name = document.getElementById('name').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const phone = document.getElementById('phone').value.trim();
 
-    if (!name || !address || !phone) {
-      alert("Please fill all the fields before placing the order.");
-      return;
+      if (!name || !address || !phone) {
+        alert("Please fill all the fields before placing the order.");
+        return;
+      }
+
+      const orderData = {
+        name,
+        address,
+        phone,
+        cart: JSON.parse(localStorage.getItem('cart')) || [],
+        paymentMethod: "Cash on Delivery",
+        timestamp: new Date().toISOString()
+      };
+
+      console.log("COD Order:", orderData);
+
+      alert("Your order has been placed successfully! You chose Cash on Delivery.");
+      localStorage.removeItem("cart");
+      window.location.href = "thankyou.html";
     }
+  </script>
 
-    const orderData = {
-      name,
-      address,
-      phone,
-      cart: JSON.parse(localStorage.getItem('cart')) || [],
-      paymentMethod: "Cash on Delivery",
-      timestamp: new Date().toISOString()
-    };
-
-    console.log("COD Order:", orderData); // Optional: Save to Firebase or send to backend
-
-    alert("Your order has been placed successfully! You chose Cash on Delivery.");
-    localStorage.removeItem("cart");
-    window.location.href = "thankyou.html";
-  }
-</script>
-
+  <!-- PayPal Script -->
   <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
   <script>
     paypal.Buttons({
