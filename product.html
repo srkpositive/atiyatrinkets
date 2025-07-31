@@ -3,19 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Product | AtiyaTrinkets</title>
+  <title>Golden Hoop | AtiyaTrinkets</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap" rel="stylesheet">
-
-  <!-- SEO Tags -->
-  <meta name="description" content="Elegant artificial jewellery by AtiyaTrinkets – trendy, affordable and festive-ready.">
-  <meta name="keywords" content="AtiyaTrinkets, earrings, rings, necklace, artificial jewellery, women's accessories">
-  <meta name="author" content="AtiyaTrinkets">
-  <meta property="og:title" content="Product | AtiyaTrinkets" />
-  <meta property="og:description" content="Beautiful handcrafted artificial jewellery for all occasions." />
-  <meta property="og:image" content="https://yourwebsite.com/img/product1-1.jpg" />
-  <meta property="og:url" content="https://yourwebsite.com/product.html" />
-  <meta name="twitter:card" content="summary_large_image" />
-
   <style>
     :root {
       --primary: #f8e1e7;
@@ -121,6 +110,22 @@
       padding: 2px 6px;
     }
 
+    .user-info {
+      margin-left: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .logout-btn {
+      margin-left: 10px;
+      background: crimson;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
     .product-section {
       padding: 60px 20px;
       max-width: 800px;
@@ -132,36 +137,17 @@
       animation: fadeInUp 0.6s ease;
     }
 
-    .main-image img {
+    .product-section img {
       width: 60%;
       max-width: 300px;
       margin-bottom: 20px;
       border-radius: 10px;
     }
 
-    .gallery {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 10px;
-      flex-wrap: wrap;
-    }
-
-    .gallery img {
-      width: 60px;
-      border-radius: 6px;
-      cursor: pointer;
-      border: 2px solid transparent;
-    }
-
-    .gallery img:hover {
-      border-color: var(--accent);
-    }
-
     .product-section h1 {
       font-family: 'Playfair Display', serif;
       font-size: 2rem;
-      margin: 15px 0 10px;
+      margin-bottom: 10px;
     }
 
     .price {
@@ -207,7 +193,7 @@
         gap: 10px;
       }
 
-      .main-image img {
+      .product-section img {
         width: 100%;
       }
     }
@@ -220,104 +206,86 @@
       <a href="index.html" class="logo">AtiyaTrinkets</a>
       <nav>
         <ul>
-  <li><a href="index.html">Home</a></li>
-  <li><a href="#">New Arrivals</a></li>
-  <li><a href="#">Earrings</a>
-    <ul>
-      <li><a href="#">Studs</a></li>
-      <li><a href="#">Hoops</a></li>
-      <li><a href="#">Drops</a></li>
-    </ul>
-  </li>
-  <li><a href="#">Necklace</a>
-    <ul>
-      <li><a href="#">Chokers</a></li>
-      <li><a href="#">Chains</a></li>
-    </ul>
-  </li>
-  <li><a href="#">Rings</a></li>
-  <li><a href="#">Bracelets</a></li>
-  <li><a href="#">Gifting</a></li>
-  <li><a href="#">Combos</a></li>
-  <li><a href="#">Couple Jewellery</a></li>
-  <li><a href="#">Ethnic</a></li>
-  <li><a href="#">Hair Accessories</a></li>
-  <li><a href="#">Handbags</a></li>
-  <li><a href="index.html#about">About Us</a></li>
-  <li><a href="index.html#contact">Contact Us</a></li>
-  <li>
-    <a href="cart.html" class="cart-icon">
-      🛒 <span id="cart-count">0</span>
-    </a>
-  </li>
-</ul>
-
+          <li><a href="index.html">Home</a></li>
+          <li><a href="#">New Arrivals</a></li>
+          <li><a href="#">Earrings</a></li>
+          <li><a href="#">Necklace</a></li>
+          <li><a href="#">Rings</a></li>
+          <li><a href="#">Bracelets</a></li>
+          <li><a href="#">Gifting</a></li>
+          <li><a href="#">Combos</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="auth.html" id="auth-link">Sign In</a></li>
+          <li class="cart-icon">
+            <a href="cart.html">🛒 <span id="cart-count">0</span></a>
+          </li>
+        </ul>
       </nav>
+      <div class="user-info" id="user-email"></div>
+      <button class="logout-btn" id="logoutBtn" style="display: none;">Logout</button>
     </div>
   </header>
 
   <section class="product-section">
-    <!-- Product data will be dynamically injected here -->
+    <img src="https://via.placeholder.com/300x300?text=Earring+1" alt="Golden Hoop Earring" />
+    <h1>Golden Hoop</h1>
+    <div class="price">₹499</div>
+    <p>Elegant gold-plated hoop earrings for daily and festive wear. Lightweight and skin-friendly.</p>
+    <button onclick="addToCart()">Add to Cart</button>
   </section>
 
   <footer>
     <p>&copy; 2025 AtiyaTrinkets</p>
   </footer>
 
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
+      authDomain: "atiyatrinkets-ce4b6.firebaseapp.com",
+      projectId: "atiyatrinkets-ce4b6",
+      storageBucket: "atiyatrinkets-ce4b6.appspot.com",
+      messagingSenderId: "562847025664",
+      appId: "1:562847025664:web:c200328acd5643c32e66e5",
+      measurementId: "G-WBWWBHQTHJ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const userEmail = document.getElementById("user-email");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const authLink = document.getElementById("auth-link");
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        userEmail.textContent = user.email;
+        logoutBtn.style.display = "inline-block";
+        authLink.style.display = "none";
+      } else {
+        userEmail.textContent = "";
+        logoutBtn.style.display = "none";
+        authLink.style.display = "inline-block";
+      }
+    });
+
+    logoutBtn.addEventListener("click", () => {
+      signOut(auth);
+    });
+  </script>
+
   <script>
-    const products = [
-      {
-        id: 1,
-        name: "Golden Hoop",
-        price: 499,
-        desc: "Elegant gold-plated hoop earrings for daily and festive wear. Lightweight and skin-friendly.",
-        images: ["img/product1-1.jpg", "img/product1-2.jpg", "img/product1-3.jpg"]
-      },
-      {
-        id: 2,
-        name: "Silver Drops",
-        price: 399,
-        desc: "Sleek silver drop earrings with polished finish and comfortable wear.",
-        images: ["img/product2-1.jpg", "img/product2-2.jpg"]
-      }
-    ];
-
-    function getProductFromURL() {
-      const params = new URLSearchParams(window.location.search);
-      const id = parseInt(params.get("id"));
-      return products.find(p => p.id === id);
-    }
-
-    function renderProduct() {
-      const product = getProductFromURL();
-      if (!product) {
-        document.querySelector(".product-section").innerHTML = "<p>Product not found</p>";
-        return;
-      }
-
-      document.title = `${product.name} | AtiyaTrinkets`;
-
-      document.querySelector(".product-section").innerHTML = `
-        <div class="main-image">
-          <img id="mainProductImage" src="${product.images[0]}" alt="${product.name}" />
-        </div>
-        <div class="gallery">
-          ${product.images.map(img => `<img src="${img}" onclick="changeImage('${img}')">`).join('')}
-        </div>
-        <h1>${product.name}</h1>
-        <div class="price">₹${product.price}</div>
-        <p>${product.desc}</p>
-        <button onclick="addToCart(${product.id})">Add to Cart</button>
-      `;
-    }
-
-    function addToCart(productId) {
+    function addToCart() {
       let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      const product = products.find(p => p.id === productId);
-      const existing = cart.find(item => item.id === productId);
-      if (existing) existing.qty += 1;
-      else cart.push({ id: product.id, name: product.name, price: product.price, qty: 1 });
-
+      const product = { id: 1, name: "Golden Hoop", price: 499, qty: 1 };
+      const existingIndex = cart.findIndex(item => item.id === product.id);
+      if (existingIndex > -1) {
+        cart[existingIndex].qty += 1;
+      } else {
+        cart.push(product);
+      }
       localStorage.setItem("cart", JSON.stringify(cart));
       updateCartCount();
       alert("Item added to cart!");
@@ -325,119 +293,11 @@
 
     function updateCartCount() {
       let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      let total = cart.reduce((sum, item) => sum + item.qty, 0);
-      document.getElementById("cart-count").innerText = total;
+      let totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+      document.getElementById("cart-count").innerText = totalItems;
     }
 
-    function changeImage(src) {
-      document.getElementById("mainProductImage").src = src;
-    }
-
-    renderProduct();
     updateCartCount();
   </script>
-  <!-- Firebase Configuration -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-analytics.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
-    authDomain: "atiyatrinkets-ce4b6.firebaseapp.com",
-    projectId: "atiyatrinkets-ce4b6",
-    storageBucket: "atiyatrinkets-ce4b6.firebaseapp.com",
-    messagingSenderId: "562847025664",
-    appId: "1:562847025664:web:c200328acd5643c32e66e5",
-    measurementId: "G-WBWWBHQTHJ"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
-<!-- Firebase Auth Display -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
-    authDomain: "atiyatrinkets-ce4b6.firebaseapp.com",
-    projectId: "atiyatrinkets-ce4b6",
-    storageBucket: "atiyatrinkets-ce4b6.appspot.com",
-    messagingSenderId: "562847025664",
-    appId: "1:562847025664:web:c200328acd5643c32e66e5",
-    measurementId: "G-WBWWBHQTHJ"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  const navArea = document.querySelector("nav ul");
-
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      const email = user.email || "Logged In";
-      localStorage.setItem("userEmail", email);
-      const userItem = document.createElement("li");
-      userItem.innerHTML = `<span style="font-weight:bold;">👤 ${email}</span>`;
-      const logoutItem = document.createElement("li");
-      logoutItem.innerHTML = `<a href="#" id="logoutBtn">Logout</a>`;
-      navArea.appendChild(userItem);
-      navArea.appendChild(logoutItem);
-      document.getElementById("logoutBtn").addEventListener("click", () => {
-        signOut(auth).then(() => {
-          localStorage.removeItem("userEmail");
-          window.location.reload();
-        });
-      });
-    } else {
-      const loginItem = document.createElement("li");
-      loginItem.innerHTML = `<a href="auth.html">Login</a>`;
-      navArea.appendChild(loginItem);
-    }
-  });
-</script>
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
-    authDomain: "atiyatrinkets-ce4b6.firebaseapp.com",
-    projectId: "atiyatrinkets-ce4b6",
-    storageBucket: "atiyatrinkets-ce4b6.appspot.com",
-    messagingSenderId: "562847025664",
-    appId: "1:562847025664:web:c200328acd5643c32e66e5",
-    measurementId: "G-WBWWBHQTHJ"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  const navUl = document.querySelector('nav ul');
-  const userLi = document.createElement('li');
-
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      // User is signed in
-      userLi.innerHTML = `
-        <span style="font-weight:bold; padding-right:8px;">${user.email}</span>
-        <button id="logoutBtn" style="background:#d8b4d3; border:none; color:white; padding:6px 10px; border-radius:6px; cursor:pointer;">Logout</button>
-      `;
-      navUl.appendChild(userLi);
-
-      document.getElementById("logoutBtn").addEventListener("click", () => {
-        signOut(auth).then(() => {
-          location.reload();
-        });
-      });
-    } else {
-      // No user signed in
-      userLi.innerHTML = `<a href="auth.html">Sign In</a>`;
-      navUl.appendChild(userLi);
-    }
-  });
-</script>
-
 </body>
 </html>
