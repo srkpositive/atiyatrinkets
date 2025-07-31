@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Your Cart | AtiyaTrinkets</title>
+  <title>Cart | AtiyaTrinkets</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Open+Sans&display=swap" rel="stylesheet">
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <style>
     :root {
       --primary: #f8e1e7;
@@ -39,7 +38,7 @@
     }
     .logo {
       font-family: 'Playfair Display', serif;
-      font-size: 1.6rem;
+      font-size: 1.8rem;
       color: var(--text);
       text-decoration: none;
     }
@@ -60,19 +59,6 @@
       font-weight: 600;
       padding: 8px 12px;
     }
-    nav ul ul {
-      display: none;
-      position: absolute;
-      top: 38px;
-      left: 0;
-      background: white;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      padding: 10px;
-      z-index: 1001;
-    }
-    nav ul li:hover > ul {
-      display: block;
-    }
     .cart-icon {
       position: relative;
       display: inline-block;
@@ -87,113 +73,75 @@
       font-size: 0.75rem;
       padding: 2px 6px;
     }
-    .user-info {
-      margin-left: 10px;
-      font-size: 0.9rem;
-      font-weight: 600;
-    }
-    .logout-btn {
-      margin-left: 10px;
-      background: crimson;
-      color: white;
-      padding: 5px 10px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.8rem;
-    }
-
-    .cart-container {
-      max-width: 900px;
+    #cart-items {
+      max-width: 800px;
       margin: 40px auto;
-      padding: 30px;
-      background: white;
+      background: #fff;
+      padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-      animation: fadeInUp 0.6s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
-
     .cart-item {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      padding: 15px 0;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
       border-bottom: 1px solid #eee;
     }
-
-    .cart-item:last-child {
-      border-bottom: none;
-    }
-
-    .cart-item .info {
-      flex: 1;
-    }
-
     .cart-item h3 {
-      margin: 0 0 5px;
+      margin: 0;
     }
-
-    .qty-controls {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .qty-controls button {
-      background: #ddd;
-      border: none;
-      padding: 4px 10px;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-
-    .qty-controls span {
+    .cart-item span {
+      color: var(--accent);
       font-weight: bold;
     }
-
-    .remove-btn {
-      background: none;
-      border: none;
-      color: crimson;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-
-    .total {
+    #total {
       text-align: right;
-      font-size: 1.4rem;
-      margin-top: 30px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-top: 20px;
       color: var(--accent);
     }
-
-    .checkout-btn {
-      display: block;
-      margin: 30px auto 0;
+    .auth-actions {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .auth-actions span {
+      font-size: 0.9rem;
+      color: #555;
+    }
+    .auth-actions button {
       background: var(--accent);
       color: white;
-      padding: 12px 30px;
       border: none;
+      padding: 6px 10px;
       border-radius: 6px;
-      font-size: 1rem;
       cursor: pointer;
+      font-weight: bold;
     }
-
-    .checkout-btn:hover {
-      background: #c29dc3;
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: var(--primary);
+      margin-top: 40px;
     }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
     @media screen and (max-width: 768px) {
-      .cart-item {
+      .navbar {
         flex-direction: column;
         align-items: flex-start;
       }
-      .total {
-        text-align: center;
+      nav ul {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+      }
+      #total {
+        text-align: left;
       }
     }
   </style>
@@ -206,31 +154,32 @@
     <nav>
       <ul>
         <li><a href="index.html">Home</a></li>
+        <li><a href="#">New Arrivals</a></li>
         <li><a href="#">Earrings</a></li>
         <li><a href="#">Necklace</a></li>
         <li><a href="#">Rings</a></li>
-        <li><a href="#">Bracelets</a></li>
-        <li><a href="#">Combos</a></li>
-        <li><a href="#">Contact</a></li>
-        <li><a href="auth.html" id="auth-link">Sign In</a></li>
-        <li class="cart-icon">
-          <a href="cart.html">🛒 <span id="cart-count">0</span></a>
+        <li><a href="#">Gifting</a></li>
+        <li><a href="cart.html" class="cart-icon">🛒 <span id="cart-count">0</span></a></li>
+        <li class="auth-actions">
+          <span id="user-email"></span>
+          <button id="logoutBtn" style="display:none;">Logout</button>
+          <a id="loginLink" href="auth.html">Sign In</a>
         </li>
       </ul>
     </nav>
-    <div class="user-info" id="user-email"></div>
-    <button class="logout-btn" id="logoutBtn" style="display: none;">Logout</button>
   </div>
 </header>
 
-<section class="cart-container">
+<section id="cart-items">
   <h2>Your Cart</h2>
-  <div id="cart-items"></div>
-  <div class="total">Total: ₹<span id="cart-total">0</span></div>
-  <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+  <div id="cart-container"></div>
+  <div id="total"></div>
 </section>
 
-<!-- Firebase Scripts -->
+<footer>
+  <p>&copy; 2025 AtiyaTrinkets</p>
+</footer>
+
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
   import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
@@ -248,130 +197,52 @@
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  const userEmail = document.getElementById("user-email");
+  const userEmailEl = document.getElementById("user-email");
   const logoutBtn = document.getElementById("logoutBtn");
-  const authLink = document.getElementById("auth-link");
+  const loginLink = document.getElementById("loginLink");
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      userEmail.textContent = user.email;
+      userEmailEl.textContent = user.email;
       logoutBtn.style.display = "inline-block";
-      authLink.style.display = "none";
+      loginLink.style.display = "none";
     } else {
-      userEmail.textContent = "";
+      userEmailEl.textContent = "";
       logoutBtn.style.display = "none";
-      authLink.style.display = "inline-block";
+      loginLink.style.display = "inline-block";
     }
   });
 
   logoutBtn.addEventListener("click", () => {
     signOut(auth);
   });
-</script>
 
-<script>
-  function updateCartCount() {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const total = cart.reduce((sum, item) => sum + item.qty, 0);
-    document.getElementById("cart-count").innerText = total;
-  }
-
+  // CART
   function renderCart() {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const cartItems = document.getElementById("cart-items");
-    const cartTotal = document.getElementById("cart-total");
-    cartItems.innerHTML = "";
+    const container = document.getElementById("cart-container");
+    const totalEl = document.getElementById("total");
+    const cartCount = document.getElementById("cart-count");
+
+    container.innerHTML = "";
     let total = 0;
 
-    if (cart.length === 0) {
-      cartItems.innerHTML = "<p>Your cart is empty.</p>";
-      cartTotal.textContent = "0";
-      return;
-    }
-
-    cart.forEach((item, index) => {
-      const itemTotal = item.price * item.qty;
-      total += itemTotal;
-
+    cart.forEach(item => {
       const div = document.createElement("div");
       div.className = "cart-item";
-      div.innerHTML = `
-        <div class="info">
-          <h3>${item.name}</h3>
-          <div class="qty-controls">
-            <button onclick="changeQty(${index}, -1)">−</button>
-            <span>${item.qty}</span>
-            <button onclick="changeQty(${index}, 1)">+</button>
-          </div>
-          <p>₹${itemTotal}</p>
-        </div>
-        <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
-      `;
-      cartItems.appendChild(div);
+      div.innerHTML = `<h3>${item.name}</h3>
+                       <div>Qty: ${item.qty}</div>
+                       <span>₹${item.price * item.qty}</span>`;
+      container.appendChild(div);
+      total += item.price * item.qty;
     });
 
-    cartTotal.textContent = total;
-  }
-
-  function changeQty(index, delta) {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    if (!cart[index]) return;
-
-    cart[index].qty += delta;
-    if (cart[index].qty <= 0) {
-      cart.splice(index, 1);
-    }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-    renderCart();
-    updateCartCount();
-  }
-
-  function removeItem(index) {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    cart.splice(index, 1);
-    localStorage.setItem("cart", JSON.stringify(cart));
-    renderCart();
-    updateCartCount();
-  }
-
-  function checkout() {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    if (cart.length === 0) {
-      alert("Your cart is empty.");
-      return;
-    }
-
-    const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-
-    const options = {
-      key: "rzp_live_8dfpF64rA0trja",
-      amount: total * 100,
-      currency: "INR",
-      name: "AtiyaTrinkets",
-      description: "Order Payment",
-      image: "https://via.placeholder.com/100x100?text=Atiya",
-      handler: function (response) {
-        alert("Payment Successful!\nPayment ID: " + response.razorpay_payment_id);
-        localStorage.removeItem("cart");
-        window.location.href = "thankyou.html";
-      },
-      prefill: {
-        name: "",
-        email: "",
-        contact: ""
-      },
-      theme: {
-        color: "#d63384"
-      }
-    };
-
-    const rzp = new Razorpay(options);
-    rzp.open();
+    totalEl.textContent = cart.length ? `Total: ₹${total}` : "Your cart is empty.";
+    cartCount.textContent = cart.reduce((sum, item) => sum + item.qty, 0);
   }
 
   renderCart();
-  updateCartCount();
 </script>
+
 </body>
 </html>
