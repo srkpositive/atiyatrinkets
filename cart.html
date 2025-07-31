@@ -275,6 +275,7 @@
 
     totalAmountEl.textContent = "Total: ₹" + total;
     document.getElementById("cart-count").textContent = cart.reduce((sum, item) => sum + item.qty, 0);
+    document.getElementById("checkoutBtn").style.display = cart.length > 0 ? "inline-block" : "none";
   }
 
   window.updateQty = function(index, change) {
