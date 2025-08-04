@@ -72,7 +72,7 @@
         console.log("Admin verified:", user.email);
 
         try {
-          const q = query(collection(db, "orders"), orderBy("timestamp", "desc"));
+          const q = collection(db, "orders");
           const querySnapshot = await getDocs(q);
           console.log("Fetched orders count:", querySnapshot.size);
 
