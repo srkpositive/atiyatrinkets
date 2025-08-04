@@ -221,15 +221,15 @@
         <li><a href="index.html">Home</a></li>
         <li><a href="cart.html" class="cart-icon">🛒 <span id="cart-count">0</span></a></li>
         <li id="auth-section">
-          <div class="auth-actions user-dropdown">
-            <span id="user-name" class="dropdown-toggle">Loading ▼</span>
-            <div class="dropdown-menu">
-              <a href="track-order.html">Track Order</a>
-              <a href="#" onclick="logout()">Logout</a>
-            </div>
-            <a id="loginLink" href="auth.html">Sign In</a>
-        </div>
-      </li>
+  <div class="user-dropdown" id="userDropdown" tabindex="0">
+    <span id="user-name" class="dropdown-toggle">Loading ▼</span>
+    <div class="dropdown-menu">
+      <a href="track-order.html" id="trackOrderLink">Track Order</a>
+      <button id="logoutBtn">Logout</button>
+    </div>
+    <a id="loginLink" href="auth.html">Sign In</a>
+  </div>
+</li>
     </ul>
     </nav>
   </div>
@@ -276,6 +276,14 @@ onAuthStateChanged(auth, (user) => {
     userNameEl.textContent = "Guest ▼";
     loginLink.style.display = "inline-block";
   }
+});
+  document.getElementById("logoutBtn").addEventListener("click", function () {
+  signOut(auth).then(() => {
+    localStorage.clear();
+    window.location.href = "index.html";
+  }).catch((error) => {
+    alert("Logout failed: " + error.message);
+  });
 });
 
 function logout() {
