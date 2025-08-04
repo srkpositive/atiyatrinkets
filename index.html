@@ -286,56 +286,18 @@
   <footer>
     <p>&copy; 2025 AtiyaTrinkets</p>
   </footer>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
-      authDomain: "atiyatrinkets-ce4b6.firebaseapp.com",
-      projectId: "atiyatrinkets-ce4b6",
-      storageBucket: "atiyatrinkets-ce4b6.appspot.com",
-      messagingSenderId: "562847025664",
-      appId: "1:562847025664:web:c200328acd5643c32e66e5",
-      measurementId: "G-WBWWBHQTHJ"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    const userEmailEl = document.getElementById("user-email");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const loginLink = document.getElementById("loginLink");
-
-    onAuthStateChanged(auth, (user) => {
-  if (user) {
-    userEmailEl.textContent = user.displayName || user.email;
-    logoutBtn.style.display = "inline-block";
-    loginLink.style.display = "none";
-  } else {
-    userEmailEl.textContent = "";
-    logoutBtn.style.display = "none";
-    loginLink.style.display = "inline-block";
-  }
-});
-
-    logoutBtn.addEventListener("click", () => {
-      signOut(auth);
-    });
-
-    const cartCount = document.getElementById("cart-count");
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    cartCount.textContent = cart.reduce((sum, item) => sum + item.qty, 0);
-  </script>
-  <script type="module">
+<script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
     authDomain: "atiyatrinkets-ce4b6.firebaseapp.com",
     projectId: "atiyatrinkets-ce4b6",
+    storageBucket: "atiyatrinkets-ce4b6.appspot.com",
+    messagingSenderId: "562847025664",
+    appId: "1:562847025664:web:c200328acd5643c32e66e5",
+    measurementId: "G-WBWWBHQTHJ"
   };
 
   const app = initializeApp(firebaseConfig);
@@ -343,14 +305,38 @@
 
   const adminUID = "C6Jufkjv8CX4UHTB0R3EuMpTDoy2";
 
+  const userEmailEl = document.getElementById("user-email");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const loginLink = document.getElementById("loginLink");
+
   onAuthStateChanged(auth, (user) => {
-    if (user && user.uid === adminUID) {
-      const adminSpan = document.getElementById("admin-link");
-      if (adminSpan) {
-        adminSpan.innerHTML = `<a href="admin.html" style="color: #fff; background: #d63384; padding: 5px 10px; border-radius: 6px; text-decoration: none;">Admin Panel</a>`;
+    if (user) {
+      userEmailEl.textContent = user.displayName || user.email;
+      logoutBtn.style.display = "inline-block";
+      loginLink.style.display = "none";
+
+      // Show admin link if UID matches
+      if (user.uid === adminUID) {
+        const adminSpan = document.getElementById("admin-link");
+        if (adminSpan) {
+          adminSpan.innerHTML = `<a href="admin.html" style="color: #fff; background: #d63384; padding: 5px 10px; border-radius: 6px; text-decoration: none;">Admin Panel</a>`;
+        }
       }
+    } else {
+      userEmailEl.textContent = "";
+      logoutBtn.style.display = "none";
+      loginLink.style.display = "inline-block";
     }
   });
+
+  logoutBtn.addEventListener("click", () => {
+    signOut(auth);
+  });
+
+  // Update cart count
+  const cartCount = document.getElementById("cart-count");
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  cartCount.textContent = cart.reduce((sum, item) => sum + item.qty, 0);
 </script>
 </body>
 </html>
