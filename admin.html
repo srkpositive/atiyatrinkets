@@ -84,28 +84,55 @@
           ordersContainer.innerHTML = "";
           querySnapshot.forEach((doc) => {
             const order = doc.data();
-            console.log("Order document:", doc.id, order);
+            const orderId = doc.id;
 
-            const div = document.createElement("div");
-            div.className = "order";
-            div.innerHTML = `
-              <p><strong>Order ID:</strong> ${doc.id}</p>
+            const orderDiv = document.createElement('div');
+            orderDiv.className = 'order';
+
+            const status = order.status || 'Pending';
+            const timestamp = order.timestamp?.toDate?.().toLocaleString() || 'Pending';
+
+            let itemsHtml = '';
+            if (Array.isArray(order.cart)) {itemsHtml = order.cart.map(item => `<li>${item.name} × ${item.qty} (₹${item.price})</li>`).join('');}
+
+            orderDiv.innerHTML = `
+              <p><strong>Order ID:</strong> ${orderId}</p>
               <p><strong>Name:</strong> ${order.name}</p>
-              <p><strong>Email:</strong> ${order.email || "N/A"}</p>
+              <p><strong>Email:</strong> ${order.userEmail || 'N/A'}</p>
               <p><strong>Phone:</strong> ${order.phone}</p>
               <p><strong>Address:</strong> ${order.address}</p>
               <p><strong>Payment Method:</strong> ${order.paymentMethod}</p>
-              <p><strong>Status:</strong> ${order.status || "Pending"}</p>
-              <p><strong>Timestamp:</strong> ${order.timestamp && typeof order.timestamp.toDate === "function"? order.timestamp.toDate().toLocaleString(): "Pending"}</p>
+              <p><strong>Status:</strong> 
+                <select data-id="${orderId}" class="status-dropdown">
+                  <option value="Pending" ${status === 'Pending' ? 'selected' : ''}>Pending</option>
+                  <option value="Shipped" ${status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                  <option value="Delivered" ${status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+              </select>
+              </p>
+              <p><strong>Timestamp:</strong> ${timestamp}</p>
               <p><strong>Items:</strong></p>
-              <ul>
-                ${(order.cart || []).map(item => `
-                  <li class="item">${item.name} × ${item.qty} (₹${item.price})</li>
-                `).join("")}
-              </ul>
-            `;
-            ordersContainer.appendChild(div);
-          });
+              <ul>${itemsHtml}</ul>
+              `;
+
+              ordersContainer.appendChild(orderDiv);
+            });
+  // 🔁 Listen for dropdown changes and update Firestore
+document.addEventListener('change', async (e) => {
+  if (e.target.classList.contains('status-dropdown')) {
+    const orderId = e.target.dataset.id;
+    const newStatus = e.target.value;
+
+    try {
+      await updateDoc(doc(db, "orders", orderId), {
+        status: newStatus
+      });
+      alert(`Status updated to ${newStatus} for Order ID: ${orderId}`);
+    } catch (error) {
+      console.error("Error updating status:", error);
+      alert("Failed to update order status.");
+    }
+  }
+});
         } catch (err) {
           console.error("Error fetching orders:", err);
           ordersContainer.innerHTML = `<p>Error loading orders. Check console for details.</p>`;
