@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Check UID | AtiyaTrinkets</title>
+</head>
+<body>
+  <h2>User UID</h2>
+  <p id="uid-display">Loading...</p>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
+      authDomain: "atiyatrinkets-ce4b6.firebaseapp.com",
+      projectId: "atiyatrinkets-ce4b6",
+      storageBucket: "atiyatrinkets-ce4b6.appspot.com",
+      messagingSenderId: "562847025664",
+      appId: "1:562847025664:web:c200328acd5643c32e66e5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const uidDisplay = document.getElementById("uid-display");
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        uidDisplay.textContent = `✅ Your UID is: ${user.uid}`;
+        console.log("UID:", user.uid);
+      } else {
+        uidDisplay.textContent = "❌ No user is signed in.";
+      }
+    });
+  </script>
+</body>
+</html>
