@@ -131,7 +131,49 @@
 }
 
 /* Show dropdown on hover */
-.user-dropdown:hover .dropdown-menu {
+.dropdown {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.dropdown-toggle {
+  padding: 5px 10px;
+  user-select: none;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  right: 0;
+  min-width: 150px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 10;
+  border-radius: 6px;
+  margin-top: 5px;
+}
+
+.dropdown-menu a,
+.dropdown-menu button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  color: #333;
+  text-align: left;
+  background: none;
+  border: none;
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.dropdown-menu a:hover,
+.dropdown-menu button:hover {
+  background-color: #f3e5f5;
+}
+
+.dropdown.open .dropdown-menu {
   display: block;
 }
 
@@ -221,15 +263,17 @@
         <li><a href="index.html">Home</a></li>
         <li><a href="cart.html" class="cart-icon">🛒 <span id="cart-count">0</span></a></li>
         <li id="auth-section">
-  <div class="user-dropdown" id="userDropdown" tabindex="0">
-    <span id="user-name" class="dropdown-toggle">Loading ▼</span>
-    <div class="dropdown-menu">
-      <a href="track-order.html" id="trackOrderLink">Track Order</a>
-      <button id="logoutBtn">Logout</button>
+  <div class="auth-actions">
+    <div class="dropdown" id="userDropdown">
+      <span id="user-name" class="dropdown-toggle">Loading ▼</span>
+      <div class="dropdown-menu" id="dropdownMenu">
+        <a href="track-order.html" id="trackOrderLink">Track Order</a>
+        <a href="#" id="logoutBtn">Logout</a>
+      </div>
     </div>
     <a id="loginLink" href="auth.html">Sign In</a>
   </div>
-</li>
+        </li>
     </ul>
     </nav>
   </div>
