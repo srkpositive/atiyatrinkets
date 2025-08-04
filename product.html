@@ -301,65 +301,68 @@
   </footer>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
-      authDomain: "atiyatrinkets-ce4b6.firebaseapp.com",
-      projectId: "atiyatrinkets-ce4b6",
-      storageBucket: "atiyatrinkets-ce4b6.appspot.com",
-      messagingSenderId: "562847025664",
-      appId: "1:562847025664:web:c200328acd5643c32e66e5",
-      measurementId: "G-WBWWBHQTHJ"
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
+    authDomain: "atiyatrinkets-ce4b6.firebaseapp.com",
+    projectId: "atiyatrinkets-ce4b6",
+    storageBucket: "atiyatrinkets-ce4b6.appspot.com",
+    messagingSenderId: "562847025664",
+    appId: "1:562847025664:web:c200328acd5643c32e66e5",
+    measurementId: "G-WBWWBHQTHJ"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-    const userNameEl = document.getElementById("user-name");
-const loginLink = document.getElementById("loginLink");
+  const userNameEl = document.getElementById("user-name");
+  const loginLink = document.getElementById("loginLink");
 
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    userNameEl.textContent = (user.displayName || user.email) + " ▼";
-    loginLink.style.display = "none";
-  } else {
-    userNameEl.textContent = "Guest ▼";
-    loginLink.style.display = "inline-block";
-  }
-});
-
-function logout() {
-  signOut(auth).then(() => {
-    localStorage.clear();
-    window.location.href = "index.html";
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      userNameEl.textContent = (user.displayName || user.email) + " ▼";
+      loginLink.style.display = "none";
+    } else {
+      userNameEl.textContent = "Guest ▼";
+      loginLink.style.display = "inline-block";
+    }
   });
-}
-  </script>
 
-  <script>
-    function addToCart() {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      const product = { id: 1, name: "Golden Hoop", price: 499, qty: 1 };
-      const existingIndex = cart.findIndex(item => item.id === product.id);
-      if (existingIndex > -1) {
-        cart[existingIndex].qty += 1;
-      } else {
-        cart.push(product);
-      }
-      localStorage.setItem("cart", JSON.stringify(cart));
-      updateCartCount();
-      alert("Item added to cart!");
+  window.logout = function () {
+    signOut(auth).then(() => {
+      localStorage.clear();
+      window.location.href = "index.html";
+    });
+  };
+</script>
+
+<!-- ✅ Separate script for cart logic -->
+<script>
+  function addToCart() {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const product = { id: 1, name: "Golden Hoop", price: 499, qty: 1 };
+    const existingIndex = cart.findIndex(item => item.id === product.id);
+    if (existingIndex > -1) {
+      cart[existingIndex].qty += 1;
+    } else {
+      cart.push(product);
     }
-
-    function updateCartCount() {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      let totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
-      document.getElementById("cart-count").innerText = totalItems;
-    }
-
+    localStorage.setItem("cart", JSON.stringify(cart));
     updateCartCount();
-  </script>
+    alert("Item added to cart!");
+  }
+
+  function updateCartCount() {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+    document.getElementById("cart-count").textContent = totalItems;
+  }
+
+  // ✅ Update count immediately on load
+  updateCartCount();
+</script>
+
 </body>
 </html>
