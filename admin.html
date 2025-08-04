@@ -30,6 +30,23 @@
     .item {
       margin-left: 10px;
     }
+    select {
+      padding: 6px;
+      border-radius: 4px;
+      margin-top: 5px;
+    }
+    button.update-btn {
+      background: #d8b4d3;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      margin-top: 5px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button.update-btn:hover {
+      background: #c29dc3;
+    }
   </style>
 </head>
 <body>
@@ -43,7 +60,9 @@
       collection,
       getDocs,
       query,
-      orderBy
+      orderBy,
+      updateDoc,
+      doc
     } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
     import {
       getAuth,
@@ -77,18 +96,28 @@
         }
 
         ordersContainer.innerHTML = "";
-        querySnapshot.forEach((doc) => {
-          const order = doc.data();
+        querySnapshot.forEach((docSnap) => {
+          const order = docSnap.data();
+          const orderId = docSnap.id;
           const div = document.createElement("div");
           div.className = "order";
+
+          const statusOptions = ["Pending", "Confirmed", "Shipped", "Delivered", "Cancelled"];
+          const optionsHTML = statusOptions.map(status =>
+            `<option value="${status}" ${order.status === status ? 'selected' : ''}>${status}</option>`
+          ).join("");
+
           div.innerHTML = `
-            <p><strong>Order ID:</strong> ${doc.id}</p>
+            <p><strong>Order ID:</strong> ${orderId}</p>
             <p><strong>Name:</strong> ${order.name}</p>
             <p><strong>Email:</strong> ${order.email || "N/A"}</p>
             <p><strong>Phone:</strong> ${order.phone}</p>
             <p><strong>Address:</strong> ${order.address}</p>
             <p><strong>Payment Method:</strong> ${order.paymentMethod}</p>
-            <p><strong>Status:</strong> ${order.status || "Pending"}</p>
+            <p><strong>Status:</strong>
+              <select id="status-${orderId}">${optionsHTML}</select>
+              <button class="update-btn" onclick="updateOrderStatus('${orderId}')">Update</button>
+            </p>
             <p><strong>Timestamp:</strong> ${new Date(order.timestamp).toLocaleString()}</p>
             <p><strong>Items:</strong></p>
             <ul>
@@ -101,6 +130,17 @@
         ordersContainer.innerHTML = "<p>Access denied. You must be signed in as admin.</p>";
       }
     });
+
+    window.updateOrderStatus = async function(orderId) {
+      const newStatus = document.getElementById(`status-${orderId}`).value;
+      try {
+        const orderRef = doc(db, "orders", orderId);
+        await updateDoc(orderRef, { status: newStatus });
+        alert("Order status updated successfully.");
+      } catch (err) {
+        alert("Error updating status: " + err.message);
+      }
+    };
   </script>
 </body>
 </html>
