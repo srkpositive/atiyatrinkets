@@ -96,7 +96,7 @@
               <p><strong>Address:</strong> ${order.address}</p>
               <p><strong>Payment Method:</strong> ${order.paymentMethod}</p>
               <p><strong>Status:</strong> ${order.status || "Pending"}</p>
-              <p><strong>Timestamp:</strong> ${order.timestamp?.toDate().toLocaleString() || "N/A"}</p>
+              <p><strong>Timestamp:</strong> ${order.timestamp && typeof order.timestamp.toDate === "function"? order.timestamp.toDate().toLocaleString(): "Pending"}</p>
               <p><strong>Items:</strong></p>
               <ul>
                 ${(order.cart || []).map(item => `
