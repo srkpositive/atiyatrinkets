@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Orders | AtiyaTrinkets</title>
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: #f9f5f2;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #d63384;
+      text-align: center;
+    }
+    .order {
+      background: white;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 15px auto;
+      max-width: 700px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .order p {
+      margin: 5px 0;
+    }
+    .item {
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Admin Orders</h1>
+  <div id="orders-container">Loading orders...</div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+      query,
+      orderBy
+    } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+    import {
+      getAuth,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
+      authDomain: "atiyatrinkets-ce4b6.firebaseapp.com",
+      projectId: "atiyatrinkets-ce4b6",
+      storageBucket: "atiyatrinkets-ce4b6.appspot.com",
+      messagingSenderId: "562847025664",
+      appId: "1:562847025664:web:c200328acd5643c32e66e5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    const ADMIN_UID = "C6Jufkjv8CX4UHTB0R3EuMpTDoy2";
+    const ordersContainer = document.getElementById("orders-container");
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user && user.uid === ADMIN_UID) {
+        const q = query(collection(db, "orders"), orderBy("timestamp", "desc"));
+        const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.empty) {
+          ordersContainer.innerHTML = "<p>No orders found.</p>";
+          return;
+        }
+
+        ordersContainer.innerHTML = "";
+        querySnapshot.forEach((doc) => {
+          const order = doc.data();
+          const div = document.createElement("div");
+          div.className = "order";
+          div.innerHTML = `
+            <p><strong>Order ID:</strong> ${doc.id}</p>
+            <p><strong>Name:</strong> ${order.name}</p>
+            <p><strong>Email:</strong> ${order.email || "N/A"}</p>
+            <p><strong>Phone:</strong> ${order.phone}</p>
+            <p><strong>Address:</strong> ${order.address}</p>
+            <p><strong>Payment Method:</strong> ${order.paymentMethod}</p>
+            <p><strong>Status:</strong> ${order.status || "Pending"}</p>
+            <p><strong>Timestamp:</strong> ${new Date(order.timestamp).toLocaleString()}</p>
+            <p><strong>Items:</strong></p>
+            <ul>
+              ${order.cart.map(item => `<li class="item">${item.name} × ${item.qty} (₹${item.price})</li>`).join("")}
+            </ul>
+          `;
+          ordersContainer.appendChild(div);
+        });
+      } else {
+        ordersContainer.innerHTML = "<p>Access denied. You must be signed in as admin.</p>";
+      }
+    });
+  </script>
+</body>
+</html>
