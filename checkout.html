@@ -87,80 +87,111 @@
 
   <!-- Firebase + Firestore + Auth -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
-      authDomain: "atiyatrinkets-ce4b6.firebaseapp.com",
-      projectId: "atiyatrinkets-ce4b6",
-      storageBucket: "atiyatrinkets-ce4b6.appspot.com",
-      messagingSenderId: "562847025664",
-      appId: "1:562847025664:web:c200328acd5643c32e66e5"
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyCUkMcVsTmhfZ0PtsGTHJIGU156MjrxqzE",
+    authDomain: "atiyatrinkets-ce4b6.firebaseapp.com",
+    projectId: "atiyatrinkets-ce4b6",
+    storageBucket: "atiyatrinkets-ce4b6.appspot.com",
+    messagingSenderId: "562847025664",
+    appId: "1:562847025664:web:c200328acd5643c32e66e5"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
 
-    const summaryList = document.getElementById('summary-items');
-    const summaryTotal = document.getElementById('summary-total');
-    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+  const summaryList = document.getElementById('summary-items');
+  const summaryTotal = document.getElementById('summary-total');
+  const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
 
-    let totalAmount = 0;
-    cartItems.forEach(item => {
-      const li = document.createElement('li');
-      li.innerHTML = `<span>${item.name} × ${item.qty}</span><span>₹${item.qty * item.price}</span>`;
-      summaryList.appendChild(li);
-      totalAmount += item.qty * item.price;
-    });
-    summaryTotal.textContent = totalAmount;
+  let totalAmount = 0;
+  cartItems.forEach(item => {
+    const li = document.createElement('li');
+    li.innerHTML = `<span>${item.name} × ${item.qty}</span><span>₹${item.qty * item.price}</span>`;
+    summaryList.appendChild(li);
+    totalAmount += item.qty * item.price;
+  });
+  summaryTotal.textContent = totalAmount;
 
-    function validateDetails() {
-      const name = document.getElementById('name').value.trim();
-      const address = document.getElementById('address').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      if (!name || !address || !phone) {
-        alert("Please fill all details before proceeding.");
-        return false;
-      }
-      return true;
+  function validateDetails() {
+    const name = document.getElementById('name').value.trim();
+    const address = document.getElementById('address').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    if (!name || !address || !phone) {
+      alert("Please fill all details before proceeding.");
+      return false;
     }
+    return true;
+  }
 
-    window.payWithRazorpay = function () {
-      if (!validateDetails()) return;
+window.payWithRazorpay = function () {
+  if (!validateDetails()) return;
 
-      const options = {
-        key: "rzp_live_8dfpF64rA0trja",
-        amount: totalAmount * 100,
-        currency: "INR",
-        name: "AtiyaTrinkets",
-        description: "Jewellery Order",
-        handler: function (response) {
-          alert("Payment Successful: " + response.razorpay_payment_id);
-          localStorage.removeItem('cart');
-          window.location.href = "thankyou.html";
-        },
-        prefill: {
-          name: document.getElementById('name').value,
-          contact: document.getElementById('phone').value
-        },
-        theme: { color: "#d8b4d3" }
-      };
-      const rzp = new Razorpay(options);
-      rzp.open();
-    };
+  const name = document.getElementById('name').value.trim();
+  const address = document.getElementById('address').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    window.payWithCOD = async function () {
-      if (!validateDetails()) return;
+  const options = {
+    key: "rzp_live_8dfpF64rA0trja",
+    amount: totalAmount * 100,
+    currency: "INR",
+    name: "AtiyaTrinkets",
+    description: "Jewellery Order",
+    handler: async function (response) {
+      onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+          alert("Please sign in before placing an order.");
+          return;
+        }
 
-      const name = document.getElementById('name').value.trim();
-      const address = document.getElementById('address').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const orderData = {
+          userId: user.uid,
+          userEmail: user.email,
+          name,
+          address,
+          phone,
+          cart,
+          paymentMethod: "Online - Razorpay",
+          paymentId: response.razorpay_payment_id,
+          timestamp: serverTimestamp()
+        };
 
-      const user = auth.currentUser;
+        try {
+          const docRef = await addDoc(collection(db, "orders"), orderData);
+          alert("Payment Successful! Order ID: " + docRef.id);
+          localStorage.removeItem("cart");
+          window.location.href = "thankyou.html?orderId=" + docRef.id;
+        } catch (error) {
+          console.error("Error saving order:", error);
+          alert("Payment done, but error saving order: " + error.message);
+        }
+      });
+    },
+    prefill: {
+      name: name,
+      contact: phone
+    },
+    theme: { color: "#d8b4d3" }
+  };
+
+  const rzp = new Razorpay(options);
+  rzp.open();
+};
+
+  window.payWithCOD = async function () {
+    if (!validateDetails()) return;
+
+    const name = document.getElementById('name').value.trim();
+    const address = document.getElementById('address').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    onAuthStateChanged(auth, async (user) => {
       if (!user) {
         alert("Please sign in before placing an order.");
         return;
@@ -174,7 +205,7 @@
         phone,
         cart,
         paymentMethod: "Cash on Delivery",
-        timestamp: Date.now()
+        timestamp: serverTimestamp()  // ✅ Correct Firebase timestamp
       };
 
       try {
@@ -186,8 +217,9 @@
         console.error("Error placing order:", error);
         alert("Error placing order: " + error.message);
       }
-    };
-  </script>
+    });
+  };
+</script>
 
   <!-- PayPal -->
   <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
